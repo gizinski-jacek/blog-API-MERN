@@ -1,0 +1,23 @@
+{
+	"name": "blog-api-mern",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"devall": "concurrently \"cd server && npm devstartcss\" \"cd client && npm start\" "
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/gizinski-jacek/blog-API-MERN.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/gizinski-jacek/blog-API-MERN/issues"
+	},
+	"homepage": "https://github.com/gizinski-jacek/blog-API-MERN#readme",
+	"dependencies": {
+		"concurrently": "^7.0.0"
+	}
+}
