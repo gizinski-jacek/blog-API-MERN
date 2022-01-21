@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"devall": "concurrently \"cd server && npm devstartcss\" \"cd client && npm start\" "
+		"runall": "concurrently \"cd server && npm run devstart\" \"cd client && npm start\" ",
+		"devrunall": "concurrently \"cd server && npm run devstartcss\" \"cd client && npm start\" "
 	},
 	"repository": {
 		"type": "git",
