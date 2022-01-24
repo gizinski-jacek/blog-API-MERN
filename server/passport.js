@@ -8,6 +8,7 @@ const bcryptjs = require('bcryptjs');
 const User = require('./models/user');
 
 passport.use(
+	'login',
 	new LocalStrategy((username, password, done) => {
 		User.findOne({ username: username }, (err, user) => {
 			if (err) {
@@ -16,7 +17,7 @@ passport.use(
 			if (!user) {
 				return done(null, false, { message: 'Incorrect username' });
 			}
-			bcryptjs.compare(password, user.password, (err, equal) => {
+			bcryptjs.compare(password, user.password, (err, match) => {
 				if (err) {
 					return next(err);
 				}
