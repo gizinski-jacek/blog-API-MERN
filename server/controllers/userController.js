@@ -83,9 +83,6 @@ exports.sign_up_new_user = [
 				// Move this into custom body validator?
 				return res.status(409).json([{ msg: 'User already exists' }]);
 			}
-			// if (req.body.password !== req.body.confirmPassword) {
-			// 	return res.status(401).json([{ msg: 'Passwords must match' }]);
-			// }
 			if (!errors.isEmpty()) {
 				return res.status(400).json(errors.array());
 			}
