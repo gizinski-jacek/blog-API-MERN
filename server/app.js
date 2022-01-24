@@ -8,6 +8,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const mongoose = require('mongoose');
+require('./passport');
 
 const mongoDb = process.env.MONGODB_URI;
 mongoose.connect(mongoDb, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -19,19 +20,12 @@ const apiRouter = require('./routes/api');
 
 const app = express();
 
-// const sessionConfig = {
-// 	secret: process.env.PASSPORT_SECRET,
-// 	resave: false,
-// 	saveUninitialized: true,
-// 	store: MongoStore.create({ mongoUrl: mongoDb, collectionName: 'sessions' }),
-// 	cookie: { maxAge: 1000 * 60 * 60 * 24 }, // One day
-// };
-
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+	res.header('Access-Control-Allow-Credentials', true);
 	res.header(
 		'Access-Control-Allow-Headers',
 		'Origin, X-Requested-With, Content-Type, Accept'
