@@ -6,22 +6,43 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import PostsPreview from './components/PostsPreview';
 import Posts from './components/Posts';
-import PostDetail from './components/PostDetail';
+import PostDetails from './components/PostDetails';
 import Comments from './components/Comments';
-import CommentDetail from './components/CommentDetail';
-import Login from './components/Login';
+import CommentDetails from './components/CommentDetails';
+import Authors from './components/Authors';
+import AuthorDetails from './components/AuthorDetails';
+import Dashboard from './components/Dashboard';
+import CreatePost from './components/CreatePost';
+import LogIn from './components/LogIn';
 import Signup from './components/Signup';
 
 const App = () => {
+	const [user, setUser] = useState(null);
 	const [posts, setPosts] = useState();
 
 	useEffect(() => {
 		(async () => {
 			try {
-				const res = await fetch('http://localhost:4000/api/posts');
+				const res = await fetch('/api/authUser', {
+					method: 'GET',
+					mode: 'cors',
+					credentials: 'include',
+					headers: { 'Content-type': 'application/json' },
+				});
+				const resJson = await res.json();
+				setUser(resJson.currentUser);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const res = await fetch('/api/posts');
 				const resJson = await res.json();
 				setPosts(resJson);
-				console.log(resJson);
 			} catch (error) {
 				console.log(error);
 			}
@@ -34,11 +55,11 @@ const App = () => {
 				<Route
 					path='/'
 					element={
-						<>
-							<Nav />
+						<main className='main'>
+							<Nav user={user} setUser={setUser} />
 							<Outlet />
 							<Footer />
-						</>
+						</main>
 					}
 				>
 					<Route
@@ -46,32 +67,35 @@ const App = () => {
 						element={
 							<>
 								<Home />
-								<PostsPreview />
+								<PostsPreview posts={posts} />
 							</>
 						}
 					/>
-					<Route path='posts' element={<Posts />}>
+					<Route path='posts' element={<Posts posts={posts} />}>
 						<Route
 							path=':postid'
 							element={
 								<>
-									<PostDetail />
+									<PostDetails />
 									<Comments />
 								</>
 							}
 						>
-							<Route path='comments' element={<CommentDetail />}>
-								<Route path=':commentid' element={<CommentDetail />} />
-							</Route>
+							<Route path='comments/:commentid' element={<CommentDetails />} />
 						</Route>
 					</Route>
-					<Route path='authors'>
-						<Route path=':authorid' />
+					<Route path='authors' element={<Authors />}>
+						<Route path=':authorid' element={<AuthorDetails />} />
 					</Route>
-					<Route path='dashboard'>
-						<Route path=':userid' />
-					</Route>
-					<Route path='login' element={<Login />} />
+					<Route
+						path='dashboard'
+						element={<Dashboard user={user} posts={posts} />}
+					/>
+					<Route path='create' element={<CreatePost user={user} />} />
+					<Route
+						path='log-in'
+						element={<LogIn user={user} setUser={setUser} />}
+					/>
 					<Route path='sign-up' element={<Signup />} />
 				</Route>
 			</Routes>
