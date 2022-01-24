@@ -43,14 +43,14 @@ exports.log_in_user = (req, res, next) => {
 };
 
 exports.log_out_user = (req, res, next) => {
-	req.logout();
 	res.cookie('userToken', 'loggedOut', {
-		expires: new Date(Date.now() - 600000),
+		expires: new Date(Date.now() + 1000),
 		httpOnly: true,
 		secure: false,
 		sameSite: 'lax',
 	});
-	res.redirect('/');
+
+	res.status(200).json({ success: true });
 };
 
 exports.sign_up_new_user = [
