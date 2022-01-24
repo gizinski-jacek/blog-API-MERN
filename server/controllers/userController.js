@@ -1,3 +1,4 @@
+require('dotenv').config();
 const User = require('../models/user');
 const Post = require('../models/post');
 const Comment = require('../models/comment');
@@ -9,39 +10,46 @@ const passport = require('passport');
 const bcryptjs = require('bcryptjs');
 
 exports.log_in_user = (req, res, next) => {
-	passport.authenticate('local', { session: false }, (err, user) => {
+	passport.authenticate('login', { session: false }, (err, user) => {
 		if (err) {
-			// Will need reworking later
-			return next(error);
+			return next(err);
 		}
 		if (!user) {
-			return res.status(400).json({
-				message: 'User not found',
-			});
+			return res.status(400).json([
+				{
+					msg: 'User not found',
+				},
+			]);
 		}
-		req.login(user, { session: false }, (err) => {
-			if (err) {
-				return next(error);
-			}
-			console.log(user);
-			// const user = { _id: user._id, username: user.username };
-			jwt.sign(
-				user,
-				process.env.STRATEGY_SECRET,
-				{ expiresIn: '30m' },
-				(err, token) => {
-					if (err) {
-						return next(error);
-					}
-					res.json({ user, token });
+		jwt.sign(
+			{ _id: user._id, username: user.username },
+			process.env.STRATEGY_SECRET,
+			{ expiresIn: '30m' },
+			(err, token) => {
+				if (err) {
+					return next(err);
 				}
-			);
-		});
+				/// DO LATER: lower maxAge.
+				res.cookie('userToken', token, {
+					maxAge: 600000999,
+					httpOnly: true,
+					secure: false,
+					sameSite: 'lax',
+				});
+				res.status(200).json(token);
+			}
+		);
 	})(req, res, next);
 };
 
 exports.log_out_user = (req, res, next) => {
 	req.logout();
+	res.cookie('userToken', 'loggedOut', {
+		expires: new Date(Date.now() - 600000),
+		httpOnly: true,
+		secure: false,
+		sameSite: 'lax',
+	});
 	res.redirect('/');
 };
 
@@ -72,28 +80,49 @@ exports.sign_up_new_user = [
 				return next(err);
 			}
 			if (userExists.length > 0) {
-				return res.status(409).json({ error: 'User already exists' });
+				// Move this into custom body validator?
+				return res.status(409).json([{ msg: 'User already exists' }]);
 			}
-			if (req.body.password !== req.body.confirmPassword) {
-				return res.status(401).json({ errors: 'Passwords must match' });
-			}
+			// if (req.body.password !== req.body.confirmPassword) {
+			// 	return res.status(401).json([{ msg: 'Passwords must match' }]);
+			// }
 			if (!errors.isEmpty()) {
-				return res.json({ errors: errors.array() });
+				return res.status(400).json(errors.array());
 			}
 			bcryptjs.hash(req.body.password, 10, (err, hashedPassword) => {
+				if (err) {
+					return next(err);
+				}
 				newUser.password = hashedPassword;
 				newUser.save(newUser, (err) => {
-					console.log(newUser);
 					if (err) {
 						return next(err);
 					}
-					// return res.redirect('/');
-					return res.status(200).json({ success: true, redirectUrl: '/' });
+					return res.status(200).json({ success: true });
 				});
 			});
 		});
 	},
 ];
+
+exports.check_user = async (req, res, next) => {
+	let currentUser;
+	if (req.cookies.userToken) {
+		const decoded = await jwt.verify(
+			req.cookies.userToken,
+			process.env.STRATEGY_SECRET
+		);
+		const user = await User.findById(decoded._id);
+		currentUser = {
+			_id: user._id,
+			username: user.username,
+			token: req.cookies.userToken,
+		};
+	} else {
+		currentUser = null;
+	}
+	res.status(200).json({ currentUser });
+};
 
 exports.get_all_users = (req, res, next) => {
 	if (!req.isAuthenticated()) {
