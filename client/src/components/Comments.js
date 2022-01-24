@@ -1,6 +1,6 @@
 const Comments = () => {
 	return (
-		<div>
+		<div className='comments'>
 			<span>Comments</span>
 		</div>
 	);
