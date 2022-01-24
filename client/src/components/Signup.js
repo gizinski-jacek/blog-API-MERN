@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 
 const Signup = () => {
 	const navigate = useNavigate();
 
+	const [errors, setErrors] = useState();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setconfirmPassword] = useState('');
@@ -12,18 +12,29 @@ const Signup = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			await fetch('http://localhost:4000/api/sign-up', {
+			const res = await fetch('/api/sign-up', {
 				method: 'POST',
 				mode: 'cors',
 				body: JSON.stringify({ username, password, confirmPassword }),
-				headers: new Headers({ 'Content-type': 'application/json' }),
+				headers: { 'Content-type': 'application/json' },
 			});
-			navigate('/login');
-		} catch (error) {}
+			if (res.status === 200) {
+				navigate('/log-in');
+			} else {
+				const resJson = await res.json();
+				setErrors(resJson);
+			}
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
+	const errorDisplay = errors?.map((error, index) => {
+		return <li key={index}>{error.msg}</li>;
+	});
+
 	return (
-		<div id='sign-up'>
+		<div className='sign-up'>
 			<form id='sign-up-form' onSubmit={handleSubmit}>
 				<label htmlFor='username'>Username</label>
 				<input
@@ -32,6 +43,7 @@ const Signup = () => {
 					name='username'
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
+					placeholder='Username'
 					required
 				/>
 				<label htmlFor='password'>Password</label>
@@ -57,6 +69,7 @@ const Signup = () => {
 					Go Back{' '}
 				</button>
 			</form>
+			{errorDisplay ? <div>{errorDisplay}</div> : null}
 		</div>
 	);
 };
