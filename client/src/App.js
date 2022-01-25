@@ -75,7 +75,7 @@ const App = () => {
 						path='posts/:postid'
 						element={
 							<>
-								<PostDetails />
+								<PostDetails posts={posts} />
 								<Comments />
 							</>
 						}
