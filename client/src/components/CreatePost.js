@@ -11,7 +11,7 @@ const CreatePost = (props) => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch('/api/create', {
+			const res = await fetch('/api/dashboard/create', {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
@@ -20,7 +20,7 @@ const CreatePost = (props) => {
 			});
 			const resJson = await res.json();
 			if (res.status === 200) {
-				navigate(resJson.redirectUrl);
+				navigate('/dashboard');
 			} else {
 				setErrors(resJson);
 			}
@@ -51,9 +51,9 @@ const CreatePost = (props) => {
 							value={title}
 							placeholder='Title'
 							required
-						></input>
+						/>
 						<label htmlFor='text'>Text</label>
-						<input
+						<textarea
 							type='text'
 							id='text'
 							name='text'
@@ -65,7 +65,7 @@ const CreatePost = (props) => {
 							value={text}
 							placeholder='Text'
 							required
-						></input>
+						/>
 						<button type='submit'>Submit</button>
 					</form>
 					{errorDisplay ? <div>{errorDisplay}</div> : null}
