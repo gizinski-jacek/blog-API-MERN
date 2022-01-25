@@ -1,4 +1,4 @@
-const PostWrapper = ({ post }) => {
+const UserPostWrapper = ({ post }) => {
 	return (
 		<div className='user-post'>
 			<div className='post-controls'>
@@ -7,13 +7,11 @@ const PostWrapper = ({ post }) => {
 			</div>
 			<article className='post'>
 				<h2 className='title'>{post.title}</h2>
-				<h3 className='author'>
-					{post.author ? post.author.username : 'Anonymous'}
-				</h3>
+				<h3 className='author'>{post.author ? post.author : 'Anonymous'}</h3>
 				<h3 className='published'>{post.timestamp}</h3>
 			</article>
 		</div>
 	);
 };
 
-export default PostWrapper;
+export default UserPostWrapper;
