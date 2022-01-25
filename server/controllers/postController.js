@@ -18,12 +18,12 @@ exports.create_post = [
 		.trim()
 		.isLength({ min: 4, max: 512 })
 		.escape(),
-	async (req, res, next) => {
+	(req, res, next) => {
 		const errors = validationResult(req);
 		const newPost = new Post({
 			title: req.body.title,
 			text: req.body.text,
-			author: req.decodedUser._id,
+			author: req.decodedUser.username,
 			timestamp: new Date(),
 		});
 		if (!errors.isEmpty()) {
@@ -33,7 +33,7 @@ exports.create_post = [
 			if (err) {
 				return next(err);
 			}
-			res.status(200).json({ success: true, redirectUrl: newPost.url });
+			res.status(200).json({ success: true });
 		});
 	},
 ];
@@ -54,14 +54,21 @@ exports.delete_post = (req, res, next) => {
 
 exports.get_all_posts = (req, res, next) => {
 	Post.find({})
-		.populate('author')
 		.sort({ timestamp: 'desc' })
 		.exec((err, post_list) => {
 			if (err) {
 				return next(err);
 			}
+			console.log(post_list);
 			res.status(200).json(post_list);
 		});
 };
 
-exports.get_post = (req, res, next) => {};
+exports.get_post = (req, res, next) => {
+	Post.findById(req.params.postid).exec((err, post) => {
+		if (err) {
+			return next(err);
+		}
+		res.status(200).json(post);
+	});
+};
