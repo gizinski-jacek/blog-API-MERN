@@ -53,7 +53,7 @@ exports.log_out_user = (req, res, next) => {
 	res.status(200).json({ success: true });
 };
 
-exports.sign_up_new_user = [
+exports.sign_up_user = [
 	body('username', 'Username field can not be empty')
 		.trim()
 		.isLength({ min: 4, max: 32 })
@@ -75,11 +75,11 @@ exports.sign_up_new_user = [
 		const newUser = new User({
 			username: req.body.username,
 		});
-		User.find({ username: req.body.username }).exec((err, userExists) => {
+		User.find({ username: req.body.username }).exec((err, user_list) => {
 			if (err) {
 				return next(err);
 			}
-			if (userExists.length > 0) {
+			if (user_list.length > 0) {
 				// Move this into custom body validator?
 				return res.status(409).json([{ msg: 'User already exists' }]);
 			}
@@ -102,7 +102,7 @@ exports.sign_up_new_user = [
 	},
 ];
 
-exports.check_user = async (req, res, next) => {
+exports.auth_user = async (req, res, next) => {
 	let currentUser;
 	if (req.cookies.userToken) {
 		const decoded = await jwt.verify(
@@ -119,20 +119,6 @@ exports.check_user = async (req, res, next) => {
 		currentUser = null;
 	}
 	res.status(200).json({ currentUser });
-};
-
-exports.get_all_users = (req, res, next) => {
-	if (!req.isAuthenticated()) {
-		return res.render('log-in', { title: 'Log In' });
-	}
-	/// Get users from db
-};
-
-exports.get_user = (req, res, next) => {
-	if (!req.isAuthenticated()) {
-		return res.render('log-in', { title: 'Log In' });
-	}
-	/// Get user from db
 };
 
 exports.update_user = (req, res, next) => {
