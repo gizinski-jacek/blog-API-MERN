@@ -3,7 +3,7 @@ import UserPostWrapper from './utils/UserPostWrapper';
 
 const Dashboard = ({ user, posts }) => {
 	const postsDisplay = posts
-		?.filter((post) => post.author === user._id)
+		?.filter((post) => post.author === user.username)
 		.map((post, index) => {
 			return <UserPostWrapper key={index} post={post} dashboard={true} />;
 		});
