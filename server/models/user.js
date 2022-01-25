@@ -8,9 +8,4 @@ const UserSchema = new Schema({
 	admin: { type: Boolean, default: false },
 });
 
-// Virtual for user's URL
-UserSchema.virtual('url').get(function () {
-	return '/users/' + this._id;
-});
-
 module.exports = mongoose.model('User', UserSchema);
