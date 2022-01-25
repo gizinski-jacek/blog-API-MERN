@@ -10,7 +10,6 @@ import PostDetails from './components/PostDetails';
 import Comments from './components/Comments';
 import CommentDetails from './components/CommentDetails';
 import Authors from './components/Authors';
-import AuthorDetails from './components/AuthorDetails';
 import Dashboard from './components/Dashboard';
 import CreatePost from './components/CreatePost';
 import LogIn from './components/LogIn';
@@ -71,22 +70,19 @@ const App = () => {
 							</>
 						}
 					/>
-					<Route path='posts' element={<Posts posts={posts} />}>
-						<Route
-							path=':postid'
-							element={
-								<>
-									<PostDetails />
-									<Comments />
-								</>
-							}
-						>
-							<Route path='comments/:commentid' element={<CommentDetails />} />
-						</Route>
+					<Route path='posts' element={<Posts posts={posts} />} />
+					<Route
+						path='posts/:postid'
+						element={
+							<>
+								<PostDetails />
+								<Comments />
+							</>
+						}
+					>
+						<Route path='comments/:commentid' element={<CommentDetails />} />
 					</Route>
-					<Route path='authors' element={<Authors />}>
-						<Route path=':authorid' element={<AuthorDetails />} />
-					</Route>
+					<Route path='authors' element={<Authors posts={posts} />} />
 					<Route
 						path='dashboard'
 						element={<Dashboard user={user} posts={posts} />}

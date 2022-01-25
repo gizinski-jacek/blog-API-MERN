@@ -1,8 +1,8 @@
-import PostWrapper from './utils/PostWrapper';
+import PostLinkWrapper from './utils/PostLinkWrapper';
 
 const Posts = ({ posts }) => {
 	const postsDisplay = posts?.map((post) => {
-		return <PostWrapper key={post._id} post={post} />;
+		return <PostLinkWrapper key={post._id} post={post} />;
 	});
 
 	return <section className='posts-preview container'>{postsDisplay}</section>;

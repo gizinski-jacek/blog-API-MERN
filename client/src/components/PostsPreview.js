@@ -1,11 +1,13 @@
-import PostWrapper from './utils/PostWrapper';
+import PostLinkWrapper from './utils/PostLinkWrapper';
 
 const PostsPreview = ({ posts }) => {
-	const postsDisplay = posts?.slice(0, 3).map((post) => {
-		return <PostWrapper key={post._id} post={post} />;
+	const postsPreviewDisplay = posts?.slice(0, 3).map((post) => {
+		return <PostLinkWrapper key={post._id} post={post} />;
 	});
 
-	return <section className='posts-preview container'>{postsDisplay}</section>;
+	return (
+		<section className='posts-preview container'>{postsPreviewDisplay}</section>
+	);
 };
 
 export default PostsPreview;
