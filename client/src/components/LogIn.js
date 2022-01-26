@@ -2,11 +2,10 @@ import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { UserContext } from './hooks/UserContext';
 
-const LogIn = () => {
+const LogIn = ({ setUser }) => {
 	const navigate = useNavigate();
 
 	// const { setUserContext } = useContext(UserContext);
-	const [user, setUser] = useState();
 	const [errors, setErrors] = useState();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -22,11 +21,11 @@ const LogIn = () => {
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
-			if (res.status === 200) {
+			if (res.status !== 200) {
+				setErrors(resJson);
+			} else {
 				setUser(resJson);
 				navigate('/dashboard');
-			} else {
-				setErrors(resJson);
 			}
 		} catch (error) {
 			console.log(error);
