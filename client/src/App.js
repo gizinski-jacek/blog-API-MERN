@@ -58,11 +58,13 @@ const App = () => {
 				<Route
 					path='/'
 					element={
-						<main className='main'>
-							<Nav user={user} setUser={setUser} />
-							<Outlet />
-							<Footer />
-						</main>
+						loading ? null : (
+							<main className='main'>
+								<Nav user={user} setUser={setUser} />
+								<Outlet />
+								<Footer />
+							</main>
+						)
 					}
 				>
 					<Route
@@ -91,7 +93,7 @@ const App = () => {
 					<Route
 						path='dashboard'
 						element={
-							loading ? null : user ? (
+							user ? (
 								<Dashboard user={user} posts={posts} />
 							) : (
 								<Navigate to='/log-in' />
@@ -100,18 +102,12 @@ const App = () => {
 					/>
 					<Route
 						path='dashboard/create'
-						element={
-							loading ? null : user ? (
-								<PostForm user={user} />
-							) : (
-								<Navigate to='log-in' />
-							)
-						}
+						element={user ? <PostForm user={user} /> : <Navigate to='log-in' />}
 					/>
 					<Route
 						path='dashboard/:postid/update'
 						element={
-							loading ? null : user ? (
+							user ? (
 								<PostForm posts={posts} editing={true} />
 							) : (
 								<Navigate to='log-in' />
@@ -121,7 +117,7 @@ const App = () => {
 					<Route
 						path='dashboard/:postid/delete'
 						element={
-							loading ? null : user ? (
+							user ? (
 								<PostDetails posts={posts} deleting={true} />
 							) : (
 								<Navigate to='log-in' />
@@ -131,18 +127,12 @@ const App = () => {
 					<Route
 						path='log-in'
 						element={
-							loading ? null : user ? (
-								<Navigate to='/dashboard' />
-							) : (
-								<LogIn setUser={setUser} />
-							)
+							user ? <Navigate to='/dashboard' /> : <LogIn setUser={setUser} />
 						}
 					/>
 					<Route
 						path='sign-up'
-						element={
-							loading ? null : user ? <Navigate to='/dashboard' /> : <Signup />
-						}
+						element={user ? <Navigate to='/dashboard' /> : <Signup />}
 					/>
 				</Route>
 			</Routes>
