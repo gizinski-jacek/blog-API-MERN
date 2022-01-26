@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-const CreatePost = (props) => {
+const PostForm = (props) => {
 	const navigate = useNavigate();
 
 	const [errors, setErrors] = useState();
@@ -77,4 +77,4 @@ const CreatePost = (props) => {
 	);
 };
 
-export default CreatePost;
+export default PostForm;
