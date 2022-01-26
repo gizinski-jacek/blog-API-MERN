@@ -29,9 +29,9 @@ exports.create_post = [
 		if (!errors.isEmpty()) {
 			res.status(401).json(errors.array());
 		}
-		newPost.save((err) => {
-			if (err) {
-				return next(err);
+		newPost.save((error) => {
+			if (error) {
+				return next(error);
 			}
 			res.status(200).json({ success: true });
 		});
@@ -55,20 +55,19 @@ exports.delete_post = (req, res, next) => {
 exports.get_all_posts = (req, res, next) => {
 	Post.find({})
 		.sort({ timestamp: 'desc' })
-		.exec((err, post_list) => {
-			if (err) {
-				return next(err);
+		.exec((error, post_list) => {
+			if (error) {
+				return next(error);
 			}
-			console.log(post_list);
 			res.status(200).json(post_list);
 		});
 };
 
-exports.get_post = (req, res, next) => {
-	Post.findById(req.params.postid).exec((err, post) => {
-		if (err) {
-			return next(err);
-		}
-		res.status(200).json(post);
-	});
-};
+// exports.get_post = (req, res, next) => {
+// 	Post.findById(req.params.postid).exec((error, post) => {
+// 		if (error) {
+// 			return next(error);
+// 		}
+// 		res.status(200).json(post);
+// 	});
+// };

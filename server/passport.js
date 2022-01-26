@@ -10,16 +10,16 @@ const User = require('./models/user');
 passport.use(
 	'login',
 	new LocalStrategy((username, password, done) => {
-		User.findOne({ username: username }, (err, user) => {
-			if (err) {
-				return done(err);
+		User.findOne({ username: username }, (error, user) => {
+			if (error) {
+				return done(error);
 			}
 			if (!user) {
 				return done(null, false, { message: 'Incorrect username' });
 			}
-			bcryptjs.compare(password, user.password, (err, match) => {
-				if (err) {
-					return next(err);
+			bcryptjs.compare(password, user.password, (error, match) => {
+				if (error) {
+					return next(error);
 				}
 				if (!match) {
 					return done(null, false, { message: 'Incorrect password' });
@@ -37,9 +37,9 @@ passport.use(
 			secretOrKey: process.env.STRATEGY_SECRET,
 		},
 		(jwtPayload, done) => {
-			User.findById(jwtPayload.id, (err, user) => {
-				if (err) {
-					return done(err);
+			User.findById(jwtPayload.id, (error, user) => {
+				if (error) {
+					return done(error);
 				}
 				if (!user) {
 					return done(null, false, { message: 'User not found' });

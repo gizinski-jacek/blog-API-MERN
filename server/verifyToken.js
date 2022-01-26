@@ -13,8 +13,8 @@ const verifyToken = async (req, res, next) => {
 			req.token = req.cookies.userToken;
 			next();
 		}
-	} catch (err) {
-		return next(err);
+	} catch (error) {
+		return next(error);
 	}
 };
 
