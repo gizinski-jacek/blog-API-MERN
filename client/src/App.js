@@ -16,11 +16,13 @@ import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
 import Signup from './components/Signup';
+import FetchPostComments from './components/hooks/FetchPostComments';
 
 const App = () => {
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState(null);
 	const [posts, setPosts] = useState();
+	const [comments, setComments] = useState();
 
 	useEffect(() => {
 		(async () => {
@@ -68,60 +70,12 @@ const App = () => {
 					}
 				>
 					<Route
-						path='/'
+						path=''
 						element={
 							<>
 								<Home />
 								<PostsPreview posts={posts} />
 							</>
-						}
-					/>
-					<Route path='posts' element={<Posts posts={posts} />} />
-					<Route
-						path='posts/:postid'
-						element={
-							<>
-								<PostDetails posts={posts} />
-								<CommentForm user={user} />
-								<Comments />
-							</>
-						}
-					>
-						<Route path='comments/:commentid' element={<CommentDetails />} />
-					</Route>
-					<Route path='authors' element={<Authors posts={posts} />} />
-					<Route
-						path='dashboard'
-						element={
-							user ? (
-								<Dashboard user={user} posts={posts} />
-							) : (
-								<Navigate to='/log-in' />
-							)
-						}
-					/>
-					<Route
-						path='dashboard/create'
-						element={user ? <PostForm user={user} /> : <Navigate to='log-in' />}
-					/>
-					<Route
-						path='dashboard/:postid/update'
-						element={
-							user ? (
-								<PostForm posts={posts} editing={true} />
-							) : (
-								<Navigate to='log-in' />
-							)
-						}
-					/>
-					<Route
-						path='dashboard/:postid/delete'
-						element={
-							user ? (
-								<PostDetails posts={posts} deleting={true} />
-							) : (
-								<Navigate to='log-in' />
-							)
 						}
 					/>
 					<Route
@@ -134,6 +88,50 @@ const App = () => {
 						path='sign-up'
 						element={user ? <Navigate to='/dashboard' /> : <Signup />}
 					/>
+					<Route path='posts'>
+						<Route path='' element={<Posts posts={posts} />} />
+						<Route
+							path=':postid'
+							element={
+								<>
+									{/* Fetch here post's comments? */}
+									<FetchPostComments setComments={setComments} />
+									<PostDetails posts={posts} />
+									<CommentForm user={user} setComments={setComments} />
+									<Comments comments={comments} />
+								</>
+							}
+						>
+							<Route path='comments/:commentid' element={<CommentDetails />} />
+						</Route>
+					</Route>
+					<Route path='authors' element={<Authors posts={posts} />} />
+					<Route
+						path='dashboard'
+						element={
+							user ? (
+								<>
+									<Outlet />
+								</>
+							) : (
+								<Navigate to='/log-in' />
+							)
+						}
+					>
+						<Route path='' element={<Dashboard user={user} posts={posts} />} />
+						<Route
+							path='create'
+							element={<PostForm user={user} setPosts={setPosts} />}
+						/>
+						<Route
+							path=':postid/update'
+							element={<PostForm posts={posts} editing={true} />}
+						/>
+						<Route
+							path=':postid/delete'
+							element={<PostDetails posts={posts} deleting={true} />}
+						/>
+					</Route>
 				</Route>
 			</Routes>
 		</BrowserRouter>
