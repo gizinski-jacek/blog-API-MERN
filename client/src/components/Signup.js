@@ -18,11 +18,11 @@ const Signup = () => {
 				body: JSON.stringify({ username, password, confirmPassword }),
 				headers: { 'Content-type': 'application/json' },
 			});
-			if (res.status === 200) {
-				navigate('/log-in');
-			} else {
-				const resJson = await res.json();
+			const resJson = await res.json();
+			if (res.status !== 200) {
 				setErrors(resJson);
+			} else {
+				navigate('/log-in');
 			}
 		} catch (error) {
 			console.log(error);
