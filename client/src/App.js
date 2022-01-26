@@ -11,7 +11,7 @@ import Comments from './components/Comments';
 import CommentDetails from './components/CommentDetails';
 import Authors from './components/Authors';
 import Dashboard from './components/Dashboard';
-import CreatePost from './components/CreatePost';
+import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
 import Signup from './components/Signup';
 
@@ -87,7 +87,7 @@ const App = () => {
 						path='dashboard'
 						element={<Dashboard user={user} posts={posts} />}
 					/>
-					<Route path='create' element={<CreatePost user={user} />} />
+					<Route path='create' element={<PostForm user={user} />} />
 					<Route
 						path='log-in'
 						element={<LogIn user={user} setUser={setUser} />}
