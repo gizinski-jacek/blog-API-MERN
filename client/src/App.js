@@ -16,7 +16,7 @@ import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
 import Signup from './components/Signup';
-import FetchPostComments from './components/hooks/FetchPostComments';
+import useFetchComments from './components/hooks/useFetchComments';
 
 const App = () => {
 	const [loading, setLoading] = useState(true);
@@ -95,7 +95,7 @@ const App = () => {
 							element={
 								<>
 									{/* Fetch here post's comments? */}
-									<FetchPostComments setComments={setComments} />
+									<useFetchComments setComments={setComments} />
 									<PostDetails posts={posts} />
 									<CommentForm user={user} setComments={setComments} />
 									<Comments comments={comments} />
