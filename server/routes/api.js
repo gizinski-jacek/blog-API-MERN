@@ -25,12 +25,6 @@ router.post('/log-out', user_controller.log_out_user);
 router.post('/sign-up', user_controller.sign_up_user);
 
 /////
-/* PUT update a user */
-router.put('/dashboard', verifyToken, user_controller.update_user);
-
-/* DELETE delete a user */
-router.delete('/dashboard', verifyToken, user_controller.delete_user);
-
 /* POST new post */
 router.post('/dashboard/create', verifyToken, post_controller.create_post);
 
@@ -38,27 +32,35 @@ router.post('/dashboard/create', verifyToken, post_controller.create_post);
 router.get('/dashboard/:postid', verifyToken, post_controller.update_post);
 
 /* PUT update a post */
-router.put('/dashboard/:postid', verifyToken, post_controller.update_post);
+router.put(
+	'/dashboard/:postid/update',
+	verifyToken,
+	post_controller.update_post
+);
 
 /* DELETE delete a post */
-router.delete('/dashboard/:postid', verifyToken, post_controller.delete_post);
+router.delete(
+	'/dashboard/:postid/delete',
+	verifyToken,
+	post_controller.delete_post
+);
 
 /////
 /* GET all posts */
 router.get('/posts', post_controller.get_all_posts);
 
-/* GET one post */
-router.get('/posts/:postid', post_controller.get_post);
+// /* GET one post */
+// router.get('/posts/:postid', post_controller.get_post);
 
 /////
 /* GET all post's comments */
 router.get('/posts/:postid/comments', comment_controller.get_all_comments);
 
-/* GET one comment */
-router.get(
-	'/posts/:postid/comments/:commentid',
-	comment_controller.get_comment
-);
+// /* GET one comment */
+// router.get(
+// 	'/posts/:postid/comments/:commentid',
+// 	comment_controller.get_comment
+// );
 
 /* POST new comment */
 router.post('/posts/:postid/comments', comment_controller.create_comment);
