@@ -7,6 +7,7 @@ const PostSchema = new Schema({
 	text: { type: String, minlength: 4, maxlength: 512, required: true },
 	author: { type: String, required: true },
 	timestamp: { type: Date, required: true },
+	published: { type: Boolean, default: false },
 });
 
 // Virtual for post's URL
