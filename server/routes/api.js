@@ -54,7 +54,10 @@ router.get('/posts', post_controller.get_all_posts);
 
 /////
 /* GET all post's comments */
-router.get('/posts/:postid/comments', comment_controller.get_all_comments);
+router.get(
+	'/posts/:postid/comments',
+	comment_controller.get_all_comments_for_post
+);
 
 // /* GET one comment */
 // router.get(
@@ -63,7 +66,11 @@ router.get('/posts/:postid/comments', comment_controller.get_all_comments);
 // );
 
 /* POST new comment */
-router.post('/posts/:postid/comments', comment_controller.create_comment);
+router.post(
+	'/posts/:postid/comments',
+	verifyToken,
+	comment_controller.create_comment
+);
 
 /* PUT update comment */
 router.put(
