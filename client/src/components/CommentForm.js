@@ -3,8 +3,9 @@ import { useParams } from 'react-router';
 
 const CommentForm = ({ user, setComments }) => {
 	const params = useParams();
+
 	const [errors, setErrors] = useState();
-	const [comment, setComment] = useState('');
+	const [commentValue, setCommentValue] = useState('');
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -13,7 +14,7 @@ const CommentForm = ({ user, setComments }) => {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
-				body: JSON.stringify({ comment }),
+				body: JSON.stringify({ commentValue }),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
@@ -44,9 +45,9 @@ const CommentForm = ({ user, setComments }) => {
 							minLength='2'
 							maxLength='64'
 							onChange={(e) => {
-								setComment(e.target.value);
+								setCommentValue(e.target.value);
 							}}
-							value={comment}
+							value={commentValue}
 							placeholder='Comment'
 							required
 						/>
