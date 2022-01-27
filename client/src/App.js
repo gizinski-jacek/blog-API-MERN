@@ -125,11 +125,19 @@ const App = () => {
 						/>
 						<Route
 							path=':postid/update'
-							element={<PostForm posts={posts} editing={true} />}
+							element={
+								<PostForm posts={posts} setPosts={setPosts} editing={true} />
+							}
 						/>
 						<Route
 							path=':postid/delete'
-							element={<PostDetails posts={posts} deleting={true} />}
+							element={
+								<PostDetails
+									posts={posts}
+									setPosts={setPosts}
+									deleting={true}
+								/>
+							}
 						/>
 					</Route>
 				</Route>
