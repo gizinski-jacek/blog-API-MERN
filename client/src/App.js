@@ -16,7 +16,6 @@ import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
 import Signup from './components/Signup';
-import useFetchComments from './components/hooks/useFetchComments';
 
 const App = () => {
 	const [loading, setLoading] = useState(true);
@@ -34,6 +33,7 @@ const App = () => {
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
+				// Move token to userContext and remove from state
 				setUser(resJson.currentUser);
 				setLoading(false);
 			} catch (error) {
@@ -48,6 +48,22 @@ const App = () => {
 				const res = await fetch('/api/posts');
 				const resJson = await res.json();
 				setPosts(resJson);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const res = await fetch(`/api/comments`, {
+					method: 'GET',
+					mode: 'cors',
+					headers: { 'Content-type': 'application/json' },
+				});
+				const resJson = await res.json();
+				setComments(resJson);
 			} catch (error) {
 				console.log(error);
 			}
@@ -90,19 +106,27 @@ const App = () => {
 					/>
 					<Route path='posts'>
 						<Route path='' element={<Posts posts={posts} />} />
-						<Route
-							path=':postid'
-							element={
-								<>
-									{/* Fetch here post's comments? */}
-									<useFetchComments setComments={setComments} />
-									<PostDetails posts={posts} />
-									<CommentForm user={user} setComments={setComments} />
-									<Comments comments={comments} />
-								</>
-							}
-						>
-							<Route path='comments/:commentid' element={<CommentDetails />} />
+						<Route path=':postid' element={<Outlet />}>
+							<Route
+								path=''
+								element={
+									<>
+										<PostDetails posts={posts} />
+										<CommentForm user={user} setComments={setComments} />
+										<Comments comments={comments} />
+									</>
+								}
+							/>
+							<Route
+								path='comments/:commentid'
+								element={
+									<CommentDetails
+										user={user}
+										setComments={setComments}
+										comments={comments}
+									/>
+								}
+							/>
 						</Route>
 					</Route>
 					<Route path='authors' element={<Authors posts={posts} />} />
@@ -118,7 +142,12 @@ const App = () => {
 							)
 						}
 					>
-						<Route path='' element={<Dashboard user={user} posts={posts} />} />
+						<Route
+							path=''
+							element={
+								<Dashboard user={user} posts={posts} setPosts={setPosts} />
+							}
+						/>
 						<Route
 							path='create'
 							element={<PostForm user={user} setPosts={setPosts} />}
