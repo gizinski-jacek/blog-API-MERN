@@ -28,7 +28,7 @@ exports.auth_user = async (req, res, next) => {
 		}
 		res.status(200).json({ currentUser });
 	} catch (error) {
-		console.log(error);
+		return next(error);
 	}
 };
 
