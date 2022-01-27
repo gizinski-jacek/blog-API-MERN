@@ -1,10 +1,6 @@
 require('dotenv').config();
 const User = require('../models/user');
-const Post = require('../models/post');
-const Comment = require('../models/comment');
-const async = require('async');
 const { body, validationResult } = require('express-validator');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcryptjs = require('bcryptjs');
@@ -13,7 +9,7 @@ exports.auth_user = async (req, res, next) => {
 	try {
 		let currentUser;
 		if (req.cookies.userToken) {
-			const decoded = await jwt.verify(
+			const decoded = jwt.verify(
 				req.cookies.userToken,
 				process.env.STRATEGY_SECRET
 			);
@@ -28,39 +24,38 @@ exports.auth_user = async (req, res, next) => {
 		}
 		res.status(200).json({ currentUser });
 	} catch (error) {
-		return next(error);
+		next(error);
 	}
 };
 
 exports.log_in_user = (req, res, next) => {
-	passport.authenticate('login', { session: false }, (error, user) => {
-		if (error) {
-			return next(error);
-		}
-		if (!user) {
-			return res.status(400).json([
-				{
-					msg: 'User not found',
-				},
-			]);
-		}
-		jwt.sign(
-			{ _id: user._id, username: user.username },
-			process.env.STRATEGY_SECRET,
-			{ expiresIn: '30m' },
-			(error, token) => {
+	passport.authenticate(
+		'login',
+		{ session: false },
+		async (error, user, info) => {
+			try {
 				if (error) {
 					return next(error);
 				}
+				if (!user) {
+					return res.status(400).json(info);
+				}
+				const token = jwt.sign(
+					{ _id: user._id, username: user.username },
+					process.env.STRATEGY_SECRET,
+					{ expiresIn: '15m' }
+				);
 				res.cookie('userToken', token, {
 					httpOnly: true,
 					secure: false,
 					sameSite: 'lax',
 				});
 				res.status(200).json(token);
+			} catch (error) {
+				return next(error);
 			}
-		);
-	})(req, res, next);
+		}
+	)(req, res, next);
 };
 
 exports.log_out_user = (req, res, next) => {
@@ -78,6 +73,13 @@ exports.sign_up_user = [
 		.trim()
 		.isLength({ min: 4, max: 32 })
 		.escape(),
+	body('username').custom(async (value, { req }) => {
+		const user_list = await User.find({ username: req.body.username });
+		if (user_list.length > 0) {
+			throw new Error(`${value} name is already taken`);
+		}
+		return true;
+	}),
 	body('password', 'Password field can not be empty')
 		.trim()
 		.isLength({ min: 4, max: 64 })
@@ -90,34 +92,21 @@ exports.sign_up_user = [
 			return true;
 		}
 	),
-	(req, res, next) => {
-		const errors = validationResult(req);
-		const newUser = new User({
-			username: req.body.username,
-		});
-		User.find({ username: req.body.username }).exec((error, user_list) => {
-			if (error) {
-				return next(error);
-			}
-			if (user_list.length > 0) {
-				// Move this into custom body validator?
-				return res.status(409).json([{ msg: 'User already exists' }]);
-			}
+	async (req, res, next) => {
+		try {
+			const errors = validationResult(req);
+			const newUser = new User({
+				username: req.body.username,
+			});
 			if (!errors.isEmpty()) {
 				return res.status(400).json(errors.array());
 			}
-			bcryptjs.hash(req.body.password, 10, (error, hashedPassword) => {
-				if (error) {
-					return next(error);
-				}
-				newUser.password = hashedPassword;
-				newUser.save(newUser, (error) => {
-					if (error) {
-						return next(error);
-					}
-					return res.status(200).json({ success: true });
-				});
-			});
-		});
+			const hashedPassword = await bcryptjs.hash(req.body.password, 10);
+			newUser.password = hashedPassword;
+			await newUser.save();
+			res.status(200).json({ success: true });
+		} catch (error) {
+			next(error);
+		}
 	},
 ];
