@@ -6,14 +6,14 @@ const PostForm = ({ posts, setPosts, editing }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
-	const [title, setTitle] = useState('');
-	const [text, setText] = useState('');
+	const [titleValue, setTitleValue] = useState('');
+	const [textValue, setTextValue] = useState('');
 
 	useEffect(() => {
 		if (posts) {
 			const thePost = posts.find((post) => post._id === params.postid);
-			setTitle(thePost.title);
-			setText(thePost.text);
+			setTitleValue(thePost.title);
+			setTextValue(thePost.text);
 		}
 	}, [posts, params.postid]);
 
@@ -24,7 +24,7 @@ const PostForm = ({ posts, setPosts, editing }) => {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
-				body: JSON.stringify({ title, text }),
+				body: JSON.stringify({ titleValue, textValue }),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
@@ -46,7 +46,7 @@ const PostForm = ({ posts, setPosts, editing }) => {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
-				body: JSON.stringify({ title, text }),
+				body: JSON.stringify({ titleValue, textValue }),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
@@ -78,9 +78,9 @@ const PostForm = ({ posts, setPosts, editing }) => {
 					minLength='4'
 					maxLength='64'
 					onChange={(e) => {
-						setTitle(e.target.value);
+						setTitleValue(e.target.value);
 					}}
-					value={title}
+					value={titleValue}
 					placeholder='Title'
 					required
 				/>
@@ -92,9 +92,9 @@ const PostForm = ({ posts, setPosts, editing }) => {
 					minLength='4'
 					maxLength='512'
 					onChange={(e) => {
-						setText(e.target.value);
+						setTextValue(e.target.value);
 					}}
-					value={text}
+					value={textValue}
 					placeholder='Text'
 					required
 				/>
