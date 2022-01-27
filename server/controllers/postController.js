@@ -33,7 +33,14 @@ exports.create_post = [
 			if (error) {
 				return next(error);
 			}
-			res.status(200).json({ success: true });
+			Post.find({})
+				.sort({ timestamp: 'desc' })
+				.exec((error, post_list) => {
+					if (error) {
+						return next(error);
+					}
+					res.status(200).json(post_list);
+				});
 		});
 	},
 ];
