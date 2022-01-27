@@ -1,13 +1,15 @@
 import { useState } from 'react';
+import { useParams } from 'react-router';
 
-const CommentForm = ({ user }) => {
+const CommentForm = ({ user, setComments }) => {
+	const params = useParams();
 	const [errors, setErrors] = useState();
-	const [comment, setComment] = useState();
+	const [comment, setComment] = useState('');
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch('/api/dashboard/create', {
+			const res = await fetch(`/api/posts/${params.postid}/comments`, {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
@@ -17,10 +19,9 @@ const CommentForm = ({ user }) => {
 			const resJson = await res.json();
 			if (res.status !== 200) {
 				setErrors(resJson);
+			} else {
+				setComments(resJson);
 			}
-			// else {
-			// 	navigate('/dashboard');
-			// }
 		} catch (error) {
 			console.log(error);
 		}
@@ -42,14 +43,14 @@ const CommentForm = ({ user }) => {
 							name='comment'
 							minLength='2'
 							maxLength='64'
-							value={comment}
 							onChange={(e) => {
 								setComment(e.target.value);
 							}}
+							value={comment}
 							placeholder='Comment'
 							required
 						/>
-						<button type='submit'></button>
+						<button type='submit'>Submit</button>
 					</form>
 					{errorDisplay ? <div>{errorDisplay}</div> : null}
 				</>
