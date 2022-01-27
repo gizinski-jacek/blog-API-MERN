@@ -45,6 +45,20 @@ router.delete(
 	post_controller.delete_post
 );
 
+/* PUT publish a post */
+router.delete(
+	'/dashboard/:postid/publish',
+	verifyToken,
+	post_controller.publish_post
+);
+
+/* PUT unpublish a post */
+router.delete(
+	'/dashboard/:postid/unpublish',
+	verifyToken,
+	post_controller.unpublish_post
+);
+
 /////
 /* GET all posts */
 router.get('/posts', post_controller.get_all_posts);
@@ -53,11 +67,14 @@ router.get('/posts', post_controller.get_all_posts);
 // router.get('/posts/:postid', post_controller.get_post);
 
 /////
-/* GET all post's comments */
-router.get(
-	'/posts/:postid/comments',
-	comment_controller.get_all_comments_for_post
-);
+/* GET all comments */
+router.get('/comments', comment_controller.get_all_comments);
+
+// /* GET all post's comments */
+// router.get(
+// 	'/posts/:postid/comments',
+// 	comment_controller.get_all_comments_for_post
+// );
 
 // /* GET one comment */
 // router.get(
