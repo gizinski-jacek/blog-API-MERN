@@ -9,16 +9,29 @@ const passport = require('passport');
 const bcryptjs = require('bcryptjs');
 
 exports.get_all_comments = (req, res, next) => {
-	Post.find({ post_ref_id: req.params.postid }).exec((error, comment_list) => {
-		if (error) {
-			return next(error);
-		}
-		res.status(202).json(comment_list);
-	});
+	Comment.find({})
+		.sort({ timestamp: 'desc' })
+		.exec((error, comment_list) => {
+			if (error) {
+				return next(error);
+			}
+			res.status(202).json(comment_list);
+		});
+};
+
+exports.get_all_comments_for_post = (req, res, next) => {
+	Comment.find({ post_ref_id: req.params.postid })
+		.sort({ timestamp: 'desc' })
+		.exec((error, comment_list) => {
+			if (error) {
+				return next(error);
+			}
+			res.status(202).json(comment_list);
+		});
 };
 
 // exports.get_comment = (req, res, next) => {
-// 	Post.findById(req.params.commentid).exec((error, comment) => {
+// 	Comment.findById(req.params.commentid).exec((error, comment) => {
 // 		if (error) {
 // 			return next(error);
 // 		}
@@ -32,7 +45,7 @@ exports.get_all_comments = (req, res, next) => {
 // };
 
 exports.create_comment = [
-	body('comment', 'Title field can not be empty')
+	body('comment', 'Text field can not be empty')
 		.trim()
 		.isLength({ min: 4, max: 64 })
 		.escape(),
@@ -41,6 +54,7 @@ exports.create_comment = [
 		const newComment = new Comment({
 			text: req.body.comment,
 			author: req.decodedUser.username,
+			post_ref_id: req.params.postid,
 			timestamp: new Date(),
 		});
 		if (!errors.isEmpty()) {
@@ -50,7 +64,14 @@ exports.create_comment = [
 			if (error) {
 				return next(error);
 			}
-			res.status(200).json({ success: true });
+			Comment.find({})
+				.sort({ timestamp: 'desc' })
+				.exec((error, comment_list) => {
+					if (error) {
+						return next(error);
+					}
+					res.status(200).json(comment_list);
+				});
 		});
 	},
 ];
