@@ -6,7 +6,7 @@ const LogIn = ({ setUser }) => {
 	const navigate = useNavigate();
 
 	// const { setUserContext } = useContext(UserContext);
-	const [errors, setErrors] = useState();
+	const [error, setError] = useState();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -22,7 +22,7 @@ const LogIn = ({ setUser }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setErrors(resJson);
+				setError(resJson);
 			} else {
 				setUser(resJson);
 				navigate('/dashboard');
@@ -31,10 +31,6 @@ const LogIn = ({ setUser }) => {
 			console.log(error);
 		}
 	};
-
-	const errorDisplay = errors?.map((error, index) => {
-		return <li key={index}>{error.msg}</li>;
-	});
 
 	return (
 		<div className='log-in'>
@@ -62,7 +58,7 @@ const LogIn = ({ setUser }) => {
 					Go Back
 				</button>
 			</form>
-			{errorDisplay ? <div>{errorDisplay}</div> : null}
+			{error ? <div>{error.msg}</div> : null}
 		</div>
 	);
 };
