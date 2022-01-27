@@ -1,14 +1,45 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import PostDataWrapper from './utils/PostDataWrapper';
 
-const PostDetails = (props) => {
+const PostDetails = ({ posts, setPosts, deleting }) => {
+	const navigate = useNavigate();
+
 	const params = useParams();
 
-	const thePost = props.posts?.filter((post) => post._id === params.postid)[0];
+	const thePost = posts?.find((post) => post._id === params.postid);
+
+	const handleDelete = async (e) => {
+		e.preventDefault();
+		try {
+			const res = await fetch(`/api/dashboard/${params.postid}/delete`, {
+				method: 'POST',
+				mode: 'cors',
+				credentials: 'include',
+				headers: { 'Content-type': 'application/json' },
+			});
+			const resJson = await res.json();
+			console.log(resJson);
+			if (res.status !== 200) {
+				// setErrors(resJson);
+			} else {
+				setPosts(resJson);
+				navigate('/dashboard');
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
 		<div className='post-details'>
+			{deleting ? (
+				<div className='delete-controls'>
+					<h1>Delete this post?</h1>
+					<button type='submit' onClick={handleDelete}>
+						Delete
+					</button>
+				</div>
+			) : null}
 			{thePost ? <PostDataWrapper post={thePost} /> : null}
 		</div>
 	);
