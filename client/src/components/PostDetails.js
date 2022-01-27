@@ -6,7 +6,9 @@ const PostDetails = ({ posts, setPosts, deleting }) => {
 
 	const params = useParams();
 
-	const thePost = posts?.find((post) => post._id === params.postid);
+	const thePost = posts
+		?.filter((post) => post.published === true)
+		.find((post) => post._id === params.postid);
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
@@ -18,9 +20,9 @@ const PostDetails = ({ posts, setPosts, deleting }) => {
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
-			console.log(resJson);
 			if (res.status !== 200) {
 				// setErrors(resJson);
+				console.log(resJson);
 			} else {
 				setPosts(resJson);
 				navigate('/dashboard');

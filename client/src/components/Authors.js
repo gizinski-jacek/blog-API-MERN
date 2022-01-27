@@ -9,7 +9,9 @@ const Authors = ({ posts }) => {
 	const uniqueAuthors = [...new Set(authors)];
 	// Transform author names to objects with author name and array of posts belonging to that author
 	const authorsData = uniqueAuthors.map((author) => {
-		let authorPosts = posts.filter((post) => post.author === author);
+		let authorPosts = posts
+			.filter((post) => post.published === true)
+			.filter((post) => post.author === author);
 		return { author_name: author, authorPosts };
 	});
 	const contentDisplay = authorsData.map((author) => {
