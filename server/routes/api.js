@@ -63,24 +63,9 @@ router.delete(
 /* GET all posts */
 router.get('/posts', post_controller.get_all_posts);
 
-// /* GET one post */
-// router.get('/posts/:postid', post_controller.get_post);
-
 /////
 /* GET all comments */
 router.get('/comments', comment_controller.get_all_comments);
-
-// /* GET all post's comments */
-// router.get(
-// 	'/posts/:postid/comments',
-// 	comment_controller.get_all_comments_for_post
-// );
-
-// /* GET one comment */
-// router.get(
-// 	'/posts/:postid/comments/:commentid',
-// 	comment_controller.get_comment
-// );
 
 /* POST new comment */
 router.post(
