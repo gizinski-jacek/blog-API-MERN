@@ -15,16 +15,16 @@ passport.use(
 				return done(error);
 			}
 			if (!user) {
-				return done(null, false, { message: 'Incorrect username' });
+				return done(null, false, { msg: 'Incorrect username' });
 			}
 			bcryptjs.compare(password, user.password, (error, match) => {
 				if (error) {
 					return next(error);
 				}
 				if (!match) {
-					return done(null, false, { message: 'Incorrect password' });
+					return done(null, false, { msg: 'Incorrect password' });
 				}
-				return done(null, user, { message: 'Logged in successfully' });
+				return done(null, user, { msg: 'Logged in successfully' });
 			});
 		});
 	})
