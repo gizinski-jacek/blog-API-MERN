@@ -5,7 +5,7 @@ const UserPostDataWrapper = ({ post, setPosts }) => {
 		e.preventDefault();
 		try {
 			const res = await fetch(`/api/dashboard/${post._id}/publish`, {
-				method: 'POST',
+				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
 				headers: { 'Content-type': 'application/json' },
@@ -26,7 +26,7 @@ const UserPostDataWrapper = ({ post, setPosts }) => {
 		e.preventDefault();
 		try {
 			const res = await fetch(`/api/dashboard/${post._id}/unpublish`, {
-				method: 'POST',
+				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
 				headers: { 'Content-type': 'application/json' },
