@@ -7,22 +7,16 @@ const bcryptjs = require('bcryptjs');
 
 exports.auth_user = async (req, res, next) => {
 	try {
-		let currentUser;
 		if (req.cookies.userToken) {
 			const decoded = jwt.verify(
 				req.cookies.userToken,
 				process.env.STRATEGY_SECRET
 			);
 			const user = await User.findById(decoded._id);
-			currentUser = {
-				_id: user._id,
-				username: user.username,
-				token: req.cookies.userToken,
-			};
+			res.status(200).json({ username: user.username });
 		} else {
-			currentUser = null;
+			res.status(200).json(null);
 		}
-		res.status(200).json({ currentUser });
 	} catch (error) {
 		next(error);
 	}
@@ -32,13 +26,13 @@ exports.log_in_user = (req, res, next) => {
 	passport.authenticate(
 		'login',
 		{ session: false },
-		async (error, user, info) => {
+		async (error, user, msg) => {
 			try {
 				if (error) {
 					return next(error);
 				}
 				if (!user) {
-					return res.status(400).json(info);
+					return res.status(400).json(msg);
 				}
 				const token = jwt.sign(
 					{ _id: user._id, username: user.username },
@@ -48,9 +42,9 @@ exports.log_in_user = (req, res, next) => {
 				res.cookie('userToken', token, {
 					httpOnly: true,
 					secure: false,
-					sameSite: 'lax',
+					sameSite: 'strict',
 				});
-				res.status(200).json(token);
+				res.status(200).json({ username: user.username });
 			} catch (error) {
 				return next(error);
 			}
