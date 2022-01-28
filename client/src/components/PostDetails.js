@@ -14,7 +14,7 @@ const PostDetails = ({ posts, setPosts, deleting }) => {
 		e.preventDefault();
 		try {
 			const res = await fetch(`/api/dashboard/${params.postid}/delete`, {
-				method: 'POST',
+				method: 'DELETE',
 				mode: 'cors',
 				credentials: 'include',
 				headers: { 'Content-type': 'application/json' },

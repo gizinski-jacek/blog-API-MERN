@@ -43,7 +43,7 @@ const PostForm = ({ posts, setPosts, editing }) => {
 		e.preventDefault();
 		try {
 			const res = await fetch(`/api/dashboard/${params.postid}/update`, {
-				method: 'POST',
+				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
 				body: JSON.stringify({ titleValue, textValue }),
