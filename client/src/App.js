@@ -19,7 +19,7 @@ import Signup from './components/Signup';
 
 const App = () => {
 	const [loading, setLoading] = useState(true);
-	const [user, setUser] = useState(null);
+	const [currentUser, setCurrentUser] = useState(null);
 	const [posts, setPosts] = useState();
 	const [comments, setComments] = useState();
 
@@ -33,8 +33,7 @@ const App = () => {
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
-				// Move token to userContext and remove from state
-				setUser(resJson.currentUser);
+				setCurrentUser(resJson);
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
@@ -78,7 +77,10 @@ const App = () => {
 					element={
 						loading ? null : (
 							<main className='main'>
-								<Nav user={user} setUser={setUser} />
+								<Nav
+									currentUser={currentUser}
+									setCurrentUser={setCurrentUser}
+								/>
 								<Outlet />
 								<Footer />
 							</main>
@@ -97,12 +99,16 @@ const App = () => {
 					<Route
 						path='log-in'
 						element={
-							user ? <Navigate to='/dashboard' /> : <LogIn setUser={setUser} />
+							currentUser ? (
+								<Navigate to='/dashboard' />
+							) : (
+								<LogIn setCurrentUser={setCurrentUser} />
+							)
 						}
 					/>
 					<Route
 						path='sign-up'
-						element={user ? <Navigate to='/dashboard' /> : <Signup />}
+						element={currentUser ? <Navigate to='/dashboard' /> : <Signup />}
 					/>
 					<Route path='posts'>
 						<Route path='' element={<Posts posts={posts} />} />
@@ -112,7 +118,10 @@ const App = () => {
 								element={
 									<>
 										<PostDetails posts={posts} />
-										<CommentForm user={user} setComments={setComments} />
+										<CommentForm
+											currentUser={currentUser}
+											setComments={setComments}
+										/>
 										<Comments comments={comments} />
 									</>
 								}
@@ -121,7 +130,7 @@ const App = () => {
 								path='comments/:commentid'
 								element={
 									<CommentDetails
-										user={user}
+										currentUser={currentUser}
 										setComments={setComments}
 										comments={comments}
 									/>
@@ -133,7 +142,7 @@ const App = () => {
 					<Route
 						path='dashboard'
 						element={
-							user ? (
+							currentUser ? (
 								<>
 									<Outlet />
 								</>
@@ -145,13 +154,14 @@ const App = () => {
 						<Route
 							path=''
 							element={
-								<Dashboard user={user} posts={posts} setPosts={setPosts} />
+								<Dashboard
+									currentUser={currentUser}
+									posts={posts}
+									setPosts={setPosts}
+								/>
 							}
 						/>
-						<Route
-							path='create'
-							element={<PostForm user={user} setPosts={setPosts} />}
-						/>
+						<Route path='create' element={<PostForm setPosts={setPosts} />} />
 						<Route
 							path=':postid/update'
 							element={
