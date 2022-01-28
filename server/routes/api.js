@@ -46,14 +46,14 @@ router.delete(
 );
 
 /* PUT publish a post */
-router.delete(
+router.put(
 	'/dashboard/:postid/publish',
 	verifyToken,
 	post_controller.publish_post
 );
 
 /* PUT unpublish a post */
-router.delete(
+router.put(
 	'/dashboard/:postid/unpublish',
 	verifyToken,
 	post_controller.unpublish_post
