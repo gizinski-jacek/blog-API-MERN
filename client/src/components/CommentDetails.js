@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-const CommentDetails = ({ user, setComments, comments }) => {
+const CommentDetails = ({ currentUser, setComments, comments }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
@@ -66,7 +66,7 @@ const CommentDetails = ({ user, setComments, comments }) => {
 
 	return (
 		<div className='comment-details'>
-			{user && user.username === theComment.author ? (
+			{currentUser && currentUser.username === theComment.author ? (
 				<>
 					<button
 						type='button'

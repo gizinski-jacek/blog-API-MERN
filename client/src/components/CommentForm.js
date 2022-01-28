@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 
-const CommentForm = ({ user, setComments }) => {
+const CommentForm = ({ currentUser, setComments }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
@@ -34,9 +34,9 @@ const CommentForm = ({ user, setComments }) => {
 
 	return (
 		<div className='new-comment'>
-			{user ? (
+			{currentUser ? (
 				<>
-					<h3>{user.username}</h3>
+					<h3>{currentUser.username}</h3>
 					<form className='new-comment-form' onSubmit={handleSubmit}>
 						<input
 							type='text'

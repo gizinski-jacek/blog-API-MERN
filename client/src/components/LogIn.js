@@ -1,11 +1,9 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { UserContext } from './hooks/UserContext';
 
-const LogIn = ({ setUser }) => {
+const LogIn = ({ setCurrentUser }) => {
 	const navigate = useNavigate();
 
-	// const { setUserContext } = useContext(UserContext);
 	const [error, setError] = useState();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
@@ -24,7 +22,7 @@ const LogIn = ({ setUser }) => {
 			if (res.status !== 200) {
 				setError(resJson);
 			} else {
-				setUser(resJson);
+				setCurrentUser(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {

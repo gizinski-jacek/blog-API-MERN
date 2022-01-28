@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
-const Nav = ({ user, setUser }) => {
+const Nav = ({ currentUser, setCurrentUser }) => {
 	const navigate = useNavigate();
 
 	const handleLogOut = async (e) => {
@@ -13,7 +13,7 @@ const Nav = ({ user, setUser }) => {
 				headers: { 'Content-type': 'application/json' },
 			});
 			navigate('/');
-			setUser(null);
+			setCurrentUser(null);
 		} catch (error) {
 			console.log(error);
 		}
@@ -27,7 +27,7 @@ const Nav = ({ user, setUser }) => {
 				<Link to='authors'>Authors</Link>
 			</div>
 			<div className='nav-right'>
-				{user ? (
+				{currentUser ? (
 					<>
 						<Link to='dashboard'>Dashboard</Link>
 						<Link to='dashboard/create'>Create Post</Link>
