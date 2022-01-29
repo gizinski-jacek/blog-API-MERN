@@ -20,8 +20,8 @@ import Signup from './components/Signup';
 const App = () => {
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
-	const [posts, setPosts] = useState();
-	const [comments, setComments] = useState();
+	const [allPosts, setAllPosts] = useState();
+	const [allComments, setAllComments] = useState();
 
 	useEffect(() => {
 		(async () => {
@@ -33,7 +33,11 @@ const App = () => {
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
-				setCurrentUser(resJson);
+				if (res.status !== 200) {
+					setCurrentUser(null);
+				} else {
+					setCurrentUser(resJson);
+				}
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
@@ -46,7 +50,7 @@ const App = () => {
 			try {
 				const res = await fetch('/api/posts');
 				const resJson = await res.json();
-				setPosts(resJson);
+				setAllPosts(resJson);
 			} catch (error) {
 				console.log(error);
 			}
@@ -62,7 +66,7 @@ const App = () => {
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
-				setComments(resJson);
+				setAllComments(resJson);
 			} catch (error) {
 				console.log(error);
 			}
@@ -92,7 +96,7 @@ const App = () => {
 						element={
 							<>
 								<Home />
-								<PostsPreview posts={posts} />
+								<PostsPreview allPosts={allPosts} />
 							</>
 						}
 					/>
@@ -111,18 +115,18 @@ const App = () => {
 						element={currentUser ? <Navigate to='/dashboard' /> : <Signup />}
 					/>
 					<Route path='posts'>
-						<Route path='' element={<Posts posts={posts} />} />
+						<Route path='' element={<Posts allPosts={allPosts} />} />
 						<Route path=':postid' element={<Outlet />}>
 							<Route
 								path=''
 								element={
 									<>
-										<PostDetails posts={posts} />
+										<PostDetails allPosts={allPosts} />
 										<CommentForm
 											currentUser={currentUser}
-											setComments={setComments}
+											setAllComments={setAllComments}
 										/>
-										<Comments comments={comments} />
+										<Comments allComments={allComments} />
 									</>
 								}
 							/>
@@ -131,14 +135,14 @@ const App = () => {
 								element={
 									<CommentDetails
 										currentUser={currentUser}
-										setComments={setComments}
-										comments={comments}
+										setAllComments={setAllComments}
+										allComments={allComments}
 									/>
 								}
 							/>
 						</Route>
 					</Route>
-					<Route path='authors' element={<Authors posts={posts} />} />
+					<Route path='authors' element={<Authors allPosts={allPosts} />} />
 					<Route
 						path='dashboard'
 						element={
@@ -156,24 +160,31 @@ const App = () => {
 							element={
 								<Dashboard
 									currentUser={currentUser}
-									posts={posts}
-									setPosts={setPosts}
+									allPosts={allPosts}
+									setAllPosts={setAllPosts}
 								/>
 							}
 						/>
-						<Route path='create' element={<PostForm setPosts={setPosts} />} />
+						<Route
+							path='create'
+							element={<PostForm setAllPosts={setAllPosts} />}
+						/>
 						<Route
 							path=':postid/update'
 							element={
-								<PostForm posts={posts} setPosts={setPosts} editing={true} />
+								<PostForm
+									allPosts={allPosts}
+									setAllPosts={setAllPosts}
+									editing={true}
+								/>
 							}
 						/>
 						<Route
 							path=':postid/delete'
 							element={
 								<PostDetails
-									posts={posts}
-									setPosts={setPosts}
+									allPosts={allPosts}
+									setAllPosts={setAllPosts}
 									deleting={true}
 								/>
 							}
