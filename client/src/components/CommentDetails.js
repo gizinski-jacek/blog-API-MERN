@@ -1,40 +1,48 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 
 const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
+	const navigate = useNavigate();
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
-	const [commentValue, setCommentValue] = useState('');
 	const [editing, setEditing] = useState(false);
-	const [theComment, setTheComment] = useState('');
+	const [commentValue, setCommentValue] = useState('');
+	const [theComment, setTheComment] = useState({});
 
 	useEffect(() => {
 		if (allComments) {
 			const theComment = allComments.find(
 				(comment) => comment._id === params.commentid
 			);
-			setTheComment(theComment);
-			setCommentValue(theComment.title);
+			if (theComment) {
+				setCommentValue(theComment.text);
+				setTheComment(theComment);
+			} else {
+				navigate('../');
+			}
 		}
-	}, [allComments, params.commentid]);
+	}, [allComments, params.commentid, navigate]);
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/posts/${params.postid}/comments/update`, {
-				method: 'PUT',
-				mode: 'cors',
-				credentials: 'include',
-				body: JSON.stringify({ commentValue }),
-				headers: { 'Content-type': 'application/json' },
-			});
+			const res = await fetch(
+				`/api/posts/${params.postid}/comments/${params.commentid}`,
+				{
+					method: 'PUT',
+					mode: 'cors',
+					credentials: 'include',
+					body: JSON.stringify({ commentValue }),
+					headers: { 'Content-type': 'application/json' },
+				}
+			);
 			const resJson = await res.json();
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
+				setEditing(false);
 				setAllComments(resJson);
-				// navigate('/dashboard');
 			}
 		} catch (error) {
 			console.log(error);
@@ -44,18 +52,21 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 	const handleDelete = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/posts/${params.postid}/comments/delete`, {
-				method: 'DELETE',
-				mode: 'cors',
-				credentials: 'include',
-				headers: { 'Content-type': 'application/json' },
-			});
+			const res = await fetch(
+				`/api/posts/${params.postid}/comments/${params.commentid}`,
+				{
+					method: 'DELETE',
+					mode: 'cors',
+					credentials: 'include',
+					headers: { 'Content-type': 'application/json' },
+				}
+			);
 			const resJson = await res.json();
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
 				setAllComments(resJson);
-				// navigate('/dashboard');
+				navigate('../');
 			}
 		} catch (error) {
 			console.log(error);
@@ -69,7 +80,7 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 	return (
 		<div className='comment-details'>
 			{currentUser && currentUser.username === theComment.author ? (
-				<>
+				<div className='edit-controls'>
 					<button
 						type='button'
 						onClick={() => {
@@ -81,7 +92,7 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 					<button type='submit' onClick={handleDelete}>
 						Delete Comment
 					</button>
-				</>
+				</div>
 			) : null}
 			<div className='comment'>
 				<h3>{theComment.author}</h3>
@@ -105,14 +116,7 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 								placeholder='Comment'
 								required
 							/>
-							<button
-								type='submit'
-								onClick={() => {
-									setEditing(false);
-								}}
-							>
-								Update Comment
-							</button>
+							<button type='submit'>Update Comment</button>
 						</form>
 						{errorDisplay ? <div>{errorDisplay}</div> : null}
 					</>
