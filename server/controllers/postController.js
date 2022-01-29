@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 exports.get_all_posts = async (req, res, next) => {
 	try {
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' });
+		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 		res.status(200).json(post_list);
 	} catch (error) {
 		next(error);
@@ -28,13 +28,16 @@ exports.create_post = [
 				title: req.body.titleValue,
 				text: req.body.textValue,
 				author: req.decodedUser.username,
-				timestamp: new Date(),
+				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
 				return res.status(401).json(errors.array());
 			}
-			await newPost.save();
-			const post_list = await Post.find({}).sort({ timestamp: 'desc' });
+			const post = await newPost.save();
+			if (!post) {
+				return res.status(404).json('Error saving post');
+			}
+			const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 			res.status(200).json(post_list);
 		} catch (error) {
 			next(error);
@@ -53,12 +56,13 @@ exports.update_post = [
 		.escape(),
 	async (req, res, next) => {
 		try {
-			const postToUpdate = await Post.findById(req.params.postid);
-			if (postToUpdate == null) {
-				return res.status(404).json('Post not found');
+			const postToUpdate = await Post.findById(req.params.postid).exec();
+			if (!postToUpdate) {
+				return res.status(404).json('Post not found, nothing to update');
 			}
 			const errors = validationResult(req);
 			const updatedPost = new Post({
+				_id: postToUpdate._id,
 				title: req.body.titleValue,
 				text: req.body.textValue,
 				author: postToUpdate.author,
@@ -69,19 +73,31 @@ exports.update_post = [
 			if (!errors.isEmpty()) {
 				return res.status(401).json(errors.array());
 			}
-			await Post.findByIdAndUpdate(req.params.postid, updatedPost);
-			const post_list = await Post.find({}).sort({ timestamp: 'desc' });
+			const post = await Post.findByIdAndUpdate(
+				req.params.postid,
+				updatedPost
+			).exec();
+			if (!post) {
+				return res.status(404).json('Error updating post');
+			}
+			const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 			res.status(200).json(post_list);
 		} catch (error) {
-			next(err);
+			next(error);
 		}
 	},
 ];
 
 exports.delete_post = async (req, res, next) => {
 	try {
-		await Post.findByIdAndDelete(req.params.postid);
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' });
+		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+			return res.status(404).json('Invalid post ObjectId');
+		}
+		const post = await Post.findByIdAndDelete(req.params.postid).exec();
+		if (!post) {
+			return res.status(404).json('Post not found, nothing to delete');
+		}
+		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 		res.status(200).json(post_list);
 	} catch (error) {
 		next(err);
@@ -90,26 +106,34 @@ exports.delete_post = async (req, res, next) => {
 
 exports.publish_post = async (req, res, next) => {
 	try {
-		const thePost = await Post.findById(req.params.postid);
-		if (thePost == null) {
-			return res.status(404).json('Post not found');
+		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+			return res.status(404).json('Invalid post ObjectId');
 		}
-		await Post.findByIdAndUpdate(req.params.postid, { published: true });
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' });
+		const post = await Post.findByIdAndUpdate(req.params.postid, {
+			published: true,
+		}).exec();
+		if (!post) {
+			return res.status(404).json('Post not found, nothing to publish');
+		}
+		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 		res.status(200).json(post_list);
 	} catch (error) {
-		next(err);
+		next(error);
 	}
 };
 
 exports.unpublish_post = async (req, res, next) => {
 	try {
-		const thePost = await Post.findById(req.params.postid);
-		if (thePost == null) {
-			return res.status(404).json('Post not found');
+		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+			return res.status(404).json('Invalid post ObjectId');
 		}
-		await Post.findByIdAndUpdate(req.params.postid, { published: false });
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' });
+		const post = await Post.findByIdAndUpdate(req.params.postid, {
+			published: false,
+		}).exec();
+		if (!post) {
+			return res.status(404).json('Post not found, nothing to unpublish');
+		}
+		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 		res.status(200).json(post_list);
 	} catch (error) {
 		next(err);
