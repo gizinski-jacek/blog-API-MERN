@@ -16,6 +16,7 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 			setTextValue(thePost.text);
 		}
 	}, [allPosts, params.postid]);
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
@@ -41,7 +42,7 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 	const handleUpdate = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/dashboard/${params.postid}/update`, {
+			const res = await fetch(`/api/dashboard/${params.postid}`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
