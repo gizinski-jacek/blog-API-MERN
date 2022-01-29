@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import PostDataWrapper from './utils/PostDataWrapper';
 
@@ -6,14 +7,25 @@ const PostDetails = ({ allPosts, setAllPosts, deleting }) => {
 
 	const params = useParams();
 
-	const thePost = allPosts
-		?.filter((post) => post.published === true)
-		.find((post) => post._id === params.postid);
+	const [thePost, setThePost] = useState();
+
+	useEffect(() => {
+		if (allPosts) {
+			const thePost = allPosts
+				?.filter((post) => post.published === true)
+				.find((post) => post._id === params.postid);
+			if (thePost) {
+				setThePost(thePost);
+			} else {
+				navigate('/posts');
+			}
+		}
+	}, [allPosts, params.postid, navigate]);
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/dashboard/${params.postid}/delete`, {
+			const res = await fetch(`/api/dashboard/${params.postid}`, {
 				method: 'DELETE',
 				mode: 'cors',
 				credentials: 'include',
