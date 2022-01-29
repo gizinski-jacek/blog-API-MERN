@@ -1,25 +1,29 @@
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const Authors = ({ posts }) => {
+const Authors = ({ allPosts }) => {
 	// Grab author names from all posts
-	const authors = posts?.map((post) => {
+	const authors = allPosts?.map((post) => {
 		return post.author;
 	});
 	// Remove duplicate author names
 	const uniqueAuthors = [...new Set(authors)];
-	// Transform author names to objects with author name and array of posts belonging to that author
-	const authorsData = uniqueAuthors.map((author) => {
-		let authorPosts = posts
-			.filter((post) => post.published === true)
-			.filter((post) => post.author === author);
-		return { author_name: author, authorPosts };
-	});
-	const contentDisplay = authorsData.map((author) => {
-		const posts = author.posts.map((post, index) => {
+	// Transform author names to objects with author name and array of published posts belonging to that author
+	const authorsData = uniqueAuthors
+		.map((author) => {
+			const authorPosts = allPosts.filter(
+				(post) => post.published === true && post.author === author
+			);
+			return { author_name: author, authorPosts };
+		})
+		// Filter out authors with no published posts
+		.filter((author) => author.authorPosts.length > 0);
+
+	const contentDisplay = authorsData.map((author, index) => {
+		const posts = author.authorPosts.map((post, index) => {
 			return <PostLinkWrapper key={index} post={post} />;
 		});
 		return (
-			<div className='author'>
+			<div key={index} className='author'>
 				<h1>{author.author_name}</h1>
 				{posts}
 			</div>
