@@ -15,7 +15,7 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 			setTitleValue(thePost.title);
 			setTextValue(thePost.text);
 		}
-	}, [allPosts, params.postid]);
+	}, [allPosts, params.postid, navigate]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
