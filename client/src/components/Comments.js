@@ -8,8 +8,8 @@ const Comments = ({ allComments }) => {
 		?.filter((comment) => comment.post_ref_id === params.postid)
 		.map((comment, index) => {
 			return (
-				<Link to={`comments/${comment._id}`}>
-					<div key={index} className='comment'>
+				<Link key={index} to={`comments/${comment._id}`}>
+					<div className='comment'>
 						<h3>{comment.author}</h3>
 						<h3>{comment.create_timestamp}</h3>
 						{comment.update_timestamp ? (

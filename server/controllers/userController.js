@@ -23,7 +23,7 @@ exports.auth_user = async (req, res, next) => {
 			if (!user) {
 				return res.status(403).json('Unauthorized Access');
 			}
-			return res.status(200).json({ username: user.username });
+			return res.status(200).json({ _id: user._id, username: user.username });
 		} else {
 			return res.status(200).json(null);
 		}
@@ -54,7 +54,7 @@ exports.log_in_user = (req, res, next) => {
 					secure: false,
 					sameSite: 'strict',
 				});
-				res.status(200).json({ username: user.username });
+				res.status(200).json({ _id: user._id, username: user.username });
 			} catch (error) {
 				return next(error);
 			}

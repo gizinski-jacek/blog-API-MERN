@@ -25,7 +25,7 @@ exports.create_comment = [
 				text: req.body.commentValue,
 				author: req.decodedUser.username,
 				post_ref_id: req.params.postid,
-				timestamp: new Date(),
+				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
 				res.status(401).json(errors.array());
