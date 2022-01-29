@@ -28,22 +28,11 @@ router.post('/sign-up', user_controller.sign_up_user);
 /* POST new post */
 router.post('/dashboard/create', verifyToken, post_controller.create_post);
 
-/* GET user's post */
-router.get('/dashboard/:postid', verifyToken, post_controller.update_post);
-
 /* PUT update a post */
-router.put(
-	'/dashboard/:postid/update',
-	verifyToken,
-	post_controller.update_post
-);
+router.put('/dashboard/:postid', verifyToken, post_controller.update_post);
 
 /* DELETE delete a post */
-router.delete(
-	'/dashboard/:postid/delete',
-	verifyToken,
-	post_controller.delete_post
-);
+router.delete('/dashboard/:postid/', verifyToken, post_controller.delete_post);
 
 /* PUT publish a post */
 router.put(
