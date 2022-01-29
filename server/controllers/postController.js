@@ -56,6 +56,9 @@ exports.update_post = [
 		.escape(),
 	async (req, res, next) => {
 		try {
+			if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+				return res.status(404).json('Invalid post ObjectId');
+			}
 			const postToUpdate = await Post.findById(req.params.postid).exec();
 			if (!postToUpdate) {
 				return res.status(404).json('Post not found, nothing to update');
@@ -78,7 +81,7 @@ exports.update_post = [
 				updatedPost
 			).exec();
 			if (!post) {
-				return res.status(404).json('Error updating post');
+				return res.status(404).json('Post not found, nothing to update');
 			}
 			const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
 			res.status(200).json(post_list);
