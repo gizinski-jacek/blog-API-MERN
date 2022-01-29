@@ -71,7 +71,7 @@ exports.update_post = [
 				author: postToUpdate.author,
 				create_timestamp: postToUpdate.create_timestamp,
 				update_timestamp: new Date(),
-				published: false,
+				published: postToUpdate.published,
 			});
 			if (!errors.isEmpty()) {
 				return res.status(401).json(errors.array());
