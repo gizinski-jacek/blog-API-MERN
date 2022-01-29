@@ -1,12 +1,12 @@
 import { useNavigate, useParams } from 'react-router';
 import PostDataWrapper from './utils/PostDataWrapper';
 
-const PostDetails = ({ posts, setPosts, deleting }) => {
+const PostDetails = ({ allPosts, setAllPosts, deleting }) => {
 	const navigate = useNavigate();
 
 	const params = useParams();
 
-	const thePost = posts
+	const thePost = allPosts
 		?.filter((post) => post.published === true)
 		.find((post) => post._id === params.postid);
 
@@ -24,7 +24,7 @@ const PostDetails = ({ posts, setPosts, deleting }) => {
 				// setErrors(resJson);
 				console.log(resJson);
 			} else {
-				setPosts(resJson);
+				setAllPosts(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {

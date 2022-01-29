@@ -1,10 +1,10 @@
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 
-const Comments = ({ comments }) => {
+const Comments = ({ allComments }) => {
 	const params = useParams();
 
-	const commentsDisplay = comments
+	const commentsDisplay = allComments
 		?.filter((comment) => comment.post_ref_id === params.postid)
 		.map((comment, index) => {
 			return (

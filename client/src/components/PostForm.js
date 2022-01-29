@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-const PostForm = ({ posts, setPosts, editing }) => {
+const PostForm = ({ allPosts, setAllPosts, editing }) => {
 	const navigate = useNavigate();
 	const params = useParams();
 
@@ -10,13 +10,12 @@ const PostForm = ({ posts, setPosts, editing }) => {
 	const [textValue, setTextValue] = useState('');
 
 	useEffect(() => {
-		if (posts) {
-			const thePost = posts.find((post) => post._id === params.postid);
+		if (allPosts) {
+			const thePost = allPosts.find((post) => post._id === params.postid);
 			setTitleValue(thePost.title);
 			setTextValue(thePost.text);
 		}
-	}, [posts, params.postid]);
-
+	}, [allPosts, params.postid]);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
@@ -31,7 +30,7 @@ const PostForm = ({ posts, setPosts, editing }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setPosts(resJson);
+				setAllPosts(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {
@@ -53,6 +52,7 @@ const PostForm = ({ posts, setPosts, editing }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
+				setAllPosts(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {

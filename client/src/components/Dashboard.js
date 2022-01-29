@@ -1,11 +1,15 @@
 import UserPostDataWrapper from './utils/UserPostDataWrapper';
-//why doesnt show posts after log in
-const Dashboard = ({ currentUser, posts, setPosts }) => {
-	const postsDisplay = posts
+
+const Dashboard = ({ currentUser, allPosts, setAllPosts }) => {
+	const postsDisplay = allPosts
 		?.filter((post) => post.author === currentUser.username)
 		.map((post, index) => {
 			return (
-				<UserPostDataWrapper key={index} post={post} setPosts={setPosts} />
+				<UserPostDataWrapper
+					key={index}
+					post={post}
+					setAllPosts={setAllPosts}
+				/>
 			);
 		});
 

@@ -1,7 +1,7 @@
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const PostsPreview = ({ posts }) => {
-	const postsPreviewDisplay = posts
+const PostsPreview = ({ allPosts }) => {
+	const postsPreviewDisplay = allPosts
 		?.filter((post) => post.published === true)
 		.slice(0, 3)
 		.map((post) => {

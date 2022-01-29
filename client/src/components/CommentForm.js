@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 
-const CommentForm = ({ currentUser, setComments }) => {
+const CommentForm = ({ currentUser, setAllComments }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
@@ -21,7 +21,7 @@ const CommentForm = ({ currentUser, setComments }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setComments(resJson);
+				setAllComments(resJson);
 			}
 		} catch (error) {
 			console.log(error);

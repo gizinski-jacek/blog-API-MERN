@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-const UserPostDataWrapper = ({ post, setPosts }) => {
+const UserPostDataWrapper = ({ post, setAllPosts }) => {
 	const handlePublish = async (e) => {
 		e.preventDefault();
 		try {
@@ -15,7 +15,7 @@ const UserPostDataWrapper = ({ post, setPosts }) => {
 				// setErrors(resJson);
 				console.log(resJson);
 			} else {
-				setPosts(resJson);
+				setAllPosts(resJson);
 			}
 		} catch (error) {
 			console.log(error);
@@ -36,7 +36,7 @@ const UserPostDataWrapper = ({ post, setPosts }) => {
 				// setErrors(resJson);
 				console.log(resJson);
 			} else {
-				setPosts(resJson);
+				setAllPosts(resJson);
 			}
 		} catch (error) {
 			console.log(error);

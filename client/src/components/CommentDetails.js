@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-const CommentDetails = ({ currentUser, setComments, comments }) => {
+const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
@@ -10,14 +10,14 @@ const CommentDetails = ({ currentUser, setComments, comments }) => {
 	const [theComment, setTheComment] = useState('');
 
 	useEffect(() => {
-		if (comments) {
-			const theComment = comments.find(
+		if (allComments) {
+			const theComment = allComments.find(
 				(comment) => comment._id === params.commentid
 			);
 			setTheComment(theComment);
 			setCommentValue(theComment.title);
 		}
-	}, [comments, params.commentid]);
+	}, [allComments, params.commentid]);
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
@@ -33,7 +33,8 @@ const CommentDetails = ({ currentUser, setComments, comments }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setComments(resJson);
+				setAllComments(resJson);
+				// navigate('/dashboard');
 			}
 		} catch (error) {
 			console.log(error);
@@ -53,7 +54,8 @@ const CommentDetails = ({ currentUser, setComments, comments }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setComments(resJson);
+				setAllComments(resJson);
+				// navigate('/dashboard');
 			}
 		} catch (error) {
 			console.log(error);

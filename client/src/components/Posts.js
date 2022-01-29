@@ -1,7 +1,7 @@
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const Posts = ({ posts }) => {
-	const postsDisplay = posts
+const Posts = ({ allPosts }) => {
+	const postsDisplay = allPosts
 		?.filter((post) => post.published === true)
 		.map((post) => {
 			return <PostLinkWrapper key={post._id} post={post} />;
