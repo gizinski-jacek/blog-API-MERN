@@ -13,22 +13,17 @@ exports.auth_user = async (req, res, next) => {
 				req.cookies.userToken,
 				process.env.STRATEGY_SECRET
 			);
-			if (!decoded) {
-				return res.status(403).json('Unauthorized Access');
-			}
 			if (!mongoose.Types.ObjectId.isValid(decoded._id)) {
 				return res.status(404).json('Invalid user ObjectId');
 			}
 			const user = await User.findById(decoded._id);
-			if (!user) {
-				return res.status(403).json('Unauthorized Access');
-			}
+
 			return res.status(200).json({ _id: user._id, username: user.username });
 		} else {
 			return res.status(200).json(null);
 		}
 	} catch (error) {
-		next(error);
+		res.status(403).json(null);
 	}
 };
 
