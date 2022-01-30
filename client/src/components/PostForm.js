@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-const PostForm = ({ allPosts, setAllPosts, editing }) => {
+const PostForm = ({ editing }) => {
 	const navigate = useNavigate();
 	const params = useParams();
 
@@ -10,19 +10,31 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 	const [textValue, setTextValue] = useState('');
 
 	useEffect(() => {
-		setTitleValue('');
-		setTextValue('');
-		if (allPosts) {
-			const thePost = allPosts.find((post) => post._id === params.postid);
-			setTitleValue(thePost.title);
-			setTextValue(thePost.text);
+		if (params.postid) {
+			(async () => {
+				try {
+					const res = await fetch(`/api/posts/${params.postid}`, {
+						method: 'GET',
+						mode: 'cors',
+						headers: { 'Content-type': 'application/json' },
+					});
+					const resJson = await res.json();
+					setTitleValue(resJson.title);
+					setTextValue(resJson.text);
+				} catch (error) {
+					console.log(error);
+				}
+			})();
+		} else {
+			setTitleValue('');
+			setTextValue('');
 		}
-	}, [allPosts, params.postid, navigate]);
+	}, [params.postid]);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch('/api/dashboard/create', {
+			const res = await fetch('/api/posts/create', {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
@@ -33,7 +45,6 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setAllPosts(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {
@@ -44,7 +55,7 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 	const handleUpdate = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/dashboard/${params.postid}`, {
+			const res = await fetch(`/api/posts/update/${params.postid}`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
@@ -55,7 +66,6 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setAllPosts(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {

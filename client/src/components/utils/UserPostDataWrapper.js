@@ -4,7 +4,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 	const handlePublish = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/dashboard/${post._id}/publish`, {
+			const res = await fetch(`/api/posts/publish/${post._id}`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
@@ -25,7 +25,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 	const handleUnpublish = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/dashboard/${post._id}/unpublish`, {
+			const res = await fetch(`/api/posts/unpublish/${post._id}`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
@@ -46,7 +46,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 	return (
 		<div className='user-post'>
 			<div className='post-edit-controls'>
-				<Link to={`${post._id}/update`}>Edit</Link>
+				<Link to={`update/${post._id}`}>Edit</Link>
 				{post.published ? (
 					<button type='button' onClick={handleUnpublish}>
 						Unpublish
@@ -56,15 +56,16 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 						Publish
 					</button>
 				)}
-				<Link to={`${post._id}/delete`}>Delete</Link>
+				<Link to={`delete/${post._id}`}>Delete</Link>
 			</div>
 			<article className='post'>
-				<h2 className='post-title'>{post.title}</h2>
+				<h2 className='post-title'>Title: {post.title}</h2>
 				<h3 className='post-author'>Author: {post.author}</h3>
 				<h3 className='post-created'>Published: {post.create_timestamp}</h3>
 				{post.update_timestamp ? (
 					<h3 className='post-updated'>
-						Last updated: {post.update_timestamp}
+						Last updated:{' '}
+						{new Date(post.update_timestamp).toLocaleString('en-GB')}
 					</h3>
 				) : null}
 			</article>

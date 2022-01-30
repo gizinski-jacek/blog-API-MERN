@@ -1,11 +1,28 @@
+import { useEffect, useState } from 'react';
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const Posts = ({ allPosts }) => {
-	const postsDisplay = allPosts
-		?.filter((post) => post.published === true)
-		.map((post) => {
-			return <PostLinkWrapper key={post._id} post={post} />;
-		});
+const Posts = () => {
+	const [allPosts, setAllPosts] = useState();
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const res = await fetch('/api/posts', {
+					method: 'GET',
+					mode: 'cors',
+					headers: { 'Content-type': 'application/json' },
+				});
+				const resJson = await res.json();
+				setAllPosts(resJson);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
+
+	const postsDisplay = allPosts?.map((post) => {
+		return <PostLinkWrapper key={post._id} post={post} />;
+	});
 
 	return <section className='post-list container'>{postsDisplay}</section>;
 };

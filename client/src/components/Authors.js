@@ -1,6 +1,25 @@
+import { useEffect, useState } from 'react';
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const Authors = ({ allPosts }) => {
+const Authors = () => {
+	const [allPosts, setAllPosts] = useState();
+
+	useEffect(() => {
+		(async () => {
+			try {
+				const res = await fetch(`/api/posts`, {
+					method: 'GET',
+					mode: 'cors',
+					headers: { 'Content-type': 'application/json' },
+				});
+				const resJson = await res.json();
+				setAllPosts(resJson);
+			} catch (error) {
+				console.log(error);
+			}
+		})();
+	}, []);
+
 	// Grab author names from all posts
 	const authors = allPosts?.map((post) => {
 		return post.author;

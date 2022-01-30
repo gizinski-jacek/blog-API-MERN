@@ -2,30 +2,33 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import PostDataWrapper from './utils/PostDataWrapper';
 
-const PostDetails = ({ allPosts, setAllPosts, deleting }) => {
+const PostDetails = ({ deleting }) => {
 	const navigate = useNavigate();
 
 	const params = useParams();
 
-	const [thePost, setThePost] = useState();
+	const [post, setPost] = useState();
 
 	useEffect(() => {
-		if (allPosts) {
-			const thePost = allPosts
-				?.filter((post) => post.published === true)
-				.find((post) => post._id === params.postid);
-			if (thePost) {
-				setThePost(thePost);
-			} else {
-				navigate('/posts');
+		(async () => {
+			try {
+				const res = await fetch(`/api/posts/${params.postid}`, {
+					method: 'GET',
+					mode: 'cors',
+					headers: { 'Content-type': 'application/json' },
+				});
+				const resJson = await res.json();
+				setPost(resJson);
+			} catch (error) {
+				console.log(error);
 			}
-		}
-	}, [allPosts, params.postid, navigate]);
+		})();
+	}, [params.postid]);
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/dashboard/${params.postid}`, {
+			const res = await fetch(`/api/posts/delete/${params.postid}`, {
 				method: 'DELETE',
 				mode: 'cors',
 				credentials: 'include',
@@ -36,7 +39,6 @@ const PostDetails = ({ allPosts, setAllPosts, deleting }) => {
 				// setErrors(resJson);
 				console.log(resJson);
 			} else {
-				setAllPosts(resJson);
 				navigate('/dashboard');
 			}
 		} catch (error) {
@@ -54,7 +56,7 @@ const PostDetails = ({ allPosts, setAllPosts, deleting }) => {
 					</button>
 				</div>
 			) : null}
-			{thePost ? <PostDataWrapper post={thePost} /> : null}
+			{post ? <PostDataWrapper post={post} /> : null}
 		</div>
 	);
 };

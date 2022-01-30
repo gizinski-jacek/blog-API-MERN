@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 
-const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
+const CommentDetails = ({ currentUser }) => {
 	const navigate = useNavigate();
 	const params = useParams();
 
@@ -11,18 +11,28 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 	const [theComment, setTheComment] = useState({});
 
 	useEffect(() => {
-		if (allComments) {
-			const theComment = allComments.find(
-				(comment) => comment._id === params.commentid
-			);
-			if (theComment) {
-				setCommentValue(theComment.text);
-				setTheComment(theComment);
-			} else {
-				navigate('../');
+		(async () => {
+			try {
+				const res = await fetch(
+					`/api/posts/${params.postid}/comments/${params.commentid}`,
+					{
+						method: 'GET',
+						mode: 'cors',
+						headers: { 'Content-type': 'application/json' },
+					}
+				);
+				const resJson = await res.json();
+				if (res.status !== 200) {
+					setErrors(resJson);
+				} else {
+					setCommentValue(resJson.text);
+					setTheComment(resJson);
+				}
+			} catch (error) {
+				console.log(error);
 			}
-		}
-	}, [allComments, params.commentid, navigate]);
+		})();
+	}, [params.postid, params.commentid]);
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
@@ -42,7 +52,8 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 				setErrors(resJson);
 			} else {
 				setEditing(false);
-				setAllComments(resJson);
+				setCommentValue(resJson.text);
+				setTheComment(resJson);
 			}
 		} catch (error) {
 			console.log(error);
@@ -65,7 +76,6 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setAllComments(resJson);
 				navigate('../');
 			}
 		} catch (error) {
@@ -105,7 +115,8 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 				</h3>
 				{theComment.update_timestamp ? (
 					<h3 className='comment-updated'>
-						Last updated: {theComment.create_timestamp}
+						Last updated:{' '}
+						{new Date(theComment.create_timestamp).toLocaleString('en-GB')}
 					</h3>
 				) : null}
 				{editing ? (
