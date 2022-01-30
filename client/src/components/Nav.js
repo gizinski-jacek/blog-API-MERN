@@ -22,23 +22,37 @@ const Nav = ({ currentUser, setCurrentUser }) => {
 	return (
 		<nav className='navbar'>
 			<div className='nav-left'>
-				<Link to='/'>Home</Link>
-				<Link to='posts'>Posts</Link>
-				<Link to='authors'>Authors</Link>
+				<Link to='/' className='logo'>
+					Blogster
+				</Link>
+				<Link to='posts' className='button-link'>
+					Posts
+				</Link>
+				<Link to='authors' className='button-link'>
+					Authors
+				</Link>
 			</div>
 			<div className='nav-right'>
 				{currentUser ? (
 					<>
-						<Link to='dashboard'>Dashboard</Link>
-						<Link to='dashboard/create'>Create Post</Link>
-						<Link to='/' onClick={handleLogOut}>
+						<Link to='dashboard' className='button-link'>
+							Dashboard
+						</Link>
+						<Link to='dashboard/create' className='button-link'>
+							Create Post
+						</Link>
+						<Link to='/' className='button-link' onClick={handleLogOut}>
 							Log Out
 						</Link>
 					</>
 				) : (
 					<>
-						<Link to='log-in'>Log In</Link>
-						<Link to='sign-up'>Sign Up</Link>
+						<Link to='log-in' className='button-link'>
+							Log In
+						</Link>
+						<Link to='sign-up' className='button-link'>
+							Sign Up
+						</Link>
 					</>
 				)}
 			</div>
