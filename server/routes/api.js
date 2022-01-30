@@ -13,7 +13,7 @@ router.get('/', function (req, res, next) {
 
 /////
 /* GET logged in user */
-router.get('/authUser', user_controller.auth_user);
+router.use('/authUser', user_controller.auth_user);
 
 /* POST log in */
 router.post('/log-in', user_controller.log_in_user);
@@ -25,42 +25,60 @@ router.post('/log-out', user_controller.log_out_user);
 router.post('/sign-up', user_controller.sign_up_user);
 
 /////
+/* GET all posts */
+router.get('/posts', post_controller.get_all_posts);
+
+/* GET few preview posts */
+router.get('/posts/preview', post_controller.get_preview_posts);
+
 /* POST new post */
-router.post('/dashboard/create', verifyToken, post_controller.create_post);
+router.post('/posts/create', verifyToken, post_controller.create_post);
+
+/* GET user's posts */
+router.get(
+	'/posts/user/:username',
+	verifyToken,
+	post_controller.get_user_posts
+);
+
+/* GET signle post */
+router.get('/posts/:postid', post_controller.get_single_post);
 
 /* PUT update a post */
-router.put('/dashboard/:postid', verifyToken, post_controller.update_post);
+router.put('/posts/update/:postid', verifyToken, post_controller.update_post);
 
 /* DELETE delete a post */
-router.delete('/dashboard/:postid/', verifyToken, post_controller.delete_post);
+router.delete(
+	'/posts/delete/:postid/',
+	verifyToken,
+	post_controller.delete_post
+);
 
 /* PUT publish a post */
-router.put(
-	'/dashboard/:postid/publish',
-	verifyToken,
-	post_controller.publish_post
-);
+router.put('/posts/publish/:postid', verifyToken, post_controller.publish_post);
 
 /* PUT unpublish a post */
 router.put(
-	'/dashboard/:postid/unpublish',
+	'/posts/unpublish/:postid',
 	verifyToken,
 	post_controller.unpublish_post
 );
 
 /////
-/* GET all posts */
-router.get('/posts', post_controller.get_all_posts);
-
-/////
 /* GET all comments */
-router.get('/comments', comment_controller.get_all_comments);
+router.get('/posts/:postid/comments', comment_controller.get_all_comments);
 
 /* POST new comment */
 router.post(
 	'/posts/:postid/comments',
 	verifyToken,
 	comment_controller.create_comment
+);
+
+/* GET single comment */
+router.get(
+	'/posts/:postid/comments/:commentid',
+	comment_controller.get_single_comment
 );
 
 /* PUT update comment */
