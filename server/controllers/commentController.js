@@ -4,10 +4,22 @@ const mongoose = require('mongoose');
 
 exports.get_all_comments = async (req, res, next) => {
 	try {
-		const comment_list = await Comment.find({})
+		const comment_list = await Comment.find({ post_ref_id: req.params.postid })
 			.sort({ timestamp: 'desc' })
 			.exec();
-		res.status(202).json(comment_list);
+		res.status(200).json(comment_list);
+	} catch (error) {
+		next(error);
+	}
+};
+
+exports.get_single_comment = async (req, res, next) => {
+	try {
+		if (!mongoose.Types.ObjectId.isValid(req.params.commentid)) {
+			return res.status(404).json('Invalid comment ObjectId');
+		}
+		const comment = await Comment.findById(req.params.commentid).exec();
+		res.status(200).json(comment);
 	} catch (error) {
 		next(error);
 	}
@@ -34,10 +46,6 @@ exports.create_comment = [
 			if (!comment) {
 				return res.status(404).json('Error saving comment');
 			}
-			const comment_list = await Comment.find({})
-				.sort({ timestamp: 'desc' })
-				.exec();
-			res.status(200).json(comment_list);
 		} catch (error) {
 			next(error);
 		}
@@ -74,15 +82,13 @@ exports.update_comment = [
 			}
 			const comment = await Comment.findByIdAndUpdate(
 				req.params.commentid,
-				updatedComment
+				updatedComment,
+				{ returnDocument: 'after' }
 			).exec();
 			if (!comment) {
 				return res.status(404).json('Comment not found, nothing to update');
 			}
-			const comment_list = await Comment.find({})
-				.sort({ timestamp: 'desc' })
-				.exec();
-			res.status(200).json(comment_list);
+			res.status(200).json(comment);
 		} catch (error) {
 			next(error);
 		}
@@ -100,10 +106,7 @@ exports.delete_comment = async (req, res, next) => {
 		if (!comment) {
 			return res.status(404).json('Comment not found, nothing to delete');
 		}
-		const comment_list = await Comment.find({})
-			.sort({ timestamp: 'desc' })
-			.exec();
-		res.status(200).json(comment_list);
+		res.status(200).json('Comment deleted');
 	} catch (error) {
 		next(error);
 	}

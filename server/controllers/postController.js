@@ -5,7 +5,44 @@ const mongoose = require('mongoose');
 
 exports.get_all_posts = async (req, res, next) => {
 	try {
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
+		const post_list = await Post.find({ published: true })
+			.sort({ timestamp: 'desc' })
+			.exec();
+		res.status(200).json(post_list);
+	} catch (error) {
+		next(error);
+	}
+};
+
+exports.get_preview_posts = async (req, res, next) => {
+	try {
+		const post_list = await Post.find({ published: true })
+			.sort({ timestamp: 'desc' })
+			.limit(3)
+			.exec();
+		res.status(200).json(post_list);
+	} catch (error) {
+		next(error);
+	}
+};
+
+exports.get_single_post = async (req, res, next) => {
+	try {
+		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+			return res.status(404).json('Invalid post ObjectId');
+		}
+		const post = await Post.findById(req.params.postid).exec();
+		res.status(200).json(post);
+	} catch (error) {
+		next(error);
+	}
+};
+
+exports.get_user_posts = async (req, res, next) => {
+	try {
+		const post_list = await Post.find(req.params.postid)
+			.sort({ timestamp: 'desc' })
+			.exec();
 		res.status(200).json(post_list);
 	} catch (error) {
 		next(error);
@@ -37,8 +74,7 @@ exports.create_post = [
 			if (!post) {
 				return res.status(404).json('Error saving post');
 			}
-			const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
-			res.status(200).json(post_list);
+			res.status(200).json('Post created');
 		} catch (error) {
 			next(error);
 		}
@@ -76,6 +112,7 @@ exports.update_post = [
 			if (!errors.isEmpty()) {
 				return res.status(401).json(errors.array());
 			}
+
 			const post = await Post.findByIdAndUpdate(
 				req.params.postid,
 				updatedPost
@@ -83,8 +120,7 @@ exports.update_post = [
 			if (!post) {
 				return res.status(404).json('Post not found, nothing to update');
 			}
-			const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
-			res.status(200).json(post_list);
+			res.status(200).json('Post updated');
 		} catch (error) {
 			next(error);
 		}
@@ -100,8 +136,7 @@ exports.delete_post = async (req, res, next) => {
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to delete');
 		}
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
-		res.status(200).json(post_list);
+		res.status(200).json('Post deleted');
 	} catch (error) {
 		next(err);
 	}
