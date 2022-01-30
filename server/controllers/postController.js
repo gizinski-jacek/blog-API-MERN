@@ -68,7 +68,7 @@ exports.create_post = [
 				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
-				return res.status(401).json(errors.array());
+				return res.status(404).json(errors.array());
 			}
 			const post = await newPost.save();
 			if (!post) {
@@ -110,9 +110,8 @@ exports.update_post = [
 				published: postToUpdate.published,
 			});
 			if (!errors.isEmpty()) {
-				return res.status(401).json(errors.array());
+				return res.status(404).json(errors.array());
 			}
-
 			const post = await Post.findByIdAndUpdate(
 				req.params.postid,
 				updatedPost

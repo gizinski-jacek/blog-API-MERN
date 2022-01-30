@@ -40,7 +40,7 @@ exports.create_comment = [
 				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
-				res.status(401).json(errors.array());
+				res.status(404).json(errors.array());
 			}
 			const comment = await newComment.save();
 			if (!comment) {

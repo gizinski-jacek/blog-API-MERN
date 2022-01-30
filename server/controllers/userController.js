@@ -23,7 +23,7 @@ exports.auth_user = async (req, res, next) => {
 			return res.status(200).json(null);
 		}
 	} catch (error) {
-		res.status(403).json(null);
+		res.status(401).json(null);
 	}
 };
 
@@ -37,7 +37,7 @@ exports.log_in_user = (req, res, next) => {
 					return next(error);
 				}
 				if (!user) {
-					return res.status(400).json(msg);
+					return res.status(401).json(msg);
 				}
 				const token = jwt.sign(
 					{ _id: user._id, username: user.username },
@@ -75,7 +75,9 @@ exports.sign_up_user = [
 	body('username').custom(async (value, { req }) => {
 		const user_list = await User.find({ username: req.body.username });
 		if (user_list.length > 0) {
-			throw new Error(`${value} name is already taken`);
+			const error = new Error(`${value} name is already taken`);
+			error.status = 409;
+			throw error;
 		}
 		return true;
 	}),
@@ -98,7 +100,7 @@ exports.sign_up_user = [
 				username: req.body.username,
 			});
 			if (!errors.isEmpty()) {
-				return res.status(400).json(errors.array());
+				return res.status(404).json(errors.array());
 			}
 			const hashedPassword = await bcryptjs.hash(req.body.password, 10);
 			newUser.password = hashedPassword;
