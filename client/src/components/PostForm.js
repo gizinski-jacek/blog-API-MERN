@@ -10,6 +10,8 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 	const [textValue, setTextValue] = useState('');
 
 	useEffect(() => {
+		setTitleValue('');
+		setTextValue('');
 		if (allPosts) {
 			const thePost = allPosts.find((post) => post._id === params.postid);
 			setTitleValue(thePost.title);
@@ -61,14 +63,18 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 		}
 	};
 
-	const errorDisplay = errors?.map((error, index) => {
-		return <li key={index}>{error.msg}</li>;
+	const errorsDisplay = errors?.map((error, index) => {
+		return (
+			<li key={index} className='error-msg'>
+				{error.msg}
+			</li>
+		);
 	});
 
 	return (
-		<div className='create-post'>
+		<div className='new-post'>
 			<form
-				className='create-post-form'
+				className='new-post-form'
 				onSubmit={editing ? handleUpdate : handleSubmit}
 			>
 				<label htmlFor='title'>Title</label>
@@ -101,7 +107,7 @@ const PostForm = ({ allPosts, setAllPosts, editing }) => {
 				/>
 				<button type='submit'>Submit</button>
 			</form>
-			{errorDisplay ? <div>{errorDisplay}</div> : null}
+			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 		</div>
 	);
 };
