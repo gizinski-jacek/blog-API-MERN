@@ -4,12 +4,11 @@ import { Navigate } from 'react-router';
 import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
-import Home from './components/Home';
+import WelcomePanel from './components/WelcomePanel';
 import PostsPreview from './components/PostsPreview';
 import Posts from './components/Posts';
 import PostDetails from './components/PostDetails';
 import Comments from './components/Comments';
-import CommentForm from './components/CommentForm';
 import CommentDetails from './components/CommentDetails';
 import Authors from './components/Authors';
 import Dashboard from './components/Dashboard';
@@ -20,8 +19,6 @@ import Signup from './components/Signup';
 const App = () => {
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
-	const [allPosts, setAllPosts] = useState();
-	const [allComments, setAllComments] = useState();
 
 	useEffect(() => {
 		(async () => {
@@ -39,34 +36,6 @@ const App = () => {
 					setCurrentUser(resJson);
 				}
 				setLoading(false);
-			} catch (error) {
-				console.log(error);
-			}
-		})();
-	}, []);
-
-	useEffect(() => {
-		(async () => {
-			try {
-				const res = await fetch('/api/posts');
-				const resJson = await res.json();
-				setAllPosts(resJson);
-			} catch (error) {
-				console.log(error);
-			}
-		})();
-	}, []);
-
-	useEffect(() => {
-		(async () => {
-			try {
-				const res = await fetch(`/api/comments`, {
-					method: 'GET',
-					mode: 'cors',
-					headers: { 'Content-type': 'application/json' },
-				});
-				const resJson = await res.json();
-				setAllComments(resJson);
 			} catch (error) {
 				console.log(error);
 			}
@@ -95,8 +64,8 @@ const App = () => {
 						path=''
 						element={
 							<>
-								<Home />
-								<PostsPreview allPosts={allPosts} />
+								<WelcomePanel />
+								<PostsPreview />
 							</>
 						}
 					/>
@@ -114,35 +83,6 @@ const App = () => {
 						path='sign-up'
 						element={currentUser ? <Navigate to='/dashboard' /> : <Signup />}
 					/>
-					<Route path='posts'>
-						<Route path='' element={<Posts allPosts={allPosts} />} />
-						<Route path=':postid' element={<Outlet />}>
-							<Route
-								path=''
-								element={
-									<>
-										<PostDetails allPosts={allPosts} />
-										<CommentForm
-											currentUser={currentUser}
-											setAllComments={setAllComments}
-										/>
-										<Comments allComments={allComments} />
-									</>
-								}
-							/>
-							<Route
-								path='comments/:commentid'
-								element={
-									<CommentDetails
-										currentUser={currentUser}
-										setAllComments={setAllComments}
-										allComments={allComments}
-									/>
-								}
-							/>
-						</Route>
-					</Route>
-					<Route path='authors' element={<Authors allPosts={allPosts} />} />
 					<Route
 						path='dashboard'
 						element={
@@ -155,41 +95,36 @@ const App = () => {
 							)
 						}
 					>
+						<Route path='' element={<Dashboard currentUser={currentUser} />} />
+						<Route path='create' element={<PostForm />} />
 						<Route
-							path=''
-							element={
-								<Dashboard
-									currentUser={currentUser}
-									allPosts={allPosts}
-									setAllPosts={setAllPosts}
-								/>
-							}
+							path='update/:postid'
+							element={<PostForm editing={true} />}
 						/>
 						<Route
-							path='create'
-							element={<PostForm setAllPosts={setAllPosts} />}
-						/>
-						<Route
-							path=':postid/update'
-							element={
-								<PostForm
-									allPosts={allPosts}
-									setAllPosts={setAllPosts}
-									editing={true}
-								/>
-							}
-						/>
-						<Route
-							path=':postid/delete'
-							element={
-								<PostDetails
-									allPosts={allPosts}
-									setAllPosts={setAllPosts}
-									deleting={true}
-								/>
-							}
+							path='delete/:postid'
+							element={<PostDetails deleting={true} />}
 						/>
 					</Route>
+					<Route path='posts'>
+						<Route path='' element={<Posts />} />
+						<Route path=':postid' element={<Outlet />}>
+							<Route
+								path=''
+								element={
+									<>
+										<PostDetails />
+										<Comments currentUser={currentUser} />
+									</>
+								}
+							/>
+							<Route
+								path='comments/:commentid'
+								element={<CommentDetails currentUser={currentUser} />}
+							/>
+						</Route>
+					</Route>
+					<Route path='authors' element={<Authors />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
