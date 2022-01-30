@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 const LogIn = ({ setCurrentUser }) => {
 	const navigate = useNavigate();
 
-	const [error, setError] = useState();
+	const [errors, setErrors] = useState();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -20,7 +20,7 @@ const LogIn = ({ setCurrentUser }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setError(resJson);
+				setErrors(resJson);
 			} else {
 				setCurrentUser(resJson);
 				navigate('/dashboard');
@@ -29,6 +29,14 @@ const LogIn = ({ setCurrentUser }) => {
 			console.log(error);
 		}
 	};
+
+	const errorsDisplay = errors?.map((error, index) => {
+		return (
+			<li key={index} className='error-msg'>
+				{error.msg}
+			</li>
+		);
+	});
 
 	return (
 		<div className='log-in'>
@@ -51,12 +59,14 @@ const LogIn = ({ setCurrentUser }) => {
 					onChange={(e) => setPassword(e.target.value)}
 					required
 				/>
-				<button type='submit'>Log In</button>
-				<button type='button' onClick={() => navigate(-1)}>
-					Go Back
-				</button>
+				<div className='log-in-controls'>
+					<button type='submit'>Log In</button>
+					<button type='button' onClick={() => navigate(-1)}>
+						Go Back
+					</button>
+				</div>
 			</form>
-			{error ? <div>{error.msg}</div> : null}
+			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 		</div>
 	);
 };

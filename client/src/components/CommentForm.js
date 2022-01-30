@@ -28,8 +28,12 @@ const CommentForm = ({ currentUser, setAllComments }) => {
 		}
 	};
 
-	const errorDisplay = errors?.map((error, index) => {
-		return <li key={index}>{error.msg}</li>;
+	const errorsDisplay = errors?.map((error, index) => {
+		return (
+			<li key={index} className='error-msg'>
+				{error.msg}
+			</li>
+		);
 	});
 
 	return (
@@ -37,7 +41,7 @@ const CommentForm = ({ currentUser, setAllComments }) => {
 			{currentUser ? (
 				<>
 					<h3>{currentUser.username}</h3>
-					<form className='new-comment-form' onSubmit={handleSubmit}>
+					<form id='new-comment-form' onSubmit={handleSubmit}>
 						<input
 							type='text'
 							id='comment'
@@ -53,7 +57,9 @@ const CommentForm = ({ currentUser, setAllComments }) => {
 						/>
 						<button type='submit'>Submit</button>
 					</form>
-					{errorDisplay ? <div>{errorDisplay}</div> : null}
+					{errorsDisplay ? (
+						<ul className='error-list'>{errorsDisplay}</ul>
+					) : null}
 				</>
 			) : (
 				<>

@@ -73,18 +73,22 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 		}
 	};
 
-	const errorDisplay = errors?.map((error, index) => {
-		return <li key={index}>{error.msg}</li>;
+	const errorsDisplay = errors?.map((error, index) => {
+		return (
+			<li key={index} className='error-msg'>
+				{error.msg}
+			</li>
+		);
 	});
 
 	return (
 		<div className='comment-details'>
 			{currentUser && currentUser.username === theComment.author ? (
-				<div className='edit-controls'>
+				<div className='comment-edit-controls'>
 					<button
 						type='button'
 						onClick={() => {
-							setEditing(true);
+							setEditing(!editing);
 						}}
 					>
 						Edit Comment
@@ -95,14 +99,18 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 				</div>
 			) : null}
 			<div className='comment'>
-				<h3>{theComment.author}</h3>
-				<h3>{theComment.create_timestamp}</h3>
+				<h3 className='comment-author'>{theComment.author}</h3>
+				<h3 className='comment-created'>
+					Posted: {theComment.create_timestamp}
+				</h3>
 				{theComment.update_timestamp ? (
-					<h3>Last updated: {theComment.create_timestamp}</h3>
+					<h3 className='comment-updated'>
+						Last updated: {theComment.create_timestamp}
+					</h3>
 				) : null}
 				{editing ? (
 					<>
-						<form onSubmit={handleUpdate}>
+						<form id='edit-comment-form' onSubmit={handleUpdate}>
 							<input
 								type='text'
 								id='comment'
@@ -118,10 +126,12 @@ const CommentDetails = ({ currentUser, allComments, setAllComments }) => {
 							/>
 							<button type='submit'>Update Comment</button>
 						</form>
-						{errorDisplay ? <div>{errorDisplay}</div> : null}
+						{errorsDisplay ? (
+							<ul className='error-list'>{errorsDisplay}</ul>
+						) : null}
 					</>
 				) : (
-					<p>{theComment.text}</p>
+					<p className='comment-text'>{theComment.text}</p>
 				)}
 			</div>
 		</div>

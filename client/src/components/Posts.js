@@ -7,7 +7,7 @@ const Posts = ({ allPosts }) => {
 			return <PostLinkWrapper key={post._id} post={post} />;
 		});
 
-	return <section className='posts-preview container'>{postsDisplay}</section>;
+	return <section className='post-list container'>{postsDisplay}</section>;
 };
 
 export default Posts;

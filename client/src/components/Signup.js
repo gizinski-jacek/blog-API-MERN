@@ -29,8 +29,12 @@ const Signup = () => {
 		}
 	};
 
-	const errorDisplay = errors?.map((error, index) => {
-		return <li key={index}>{error.msg}</li>;
+	const errorsDisplay = errors?.map((error, index) => {
+		return (
+			<li key={index} className='error-msg'>
+				{error.msg}
+			</li>
+		);
 	});
 
 	return (
@@ -64,12 +68,14 @@ const Signup = () => {
 					onChange={(e) => setconfirmPassword(e.target.value)}
 					required
 				/>
-				<button type='submit'>Sign Up</button>
-				<button type='button' onClick={() => navigate(-1)}>
-					Go Back{' '}
-				</button>
+				<div className='sign-up-controls'>
+					<button type='submit'>Sign Up</button>
+					<button type='button' onClick={() => navigate(-1)}>
+						Go Back
+					</button>
+				</div>
 			</form>
-			{errorDisplay ? <div>{errorDisplay}</div> : null}
+			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 		</div>
 	);
 };

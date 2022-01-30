@@ -45,7 +45,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 
 	return (
 		<div className='user-post'>
-			<div className='post-controls'>
+			<div className='post-edit-controls'>
 				<Link to={`${post._id}/update`}>Edit</Link>
 				{post.published ? (
 					<button type='button' onClick={handleUnpublish}>
@@ -59,11 +59,13 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 				<Link to={`${post._id}/delete`}>Delete</Link>
 			</div>
 			<article className='post'>
-				<h2 className='title'>{post.title}</h2>
-				<h3 className='author'>Author: {post.author}</h3>
-				<h3 className='published'>Published: {post.create_timestamp}</h3>
+				<h2 className='post-title'>{post.title}</h2>
+				<h3 className='post-author'>Author: {post.author}</h3>
+				<h3 className='post-created'>Published: {post.create_timestamp}</h3>
 				{post.update_timestamp ? (
-					<h3 className='updated'>Last updated: {post.update_timestamp}</h3>
+					<h3 className='post-updated'>
+						Last updated: {post.update_timestamp}
+					</h3>
 				) : null}
 			</article>
 		</div>

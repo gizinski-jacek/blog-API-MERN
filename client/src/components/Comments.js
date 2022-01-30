@@ -21,7 +21,7 @@ const Comments = ({ allComments }) => {
 			);
 		});
 
-	return <div className='comments'>{commentsDisplay}</div>;
+	return <div className='comment-list'>{commentsDisplay}</div>;
 };
 
 export default Comments;

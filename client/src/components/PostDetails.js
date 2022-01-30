@@ -47,7 +47,7 @@ const PostDetails = ({ allPosts, setAllPosts, deleting }) => {
 	return (
 		<div className='post-details'>
 			{deleting ? (
-				<div className='delete-controls'>
+				<div className='post-delete-controls'>
 					<h1>Delete this post?</h1>
 					<button type='submit' onClick={handleDelete}>
 						Delete
