@@ -12,7 +12,6 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				// setErrors(resJson);
 				console.log(resJson);
 			} else {
 				setAllPosts(resJson);
@@ -33,7 +32,6 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				// setErrors(resJson);
 				console.log(resJson);
 			} else {
 				setAllPosts(resJson);
@@ -60,7 +58,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 			</div>
 			<article className='post'>
 				<h2 className='post-title'>Title: {post.title}</h2>
-				<h3 className='post-author'>Author: {post.author}</h3>
+				<h3 className='post-author'>Author: {post.author.username}</h3>
 				<h3 className='post-created'>Published: {post.create_timestamp}</h3>
 				{post.update_timestamp ? (
 					<h3 className='post-updated'>
