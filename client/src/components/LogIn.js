@@ -30,14 +30,6 @@ const LogIn = ({ setCurrentUser }) => {
 		}
 	};
 
-	const errorsDisplay = errors?.map((error, index) => {
-		return (
-			<li key={index} className='error-msg'>
-				{error.msg}
-			</li>
-		);
-	});
-
 	return (
 		<div className='log-in'>
 			<form id='log-in-form' onSubmit={handleSubmit}>
@@ -66,7 +58,11 @@ const LogIn = ({ setCurrentUser }) => {
 					</button>
 				</div>
 			</form>
-			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
+			{errors ? (
+				<ul className='error-list'>
+					<li className='error-msg'>{errors.msg}</li>
+				</ul>
+			) : null}
 		</div>
 	);
 };
