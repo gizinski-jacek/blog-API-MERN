@@ -36,11 +36,9 @@ const PostDetails = ({ deleting }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				// setErrors(resJson);
 				console.log(resJson);
-			} else {
-				navigate('/dashboard');
 			}
+			navigate('/dashboard');
 		} catch (error) {
 			console.log(error);
 		}
