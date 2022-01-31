@@ -41,7 +41,7 @@ const Comments = ({ currentUser }) => {
 		return (
 			<Link key={index} to={`comments/${comment._id}`}>
 				<div className='comment'>
-					<h3>{comment.author}</h3>
+					<h3>{comment.author.username}</h3>
 					<h3>{comment.create_timestamp}</h3>
 					{comment.update_timestamp ? (
 						<h3>
