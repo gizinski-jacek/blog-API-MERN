@@ -8,20 +8,12 @@ const mongoose = require('mongoose');
 
 exports.auth_user = async (req, res, next) => {
 	try {
-		if (req.cookies.userToken) {
-			const decoded = jwt.verify(
-				req.cookies.userToken,
-				process.env.STRATEGY_SECRET
-			);
-			if (!mongoose.Types.ObjectId.isValid(decoded._id)) {
-				return res.status(404).json('Invalid user ObjectId');
-			}
-			const user = await User.findById(decoded._id);
-
-			return res.status(200).json({ _id: user._id, username: user.username });
-		} else {
-			return res.status(200).json(null);
-		}
+		const decoded = jwt.verify(
+			req.cookies.userToken,
+			process.env.STRATEGY_SECRET
+		);
+		const user = await User.findById(decoded._id).exec();
+		return res.status(200).json({ _id: user._id, username: user.username });
 	} catch (error) {
 		res.status(401).json(null);
 	}
@@ -32,10 +24,10 @@ exports.log_in_user = (req, res, next) => {
 		'login',
 		{ session: false },
 		async (error, user, msg) => {
+			if (error) {
+				return next(error);
+			}
 			try {
-				if (error) {
-					return next(error);
-				}
 				if (!user) {
 					return res.status(401).json(msg);
 				}
@@ -51,7 +43,7 @@ exports.log_in_user = (req, res, next) => {
 				});
 				res.status(200).json({ _id: user._id, username: user.username });
 			} catch (error) {
-				return next(error);
+				next(error);
 			}
 		}
 	)(req, res, next);
@@ -73,7 +65,7 @@ exports.sign_up_user = [
 		.isLength({ min: 4, max: 32 })
 		.escape(),
 	body('username').custom(async (value, { req }) => {
-		const user_list = await User.find({ username: req.body.username });
+		const user_list = await User.find({ username: req.body.username }).exec();
 		if (user_list.length > 0) {
 			const error = new Error(`${value} name is already taken`);
 			error.status = 409;
@@ -111,3 +103,13 @@ exports.sign_up_user = [
 		}
 	},
 ];
+
+exports.get_user_list = async (req, res, next) => {
+	try {
+		const user_list = await User.find({}, 'username').exec();
+		console.log(user_list);
+		return res.status(200).json(user_list);
+	} catch (error) {
+		res.status(401).json(null);
+	}
+};
