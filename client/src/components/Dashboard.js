@@ -7,7 +7,7 @@ const Dashboard = ({ currentUser }) => {
 	useEffect(() => {
 		(async () => {
 			try {
-				const res = await fetch(`/api/posts/user/${currentUser.username}`, {
+				const res = await fetch(`/api/posts/user/${currentUser._id}`, {
 					method: 'GET',
 					mode: 'cors',
 					headers: { 'Content-type': 'application/json' },
@@ -18,7 +18,7 @@ const Dashboard = ({ currentUser }) => {
 				console.log(error);
 			}
 		})();
-	}, [currentUser.username]);
+	}, [currentUser._id]);
 
 	const postsDisplay = allPosts?.map((post, index) => {
 		return (
