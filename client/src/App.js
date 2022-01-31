@@ -32,12 +32,7 @@ const App = () => {
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
-				console.log(resJson);
-				if (res.status !== 200) {
-					setCurrentUser(null);
-				} else {
-					setCurrentUser(resJson);
-				}
+				setCurrentUser(resJson);
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
