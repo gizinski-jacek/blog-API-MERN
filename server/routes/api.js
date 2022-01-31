@@ -25,6 +25,9 @@ router.post('/log-out', user_controller.log_out_user);
 router.post('/sign-up', user_controller.sign_up_user);
 
 /////
+/* GET all authors */
+router.get('/authors', user_controller.get_user_list);
+
 /* GET all posts */
 router.get('/posts', post_controller.get_all_posts);
 
@@ -35,11 +38,7 @@ router.get('/posts/preview', post_controller.get_preview_posts);
 router.post('/posts/create', verifyToken, post_controller.create_post);
 
 /* GET user's posts */
-router.get(
-	'/posts/user/:username',
-	verifyToken,
-	post_controller.get_user_posts
-);
+router.get('/posts/user/:userid', verifyToken, post_controller.get_user_posts);
 
 /* GET signle post */
 router.get('/posts/:postid', post_controller.get_single_post);
