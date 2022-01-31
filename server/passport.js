@@ -9,24 +9,20 @@ const User = require('./models/user');
 
 passport.use(
 	'login',
-	new LocalStrategy((username, password, done) => {
-		User.findOne({ username: username }, (error, user) => {
-			if (error) {
-				return done(error);
-			}
+	new LocalStrategy(async (username, password, done) => {
+		try {
+			const user = await User.findOne({ username: username });
 			if (!user) {
 				return done(null, false, { msg: 'Incorrect username' });
 			}
-			bcryptjs.compare(password, user.password, (error, match) => {
-				if (error) {
-					return next(error);
-				}
-				if (!match) {
-					return done(null, false, { msg: 'Incorrect password' });
-				}
-				return done(null, user, { msg: 'Logged in successfully' });
-			});
-		});
+			const match = await bcryptjs.compare(password, user.password);
+			if (!match) {
+				return done(null, false, { msg: 'Incorrect password' });
+			}
+			return done(null, user, { msg: 'Logged in successfully' });
+		} catch (error) {
+			done(error);
+		}
 	})
 );
 
@@ -36,16 +32,13 @@ passport.use(
 			jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
 			secretOrKey: process.env.STRATEGY_SECRET,
 		},
-		(jwtPayload, done) => {
-			User.findById(jwtPayload.id, (error, user) => {
-				if (error) {
-					return done(error);
-				}
-				if (!user) {
-					return done(null, false, { message: 'User not found' });
-				}
+		async (jwtPayload, done) => {
+			try {
+				const user = await User.findById(jwtPayload.id);
 				return done(null, user);
-			});
+			} catch (error) {
+				done(error);
+			}
 		}
 	)
 );
