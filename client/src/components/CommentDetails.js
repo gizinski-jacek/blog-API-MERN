@@ -8,7 +8,7 @@ const CommentDetails = ({ currentUser }) => {
 	const [errors, setErrors] = useState();
 	const [editing, setEditing] = useState(false);
 	const [commentValue, setCommentValue] = useState('');
-	const [theComment, setTheComment] = useState({});
+	const [theComment, setTheComment] = useState();
 
 	useEffect(() => {
 		(async () => {
@@ -93,58 +93,62 @@ const CommentDetails = ({ currentUser }) => {
 
 	return (
 		<div className='comment-details'>
-			{currentUser && currentUser.username === theComment.author ? (
-				<div className='comment-edit-controls'>
-					<button
-						type='button'
-						onClick={() => {
-							setEditing(!editing);
-						}}
-					>
-						Edit Comment
-					</button>
-					<button type='submit' onClick={handleDelete}>
-						Delete Comment
-					</button>
-				</div>
-			) : null}
-			<div className='comment'>
-				<h3 className='comment-author'>{theComment.author}</h3>
-				<h3 className='comment-created'>
-					Posted: {theComment.create_timestamp}
-				</h3>
-				{theComment.update_timestamp ? (
-					<h3 className='comment-updated'>
-						Last updated:{' '}
-						{new Date(theComment.create_timestamp).toLocaleString('en-GB')}
-					</h3>
-				) : null}
-				{editing ? (
-					<>
-						<form id='edit-comment-form' onSubmit={handleUpdate}>
-							<input
-								type='text'
-								id='comment'
-								name='comment'
-								minLength='2'
-								maxLength='64'
-								onChange={(e) => {
-									setCommentValue(e.target.value);
+			{theComment ? (
+				<>
+					{currentUser && currentUser._id === theComment.author._id ? (
+						<div className='comment-edit-controls'>
+							<button
+								type='button'
+								onClick={() => {
+									setEditing(!editing);
 								}}
-								value={commentValue}
-								placeholder='Comment'
-								required
-							/>
-							<button type='submit'>Update Comment</button>
-						</form>
-						{errorsDisplay ? (
-							<ul className='error-list'>{errorsDisplay}</ul>
+							>
+								Edit Comment
+							</button>
+							<button type='submit' onClick={handleDelete}>
+								Delete Comment
+							</button>
+						</div>
+					) : null}
+					<div className='comment'>
+						<h3 className='comment-author'>{theComment.author.username}</h3>
+						<h3 className='comment-created'>
+							Posted: {theComment.create_timestamp}
+						</h3>
+						{theComment.update_timestamp ? (
+							<h3 className='comment-updated'>
+								Last updated:{' '}
+								{new Date(theComment.create_timestamp).toLocaleString('en-GB')}
+							</h3>
 						) : null}
-					</>
-				) : (
-					<p className='comment-text'>{theComment.text}</p>
-				)}
-			</div>
+						{editing ? (
+							<>
+								<form id='edit-comment-form' onSubmit={handleUpdate}>
+									<input
+										type='text'
+										id='comment'
+										name='comment'
+										minLength='2'
+										maxLength='64'
+										onChange={(e) => {
+											setCommentValue(e.target.value);
+										}}
+										value={commentValue}
+										placeholder='Comment'
+										required
+									/>
+									<button type='submit'>Update Comment</button>
+								</form>
+								{errorsDisplay ? (
+									<ul className='error-list'>{errorsDisplay}</ul>
+								) : null}
+							</>
+						) : (
+							<p className='comment-text'>{theComment.text}</p>
+						)}
+					</div>
+				</>
+			) : null}
 		</div>
 	);
 };
