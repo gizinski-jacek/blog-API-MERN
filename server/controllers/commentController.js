@@ -4,8 +4,10 @@ const mongoose = require('mongoose');
 
 exports.get_all_comments = async (req, res, next) => {
 	try {
-		const comment_list = await Comment.find({ post_ref_id: req.params.postid })
+		const comment_list = await Comment.find({ post_ref: req.params.postid })
 			.sort({ timestamp: 'desc' })
+			.populate('author')
+			.populate('post')
 			.exec();
 		res.status(200).json(comment_list);
 	} catch (error) {
@@ -18,7 +20,10 @@ exports.get_single_comment = async (req, res, next) => {
 		if (!mongoose.Types.ObjectId.isValid(req.params.commentid)) {
 			return res.status(404).json('Invalid comment ObjectId');
 		}
-		const comment = await Comment.findById(req.params.commentid).exec();
+		const comment = await Comment.findById(req.params.commentid)
+			.populate('author')
+			.populate('post')
+			.exec();
 		res.status(200).json(comment);
 	} catch (error) {
 		next(error);
@@ -35,8 +40,8 @@ exports.create_comment = [
 			const errors = validationResult(req);
 			const newComment = new Comment({
 				text: req.body.commentValue,
-				author: req.decodedUser.username,
-				post_ref_id: req.params.postid,
+				author: req.decodedUser._id,
+				post: req.params.postid,
 				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
@@ -73,7 +78,7 @@ exports.update_comment = [
 				_id: commentToUpdate._id,
 				text: req.body.commentValue,
 				author: commentToUpdate.author,
-				post_ref_id: commentToUpdate.post_ref_id,
+				post: commentToUpdate.post,
 				create_timestamp: commentToUpdate.create_timestamp,
 				update_timestamp: new Date(),
 			});
@@ -84,7 +89,10 @@ exports.update_comment = [
 				req.params.commentid,
 				updatedComment,
 				{ returnDocument: 'after' }
-			).exec();
+			)
+				.populate('author')
+				.populate('post')
+				.exec();
 			if (!comment) {
 				return res.status(404).json('Comment not found, nothing to update');
 			}
