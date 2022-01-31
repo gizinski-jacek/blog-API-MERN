@@ -7,6 +7,7 @@ exports.get_all_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
 			.sort({ timestamp: 'desc' })
+			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
 	} catch (error) {
@@ -17,8 +18,9 @@ exports.get_all_posts = async (req, res, next) => {
 exports.get_preview_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
-			.sort({ timestamp: 'desc' })
 			.limit(3)
+			.sort({ timestamp: 'desc' })
+			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
 	} catch (error) {
@@ -31,7 +33,9 @@ exports.get_single_post = async (req, res, next) => {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
 			return res.status(404).json('Invalid post ObjectId');
 		}
-		const post = await Post.findById(req.params.postid).exec();
+		const post = await Post.findById(req.params.postid)
+			.populate('author', 'username')
+			.exec();
 		res.status(200).json(post);
 	} catch (error) {
 		next(error);
@@ -40,8 +44,9 @@ exports.get_single_post = async (req, res, next) => {
 
 exports.get_user_posts = async (req, res, next) => {
 	try {
-		const post_list = await Post.find(req.params.postid)
+		const post_list = await Post.find({ author: req.params.userid })
 			.sort({ timestamp: 'desc' })
+			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
 	} catch (error) {
@@ -64,7 +69,7 @@ exports.create_post = [
 			const newPost = new Post({
 				title: req.body.titleValue,
 				text: req.body.textValue,
-				author: req.decodedUser.username,
+				author: req.decodedUser._id,
 				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
@@ -152,7 +157,10 @@ exports.publish_post = async (req, res, next) => {
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to publish');
 		}
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
+		const post_list = await Post.find({})
+			.sort({ timestamp: 'desc' })
+			.populate('author', 'username')
+			.exec();
 		res.status(200).json(post_list);
 	} catch (error) {
 		next(error);
@@ -170,7 +178,10 @@ exports.unpublish_post = async (req, res, next) => {
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to unpublish');
 		}
-		const post_list = await Post.find({}).sort({ timestamp: 'desc' }).exec();
+		const post_list = await Post.find({})
+			.sort({ timestamp: 'desc' })
+			.populate('author', 'username')
+			.exec();
 		res.status(200).json(post_list);
 	} catch (error) {
 		next(err);
