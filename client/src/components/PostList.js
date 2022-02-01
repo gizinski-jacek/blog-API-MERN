@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const Posts = () => {
+const PostList = () => {
 	const [allPosts, setAllPosts] = useState();
 
 	useEffect(() => {
@@ -27,4 +27,4 @@ const Posts = () => {
 	return <section className='post-list container'>{postsDisplay}</section>;
 };
 
-export default Posts;
+export default PostList;
