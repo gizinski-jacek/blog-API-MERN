@@ -4,7 +4,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 	const handlePublish = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/posts/publish/${post._id}`, {
+			const res = await fetch(`/api/posts/${post._id}/publish`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
@@ -24,7 +24,7 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 	const handleUnpublish = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/posts/unpublish/${post._id}`, {
+			const res = await fetch(`/api/posts/${post._id}/unpublish`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
