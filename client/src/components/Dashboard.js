@@ -10,6 +10,7 @@ const Dashboard = ({ currentUser }) => {
 				const res = await fetch(`/api/posts/user/${currentUser._id}`, {
 					method: 'GET',
 					mode: 'cors',
+					credentials: 'include',
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
