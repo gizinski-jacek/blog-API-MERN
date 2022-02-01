@@ -1,14 +1,14 @@
 import './App.css';
 import { useState, useEffect } from 'react';
-import { Navigate, useLocation } from 'react-router';
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router';
+import { Routes, Route, Outlet, BrowserRouter } from 'react-router-dom';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
 import WelcomePanel from './components/WelcomePanel';
 import PostsPreview from './components/PostsPreview';
-import Posts from './components/Posts';
+import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
-import Comments from './components/Comments';
+import CommentList from './components/CommentList';
 import CommentDetails from './components/CommentDetails';
 import Authors from './components/Authors';
 import Dashboard from './components/Dashboard';
@@ -17,8 +17,6 @@ import LogIn from './components/LogIn';
 import Signup from './components/Signup';
 
 const App = () => {
-	const location = useLocation();
-
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
 
@@ -32,92 +30,104 @@ const App = () => {
 					headers: { 'Content-type': 'application/json' },
 				});
 				const resJson = await res.json();
-				setCurrentUser(resJson);
+				if (res.status !== 200) {
+					setCurrentUser(null);
+				} else {
+					setCurrentUser(resJson);
+				}
 				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
 		})();
-	}, [location]);
+	}, []);
 
 	return (
-		<Routes>
-			<Route
-				path='/'
-				element={
-					loading ? null : (
-						<main className='main'>
-							<Nav currentUser={currentUser} setCurrentUser={setCurrentUser} />
-							<Outlet />
-							<Footer />
-						</main>
-					)
-				}
-			>
+		<BrowserRouter>
+			<Routes>
 				<Route
-					path=''
+					path='/'
 					element={
-						<>
-							<WelcomePanel />
-							<PostsPreview />
-						</>
-					}
-				/>
-				<Route
-					path='log-in'
-					element={
-						currentUser ? (
-							<Navigate to='/dashboard' />
-						) : (
-							<LogIn setCurrentUser={setCurrentUser} />
-						)
-					}
-				/>
-				<Route
-					path='sign-up'
-					element={currentUser ? <Navigate to='/dashboard' /> : <Signup />}
-				/>
-				<Route
-					path='dashboard'
-					element={
-						currentUser ? (
-							<>
+						loading ? null : (
+							<main className='main'>
+								<Nav
+									currentUser={currentUser}
+									setCurrentUser={setCurrentUser}
+								/>
 								<Outlet />
-							</>
-						) : (
-							<Navigate to='/log-in' />
+								<Footer />
+							</main>
 						)
 					}
 				>
-					<Route path='' element={<Dashboard currentUser={currentUser} />} />
-					<Route path='create' element={<PostForm />} />
-					<Route path='update/:postid' element={<PostForm editing={true} />} />
 					<Route
-						path='delete/:postid'
-						element={<PostDetails deleting={true} />}
+						path=''
+						element={
+							<>
+								<WelcomePanel />
+								<PostsPreview />
+							</>
+						}
 					/>
-				</Route>
-				<Route path='posts'>
-					<Route path='' element={<Posts />} />
-					<Route path=':postid' element={<Outlet />}>
-						<Route
-							path=''
-							element={
+					<Route
+						path='log-in'
+						element={
+							currentUser ? (
+								<Navigate to='/dashboard' />
+							) : (
+								<LogIn setCurrentUser={setCurrentUser} />
+							)
+						}
+					/>
+					<Route
+						path='sign-up'
+						element={currentUser ? <Navigate to='/dashboard' /> : <Signup />}
+					/>
+					<Route
+						path='dashboard'
+						element={
+							currentUser ? (
 								<>
-									<PostDetails />
-									<Comments currentUser={currentUser} />
+									<Outlet />
 								</>
-							}
+							) : (
+								<Navigate to='/log-in' />
+							)
+						}
+					>
+						<Route path='' element={<Dashboard currentUser={currentUser} />} />
+						<Route path='create' element={<PostForm />} />
+						<Route
+							path='update/:postid'
+							element={<PostForm editing={true} />}
 						/>
 						<Route
-							path='comments/:commentid'
-							element={<CommentDetails currentUser={currentUser} />}
+							path='delete/:postid'
+							element={<PostDetails deleting={true} />}
 						/>
 					</Route>
+					<Route path='posts'>
+						<Route path='' element={<PostList />} />
+						<Route path=':postid' element={<Outlet />}>
+							<Route
+								path=''
+								element={
+									<>
+										<PostDetails />
+										<CommentList currentUser={currentUser} />
+									</>
+								}
+							/>
+							<Route
+								path='comments/:commentid'
+								element={<CommentDetails currentUser={currentUser} />}
+							/>
+						</Route>
+					</Route>
+					<Route path='authors' element={<Authors />} />
 				</Route>
-				<Route path='authors' element={<Authors />} />
-			</Route>
-		</Routes>
+			</Routes>
+		</BrowserRouter>
 	);
 };
 
