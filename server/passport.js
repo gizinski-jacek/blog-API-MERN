@@ -1,9 +1,7 @@
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const JWTStrategy = require('passport-jwt').Strategy;
-const ExtractJWT = require('passport-jwt').ExtractJwt;
 const bcryptjs = require('bcryptjs');
 const User = require('./models/user');
 
@@ -26,18 +24,30 @@ passport.use(
 	})
 );
 
+const extractCookie = (req) => {
+	let token = null;
+	if (req && req.cookies && req.cookies.token) {
+		token = req.cookies.token;
+	}
+	return token;
+};
+
 passport.use(
+	'jwt',
 	new JWTStrategy(
 		{
-			jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+			jwtFromRequest: extractCookie,
 			secretOrKey: process.env.STRATEGY_SECRET,
 		},
-		async (jwtPayload, done) => {
+		(jwtPayload, done) => {
 			try {
-				const user = await User.findById(jwtPayload.id);
-				return done(null, user);
+				if (jwtPayload) {
+					done(null, jwtPayload);
+				} else {
+					done(null, false);
+				}
 			} catch (error) {
-				done(error);
+				done(error, false);
 			}
 		}
 	)
