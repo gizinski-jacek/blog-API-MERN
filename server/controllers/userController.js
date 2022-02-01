@@ -4,18 +4,14 @@ const { body, validationResult } = require('express-validator');
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
 const bcryptjs = require('bcryptjs');
-const mongoose = require('mongoose');
 
 exports.auth_user = async (req, res, next) => {
 	try {
-		const decoded = jwt.verify(
-			req.cookies.userToken,
-			process.env.STRATEGY_SECRET
-		);
-		const user = await User.findById(decoded._id).exec();
-		return res.status(200).json({ _id: user._id, username: user.username });
+		const decoded = jwt.verify(req.cookies.token, process.env.STRATEGY_SECRET);
+		const user = await User.findById(decoded._id, 'username').exec();
+		res.status(200).json(user);
 	} catch (error) {
-		res.status(401).json(null);
+		res.status(401).json('Failed to verify user. Please log in again.');
 	}
 };
 
@@ -36,7 +32,7 @@ exports.log_in_user = (req, res, next) => {
 					process.env.STRATEGY_SECRET,
 					{ expiresIn: '15m' }
 				);
-				res.cookie('userToken', token, {
+				res.cookie('token', token, {
 					httpOnly: true,
 					secure: false,
 					sameSite: 'strict',
@@ -50,7 +46,7 @@ exports.log_in_user = (req, res, next) => {
 };
 
 exports.log_out_user = (req, res, next) => {
-	res.cookie('userToken', 'loggedOut', {
+	res.cookie('token', 'loggedOut', {
 		expires: new Date(Date.now() + 1000),
 		httpOnly: true,
 		secure: false,
@@ -80,7 +76,9 @@ exports.sign_up_user = [
 	body('confirmPassword', 'Password field can not be empty').custom(
 		(value, { req }) => {
 			if (value !== req.body.password) {
-				throw new Error('Passwords must match');
+				const error = new Error('Passwords must match');
+				error.status = 403;
+				throw error;
 			}
 			return true;
 		}
@@ -107,7 +105,6 @@ exports.sign_up_user = [
 exports.get_user_list = async (req, res, next) => {
 	try {
 		const user_list = await User.find({}, 'username').exec();
-		console.log(user_list);
 		return res.status(200).json(user_list);
 	} catch (error) {
 		res.status(401).json(null);
