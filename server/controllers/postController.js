@@ -31,7 +31,7 @@ exports.get_preview_posts = async (req, res, next) => {
 exports.get_single_post = async (req, res, next) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
-			return res.status(404).json('Invalid post ObjectId');
+			return res.status(404).json('Invalid post Id');
 		}
 		const post = await Post.findById(req.params.postid)
 			.populate('author', 'username')
@@ -44,7 +44,7 @@ exports.get_single_post = async (req, res, next) => {
 
 exports.get_user_posts = async (req, res, next) => {
 	try {
-		const post_list = await Post.find({ author: req.params.userid })
+		const post_list = await Post.find({ author: req.user._id })
 			.sort({ timestamp: 'desc' })
 			.populate('author', 'username')
 			.exec();
@@ -69,7 +69,7 @@ exports.create_post = [
 			const newPost = new Post({
 				title: req.body.titleValue,
 				text: req.body.textValue,
-				author: req.decodedUser._id,
+				author: req.user._id,
 				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
@@ -77,7 +77,7 @@ exports.create_post = [
 			}
 			const post = await newPost.save();
 			if (!post) {
-				return res.status(404).json('Error saving post');
+				return res.status(404).json([{ msg: 'Error saving post, try again' }]);
 			}
 			res.status(200).json('Post created');
 		} catch (error) {
@@ -98,7 +98,7 @@ exports.update_post = [
 	async (req, res, next) => {
 		try {
 			if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
-				return res.status(404).json('Invalid post ObjectId');
+				return res.status(404).json('Invalid post Id');
 			}
 			const postToUpdate = await Post.findById(req.params.postid).exec();
 			if (!postToUpdate) {
@@ -122,7 +122,7 @@ exports.update_post = [
 				updatedPost
 			).exec();
 			if (!post) {
-				return res.status(404).json('Post not found, nothing to update');
+				return res.status(200).json('Post not found, nothing to update');
 			}
 			res.status(200).json('Post updated');
 		} catch (error) {
@@ -134,7 +134,7 @@ exports.update_post = [
 exports.delete_post = async (req, res, next) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
-			return res.status(404).json('Invalid post ObjectId');
+			return res.status(404).json('Invalid post Id');
 		}
 		const post = await Post.findByIdAndDelete(req.params.postid).exec();
 		if (!post) {
@@ -149,7 +149,7 @@ exports.delete_post = async (req, res, next) => {
 exports.publish_post = async (req, res, next) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
-			return res.status(404).json('Invalid post ObjectId');
+			return res.status(404).json('Invalid post Id');
 		}
 		const post = await Post.findByIdAndUpdate(req.params.postid, {
 			published: true,
@@ -170,7 +170,7 @@ exports.publish_post = async (req, res, next) => {
 exports.unpublish_post = async (req, res, next) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
-			return res.status(404).json('Invalid post ObjectId');
+			return res.status(404).json('Invalid post Id');
 		}
 		const post = await Post.findByIdAndUpdate(req.params.postid, {
 			published: false,
