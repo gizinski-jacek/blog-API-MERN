@@ -3,10 +3,9 @@ import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
 
-const Comments = ({ currentUser }) => {
+const CommentList = ({ currentUser }) => {
 	const params = useParams();
 
-	const [errors, setErrors] = useState();
 	const [allComments, setAllComments] = useState();
 
 	useEffect(() => {
@@ -19,7 +18,7 @@ const Comments = ({ currentUser }) => {
 				});
 				const resJson = await res.json();
 				if (res.status !== 200) {
-					setErrors(resJson);
+					console.log(resJson);
 				} else {
 					setAllComments(resJson);
 				}
@@ -28,14 +27,6 @@ const Comments = ({ currentUser }) => {
 			}
 		})();
 	}, [params.postid]);
-
-	const errorsDisplay = errors?.map((error, index) => {
-		return (
-			<li key={index} className='error-msg'>
-				{error.msg}
-			</li>
-		);
-	});
 
 	const commentsDisplay = allComments?.map((comment, index) => {
 		return (
@@ -59,9 +50,8 @@ const Comments = ({ currentUser }) => {
 		<>
 			<CommentForm currentUser={currentUser} setAllComments={setAllComments} />
 			<div className='comment-list'>{commentsDisplay}</div>
-			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 		</>
 	);
 };
 
-export default Comments;
+export default CommentList;
