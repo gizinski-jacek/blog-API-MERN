@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../verifyToken');
+const passport = require('passport');
 
 const user_controller = require('../controllers/userController');
 const post_controller = require('../controllers/postController');
@@ -35,31 +35,47 @@ router.get('/posts', post_controller.get_all_posts);
 router.get('/posts/preview', post_controller.get_preview_posts);
 
 /* POST new post */
-router.post('/posts/create', verifyToken, post_controller.create_post);
+router.post(
+	'/posts/create',
+	passport.authenticate('jwt', { session: false }),
+	post_controller.create_post
+);
 
 /* GET user's posts */
-router.get('/posts/user/:userid', verifyToken, post_controller.get_user_posts);
+router.get(
+	'/posts/user/:userid',
+	passport.authenticate('jwt', { session: false }),
+	post_controller.get_user_posts
+);
 
-/* GET signle post */
+/* GET single post */
 router.get('/posts/:postid', post_controller.get_single_post);
 
 /* PUT update a post */
-router.put('/posts/update/:postid', verifyToken, post_controller.update_post);
+router.put(
+	'/posts/:postid',
+	passport.authenticate('jwt', { session: false }),
+	post_controller.update_post
+);
 
 /* DELETE delete a post */
 router.delete(
-	'/posts/delete/:postid/',
-	verifyToken,
+	'/posts/:postid/',
+	passport.authenticate('jwt', { session: false }),
 	post_controller.delete_post
 );
 
 /* PUT publish a post */
-router.put('/posts/publish/:postid', verifyToken, post_controller.publish_post);
+router.put(
+	'/posts/:postid/publish',
+	passport.authenticate('jwt', { session: false }),
+	post_controller.publish_post
+);
 
 /* PUT unpublish a post */
 router.put(
-	'/posts/unpublish/:postid',
-	verifyToken,
+	'/posts/:postid/unpublish',
+	passport.authenticate('jwt', { session: false }),
 	post_controller.unpublish_post
 );
 
@@ -70,7 +86,7 @@ router.get('/posts/:postid/comments', comment_controller.get_all_comments);
 /* POST new comment */
 router.post(
 	'/posts/:postid/comments',
-	verifyToken,
+	passport.authenticate('jwt', { session: false }),
 	comment_controller.create_comment
 );
 
@@ -83,12 +99,14 @@ router.get(
 /* PUT update comment */
 router.put(
 	'/posts/:postid/comments/:commentid',
+	passport.authenticate('jwt', { session: false }),
 	comment_controller.update_comment
 );
 
 /* DELETE delete comment */
 router.delete(
 	'/posts/:postid/comments/:commentid',
+	passport.authenticate('jwt', { session: false }),
 	comment_controller.delete_comment
 );
 
