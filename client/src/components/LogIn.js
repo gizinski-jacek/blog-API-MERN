@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router';
 const LogIn = ({ setCurrentUser }) => {
 	const navigate = useNavigate();
 
-	const [errors, setErrors] = useState();
+	const [error, setError] = useState();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -20,7 +20,7 @@ const LogIn = ({ setCurrentUser }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setErrors(resJson);
+				setError(resJson);
 			} else {
 				setCurrentUser(resJson);
 				navigate('/dashboard');
@@ -58,9 +58,9 @@ const LogIn = ({ setCurrentUser }) => {
 					</button>
 				</div>
 			</form>
-			{errors ? (
+			{error ? (
 				<ul className='error-list'>
-					<li className='error-msg'>{errors.msg}</li>
+					<li className='error-msg'>{error.msg}</li>
 				</ul>
 			) : null}
 		</div>
