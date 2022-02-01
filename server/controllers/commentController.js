@@ -4,10 +4,9 @@ const mongoose = require('mongoose');
 
 exports.get_all_comments = async (req, res, next) => {
 	try {
-		const comment_list = await Comment.find({ post_ref: req.params.postid })
+		const comment_list = await Comment.find({ post: req.params.postid })
 			.sort({ timestamp: 'desc' })
 			.populate('author')
-			.populate('post')
 			.exec();
 		res.status(200).json(comment_list);
 	} catch (error) {
@@ -18,7 +17,7 @@ exports.get_all_comments = async (req, res, next) => {
 exports.get_single_comment = async (req, res, next) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(req.params.commentid)) {
-			return res.status(404).json('Invalid comment ObjectId');
+			return res.status(404).json('Invalid comment Id');
 		}
 		const comment = await Comment.findById(req.params.commentid)
 			.populate('author')
@@ -40,17 +39,24 @@ exports.create_comment = [
 			const errors = validationResult(req);
 			const newComment = new Comment({
 				text: req.body.commentValue,
-				author: req.decodedUser._id,
+				author: req.user._id,
 				post: req.params.postid,
 				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
-				res.status(404).json(errors.array());
+				return res.status(404).json(errors.array());
 			}
 			const comment = await newComment.save();
 			if (!comment) {
-				return res.status(404).json('Error saving comment');
+				return res
+					.status(404)
+					.json([{ msg: 'Error saving comment, try again' }]);
 			}
+			const comment_list = await Comment.find({ post: req.params.postid })
+				.sort({ timestamp: 'desc' })
+				.populate('author')
+				.exec();
+			res.status(200).json(comment_list);
 		} catch (error) {
 			next(error);
 		}
@@ -65,7 +71,7 @@ exports.update_comment = [
 	async (req, res, next) => {
 		try {
 			if (!mongoose.Types.ObjectId.isValid(req.params.commentid)) {
-				return res.status(404).json('Invalid comment ObjectId');
+				return res.status(404).json('Invalid comment Id');
 			}
 			const commentToUpdate = await Comment.findById(
 				req.params.commentid
@@ -83,7 +89,7 @@ exports.update_comment = [
 				update_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
-				return res.status(401).json(errors.array());
+				return res.status(404).json(errors.array());
 			}
 			const comment = await Comment.findByIdAndUpdate(
 				req.params.commentid,
@@ -106,7 +112,7 @@ exports.update_comment = [
 exports.delete_comment = async (req, res, next) => {
 	try {
 		if (!mongoose.Types.ObjectId.isValid(req.params.commentid)) {
-			return res.status(404).json('Invalid comment ObjectId');
+			return res.status(404).json('Invalid comment Id');
 		}
 		const comment = await Comment.findByIdAndDelete(
 			req.params.commentid
