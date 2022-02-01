@@ -55,7 +55,7 @@ const PostForm = ({ editing }) => {
 	const handleUpdate = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/posts/update/${params.postid}`, {
+			const res = await fetch(`/api/posts/${params.postid}`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',

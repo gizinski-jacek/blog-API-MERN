@@ -28,7 +28,7 @@ const PostDetails = ({ deleting }) => {
 	const handleDelete = async (e) => {
 		e.preventDefault();
 		try {
-			const res = await fetch(`/api/posts/delete/${params.postid}`, {
+			const res = await fetch(`/api/posts/${params.postid}`, {
 				method: 'DELETE',
 				mode: 'cors',
 				credentials: 'include',
