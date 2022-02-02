@@ -10,7 +10,7 @@ import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
 import CommentList from './components/CommentList';
 import CommentDetails from './components/CommentDetails';
-import Authors from './components/Authors';
+import AuthorList from './components/AuthorList';
 import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
@@ -124,7 +124,7 @@ const App = () => {
 							/>
 						</Route>
 					</Route>
-					<Route path='authors' element={<Authors />} />
+					<Route path='authors' element={<AuthorList />} />
 				</Route>
 			</Routes>
 		</BrowserRouter>
