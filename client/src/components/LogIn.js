@@ -1,14 +1,15 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 const LogIn = ({ setCurrentUser }) => {
 	const navigate = useNavigate();
+	const location = useLocation();
 
-	const [error, setError] = useState();
+	const [error, setError] = useState(location.state);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
-	const handleSubmit = async (e) => {
+	const handleLogIn = async (e) => {
 		e.preventDefault();
 		try {
 			const res = await fetch('/api/log-in', {
@@ -32,7 +33,7 @@ const LogIn = ({ setCurrentUser }) => {
 
 	return (
 		<div className='log-in'>
-			<form id='log-in-form' onSubmit={handleSubmit}>
+			<form id='log-in-form' onSubmit={handleLogIn}>
 				<label htmlFor='username'>Username</label>
 				<input
 					type='text'
