@@ -2,7 +2,7 @@ import './App.css';
 import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router';
 import { Routes, Route, Outlet, BrowserRouter } from 'react-router-dom';
-import Nav from './components/Nav';
+import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import WelcomePanel from './components/WelcomePanel';
 import PostsPreview from './components/PostsPreview';
@@ -50,7 +50,7 @@ const App = () => {
 					element={
 						loading ? null : (
 							<main className='main'>
-								<Nav
+								<Navbar
 									currentUser={currentUser}
 									setCurrentUser={setCurrentUser}
 								/>
