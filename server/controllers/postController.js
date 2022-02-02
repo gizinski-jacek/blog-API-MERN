@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 exports.get_all_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
-			.sort({ timestamp: 'desc' })
+			.sort({ create_timestamp: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -19,7 +19,7 @@ exports.get_preview_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
 			.limit(3)
-			.sort({ timestamp: 'desc' })
+			.sort({ create_timestamp: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -45,7 +45,7 @@ exports.get_single_post = async (req, res, next) => {
 exports.get_user_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ author: req.user._id })
-			.sort({ timestamp: 'desc' })
+			.sort({ create_timestamp: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -157,8 +157,8 @@ exports.publish_post = async (req, res, next) => {
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to publish');
 		}
-		const post_list = await Post.find({})
-			.sort({ timestamp: 'desc' })
+		const post_list = await Post.find({ author: req.user._id })
+			.sort({ create_timestamp: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -178,8 +178,8 @@ exports.unpublish_post = async (req, res, next) => {
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to unpublish');
 		}
-		const post_list = await Post.find({})
-			.sort({ timestamp: 'desc' })
+		const post_list = await Post.find({ author: req.user._id })
+			.sort({ create_timestamp: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
