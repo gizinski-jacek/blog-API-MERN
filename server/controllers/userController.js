@@ -11,7 +11,7 @@ exports.auth_user = async (req, res, next) => {
 		const user = await User.findById(decoded._id, 'username').exec();
 		res.status(200).json(user);
 	} catch (error) {
-		res.status(401).json('Failed to verify user. Please log in again.');
+		res.status(403).json('Failed to verify user token. Please log in again.');
 	}
 };
 
@@ -50,7 +50,7 @@ exports.log_out_user = (req, res, next) => {
 		expires: new Date(Date.now() + 1000),
 		httpOnly: true,
 		secure: false,
-		sameSite: 'lax',
+		sameSite: 'strict',
 	});
 	res.status(200).json({ success: true });
 };
@@ -88,6 +88,7 @@ exports.sign_up_user = [
 			const errors = validationResult(req);
 			const newUser = new User({
 				username: req.body.username,
+				registered: new Date(),
 			});
 			if (!errors.isEmpty()) {
 				return res.status(404).json(errors.array());
