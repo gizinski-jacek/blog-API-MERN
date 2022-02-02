@@ -1,4 +1,4 @@
-const PostDataWrapper = ({ post }) => {
+const PostDetailsWrapper = ({ post }) => {
 	return (
 		<article className='post'>
 			<h2 className='post-title'>Title: {post.title}</h2>
@@ -15,4 +15,4 @@ const PostDataWrapper = ({ post }) => {
 	);
 };
 
-export default PostDataWrapper;
+export default PostDetailsWrapper;
