@@ -26,12 +26,10 @@ const PostsPreview = () => {
 	});
 
 	return (
-		<section className='posts-preview'>
-			<div className='container'>{postsPreviewDisplay}</div>
-			<Link to='posts' className='button-link'>
-				View all posts
-			</Link>
-		</section>
+		<div className='preview-posts'>
+			<h2 className='recent-posts'>Most recent posts</h2>
+			<section className='grid-container'>{postsPreviewDisplay}</section>
+		</div>
 	);
 };
 
