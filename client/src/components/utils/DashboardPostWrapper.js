@@ -1,10 +1,9 @@
 import { Link } from 'react-router-dom';
 
-const UserPostDataWrapper = ({ post, setAllPosts }) => {
-	const handlePublish = async (e) => {
-		e.preventDefault();
+const DashboardPostWrapper = ({ post, setAllPosts }) => {
+	const handlePublish = async (id) => {
 		try {
-			const res = await fetch(`/api/posts/${post._id}/publish`, {
+			const res = await fetch(`/api/posts/${id}/publish`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
@@ -21,10 +20,9 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 		}
 	};
 
-	const handleUnpublish = async (e) => {
-		e.preventDefault();
+	const handleUnpublish = async (id) => {
 		try {
-			const res = await fetch(`/api/posts/${post._id}/unpublish`, {
+			const res = await fetch(`/api/posts/${id}/unpublish`, {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
@@ -46,11 +44,11 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 			<div className='post-edit-controls'>
 				<Link to={`update/${post._id}`}>Edit</Link>
 				{post.published ? (
-					<button type='button' onClick={handleUnpublish}>
+					<button type='button' onClick={() => handleUnpublish(post._id)}>
 						Unpublish
 					</button>
 				) : (
-					<button type='button' onClick={handlePublish}>
+					<button type='button' onClick={() => handlePublish(post._id)}>
 						Publish
 					</button>
 				)}
@@ -59,16 +57,17 @@ const UserPostDataWrapper = ({ post, setAllPosts }) => {
 			<article className='post'>
 				<h2 className='post-title'>Title: {post.title}</h2>
 				<h3 className='post-author'>Author: {post.author.username}</h3>
-				<h3 className='post-created'>Published: {post.create_timestamp}</h3>
-				{post.update_timestamp ? (
-					<h3 className='post-updated'>
-						Last updated:{' '}
-						{new Date(post.update_timestamp).toLocaleString('en-GB')}
-					</h3>
-				) : null}
+				<h3 className='post-created'>
+					Published:{' '}
+					{new Date(post.create_timestamp).toLocaleString('en-GB', {
+						year: 'numeric',
+						month: 'numeric',
+						day: 'numeric',
+					})}
+				</h3>
 			</article>
 		</div>
 	);
 };
 
-export default UserPostDataWrapper;
+export default DashboardPostWrapper;
