@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 exports.get_all_comments = async (req, res, next) => {
 	try {
 		const comment_list = await Comment.find({ post: req.params.postid })
-			.sort({ timestamp: 'desc' })
+			.sort({ create_timestamp: 'desc' })
 			.populate('author')
 			.exec();
 		res.status(200).json(comment_list);
@@ -53,7 +53,7 @@ exports.create_comment = [
 					.json([{ msg: 'Error saving comment, try again' }]);
 			}
 			const comment_list = await Comment.find({ post: req.params.postid })
-				.sort({ timestamp: 'desc' })
+				.sort({ create_timestamp: 'desc' })
 				.populate('author')
 				.exec();
 			res.status(200).json(comment_list);
