@@ -1,11 +1,14 @@
 const WelcomePanel = () => {
 	return (
 		<div className='welcome-panel'>
-			<h1>Welcome to Blogster</h1>
-			<h2>
-				Read and share Your thoughts and ideas about any topic You can imagine.
-				This is your mind's playground.
-			</h2>
+			<img src='images/pen-paper-21756.png' alt='pen' />
+			<div>
+				<h1>Welcome to Blogster</h1>
+				<h3>
+					Read and share Your thoughts and ideas about any topic You can
+					imagine. This is Your mind's playground.
+				</h3>
+			</div>
 		</div>
 	);
 };
