@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Link } from 'react-router-dom';
 import CommentForm from './CommentForm';
+import CommentLinkWrapper from './utils/CommentLinkWrapper';
 
 const CommentList = ({ currentUser }) => {
 	const params = useParams();
@@ -29,21 +29,7 @@ const CommentList = ({ currentUser }) => {
 	}, [params.postid]);
 
 	const commentsDisplay = allComments?.map((comment, index) => {
-		return (
-			<Link key={index} to={`comments/${comment._id}`}>
-				<div className='comment'>
-					<h3>{comment.author.username}</h3>
-					<h3>{comment.create_timestamp}</h3>
-					{comment.update_timestamp ? (
-						<h3>
-							Last updated:{' '}
-							{new Date(comment.update_timestamp).toLocaleString('en-GB')}
-						</h3>
-					) : null}
-					<p>{comment.text}</p>
-				</div>
-			</Link>
-		);
+		return <CommentLinkWrapper key={index} comment={comment} />;
 	});
 
 	return (
