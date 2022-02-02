@@ -113,12 +113,13 @@ const CommentDetails = ({ currentUser }) => {
 					<div className='comment'>
 						<h3 className='comment-author'>{theComment.author.username}</h3>
 						<h3 className='comment-created'>
-							Posted: {theComment.create_timestamp}
+							Posted:{' '}
+							{new Date(theComment.create_timestamp).toLocaleString('en-GB')}
 						</h3>
 						{theComment.update_timestamp ? (
 							<h3 className='comment-updated'>
 								Last updated:{' '}
-								{new Date(theComment.create_timestamp).toLocaleString('en-GB')}
+								{new Date(theComment.update_timestamp).toLocaleString('en-GB')}
 							</h3>
 						) : null}
 						{editing ? (
