@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
-const Authors = () => {
+const AuthorList = () => {
 	const [allPosts, setAllPosts] = useState();
 	const [allAuthors, setAllAuthors] = useState();
 
@@ -39,12 +39,12 @@ const Authors = () => {
 		// Filter out authors with no published posts
 		.filter((author) => author.authorPosts.length > 0);
 
-	const contentDisplay = authorsData?.map((data, index) => {
+	const authorsDataDisplay = authorsData?.map((data, index) => {
 		const posts = data.authorPosts.map((post, index) => {
 			return <PostLinkWrapper key={index} post={post} />;
 		});
 		return (
-			<div key={index} className='author'>
+			<div key={index} className='author-posts'>
 				<h1>{data.author.username}</h1>
 				{posts}
 			</div>
@@ -53,9 +53,9 @@ const Authors = () => {
 
 	return (
 		<div className='author-list'>
-			<span>{contentDisplay}</span>
+			<section className='container'>{authorsDataDisplay}</section>
 		</div>
 	);
 };
 
-export default Authors;
+export default AuthorList;
