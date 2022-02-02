@@ -24,7 +24,11 @@ const PostList = () => {
 		return <PostLinkWrapper key={post._id} post={post} />;
 	});
 
-	return <section className='post-list container'>{postsDisplay}</section>;
+	return (
+		<div className='all-posts'>
+			<section className='grid-container'>{postsDisplay}</section>
+		</div>
+	);
 };
 
 export default PostList;
