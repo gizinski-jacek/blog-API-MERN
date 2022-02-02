@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
 
-const Nav = ({ currentUser, setCurrentUser }) => {
+const Navbar = ({ currentUser, setCurrentUser }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
@@ -133,4 +133,4 @@ const Nav = ({ currentUser, setCurrentUser }) => {
 	);
 };
 
-export default Nav;
+export default Navbar;
