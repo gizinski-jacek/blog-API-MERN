@@ -8,12 +8,12 @@ const Authors = () => {
 	useEffect(() => {
 		(async () => {
 			try {
-				const resPosts = await fetch(`/api/posts`, {
+				const resPosts = await fetch('/api/posts', {
 					method: 'GET',
 					mode: 'cors',
 					headers: { 'Content-type': 'application/json' },
 				});
-				const resAuthors = await fetch(`/api/authors`, {
+				const resAuthors = await fetch('/api/authors', {
 					method: 'GET',
 					mode: 'cors',
 					headers: { 'Content-type': 'application/json' },
