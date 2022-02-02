@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import UserPostDataWrapper from './utils/UserPostDataWrapper';
+import DashboardPostWrapper from './utils/DashboardPostWrapper';
 
 const Dashboard = ({ currentUser }) => {
 	const [allPosts, setAllPosts] = useState();
@@ -23,11 +23,15 @@ const Dashboard = ({ currentUser }) => {
 
 	const postsDisplay = allPosts?.map((post, index) => {
 		return (
-			<UserPostDataWrapper key={index} post={post} setAllPosts={setAllPosts} />
+			<DashboardPostWrapper key={index} post={post} setAllPosts={setAllPosts} />
 		);
 	});
 
-	return <div className='user-posts container'>{postsDisplay}</div>;
+	return (
+		<div className='user-posts'>
+			<section className='grid-container'>{postsDisplay}</section>
+		</div>
+	);
 };
 
 export default Dashboard;
