@@ -7,10 +7,17 @@ const bcryptjs = require('bcryptjs');
 
 exports.auth_user = async (req, res, next) => {
 	try {
-		const decoded = jwt.verify(req.cookies.token, process.env.STRATEGY_SECRET);
-		const user = await User.findById(decoded._id, 'username').exec();
-		res.status(200).json(user);
+		if (req.cookies.token) {
+			const decoded = jwt.verify(
+				req.cookies.token,
+				process.env.STRATEGY_SECRET
+			);
+			const user = await User.findById(decoded._id, 'username').exec();
+			return res.status(200).json(user);
+		}
+		res.status(200).json(null);
 	} catch (error) {
+		res.clearCookie('token', { path: '/' });
 		res.status(403).json('Failed to verify user token. Please log in again.');
 	}
 };
@@ -46,12 +53,7 @@ exports.log_in_user = (req, res, next) => {
 };
 
 exports.log_out_user = (req, res, next) => {
-	res.cookie('token', 'loggedOut', {
-		expires: new Date(Date.now() + 1000),
-		httpOnly: true,
-		secure: false,
-		sameSite: 'strict',
-	});
+	res.clearCookie('token', { path: '/' });
 	res.status(200).json({ success: true });
 };
 
