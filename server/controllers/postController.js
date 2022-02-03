@@ -18,8 +18,8 @@ exports.get_all_posts = async (req, res, next) => {
 exports.get_preview_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
-			.limit(3)
 			.sort({ create_timestamp: 'desc' })
+			.limit(3)
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -57,11 +57,11 @@ exports.get_user_posts = async (req, res, next) => {
 exports.create_post = [
 	body('titleValue', 'Title field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 64 })
+		.isLength({ min: 4, max: 128 })
 		.escape(),
 	body('textValue', 'Text field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 512 })
+		.isLength({ min: 4, max: 1024 })
 		.escape(),
 	async (req, res, next) => {
 		try {
@@ -89,11 +89,11 @@ exports.create_post = [
 exports.update_post = [
 	body('titleValue', 'Title field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 64 })
+		.isLength({ min: 4, max: 128 })
 		.escape(),
 	body('textValue', 'Text field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 512 })
+		.isLength({ min: 4, max: 1024 })
 		.escape(),
 	async (req, res, next) => {
 		try {
