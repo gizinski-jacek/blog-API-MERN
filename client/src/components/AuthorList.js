@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import PostLinkWrapper from './utils/PostLinkWrapper';
+import AuthorPostsWrapper from './utils/AuthorPostsWrapper';
 
 const AuthorList = () => {
 	const [allPosts, setAllPosts] = useState();
@@ -40,22 +40,16 @@ const AuthorList = () => {
 		.filter((author) => author.authorPosts.length > 0);
 
 	const authorsDataDisplay = authorsData?.map((data, index) => {
-		const posts = data.authorPosts.map((post, index) => {
-			return <PostLinkWrapper key={index} post={post} />;
-		});
 		return (
-			<div key={index} className='author-posts'>
-				<h1>{data.author.username}</h1>
-				{posts}
-			</div>
+			<AuthorPostsWrapper
+				key={index}
+				author={data.author}
+				posts={data.authorPosts}
+			/>
 		);
 	});
 
-	return (
-		<div className='author-list'>
-			<section className='container'>{authorsDataDisplay}</section>
-		</div>
-	);
+	return <div className='author-list'>{authorsDataDisplay}</div>;
 };
 
 export default AuthorList;
