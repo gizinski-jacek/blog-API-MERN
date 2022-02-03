@@ -29,6 +29,9 @@ const PostsPreview = () => {
 		<div className='preview-posts'>
 			<h2 className='recent-posts'>Most recent posts</h2>
 			<section className='grid-container'>{postsPreviewDisplay}</section>
+			<Link to='posts' className='view-all button-link'>
+				View all posts
+			</Link>
 		</div>
 	);
 };
