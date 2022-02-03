@@ -3,7 +3,6 @@ import { useNavigate, useParams } from 'react-router';
 
 const PostDetails = ({ deleting }) => {
 	const navigate = useNavigate();
-
 	const params = useParams();
 
 	const [post, setPost] = useState();
