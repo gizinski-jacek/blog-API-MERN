@@ -57,11 +57,11 @@ exports.get_user_posts = async (req, res, next) => {
 exports.create_post = [
 	body('titleValue', 'Title field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 128 })
+		.isLength({ min: 8, max: 256 })
 		.escape(),
 	body('textValue', 'Text field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 1024 })
+		.isLength({ min: 16, max: 4084 })
 		.escape(),
 	async (req, res, next) => {
 		try {
@@ -89,11 +89,11 @@ exports.create_post = [
 exports.update_post = [
 	body('titleValue', 'Title field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 128 })
+		.isLength({ min: 8, max: 256 })
 		.escape(),
 	body('textValue', 'Text field can not be empty')
 		.trim()
-		.isLength({ min: 4, max: 1024 })
+		.isLength({ min: 16, max: 4084 })
 		.escape(),
 	async (req, res, next) => {
 		try {
