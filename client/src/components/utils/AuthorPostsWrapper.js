@@ -8,14 +8,16 @@ const AuthorPostsWrapper = ({ author, posts }) => {
 		return (
 			<Link key={index} to={`/posts/${post._id}`} className='post-simple'>
 				<h2 className='post-title'>Title: {post.title}</h2>
-				<h2 className='post-created'>
-					Published:{' '}
-					{new Date(post.create_timestamp).toLocaleString('en-GB', {
-						year: 'numeric',
-						month: 'numeric',
-						day: 'numeric',
-					})}
-				</h2>
+				<div className='post-metadata'>
+					<h2 className='post-created'>
+						Published:{' '}
+						{new Date(post.create_timestamp).toLocaleString('en-GB', {
+							year: 'numeric',
+							month: 'numeric',
+							day: 'numeric',
+						})}
+					</h2>
+				</div>
 			</Link>
 		);
 	});
