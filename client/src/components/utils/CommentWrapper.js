@@ -1,4 +1,4 @@
-const CommentLinkWrapper = ({ comment }) => {
+const CommentWrapper = ({ comment }) => {
 	return (
 		<div className='comment'>
 			<h3>{comment.author.username}</h3>
@@ -24,4 +24,4 @@ const CommentLinkWrapper = ({ comment }) => {
 	);
 };
 
-export default CommentLinkWrapper;
+export default CommentWrapper;
