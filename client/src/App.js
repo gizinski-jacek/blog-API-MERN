@@ -8,20 +8,18 @@ import WelcomePanel from './components/WelcomePanel';
 import PostsPreview from './components/PostsPreview';
 import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
-import CommentList from './components/CommentList';
-import CommentDetails from './components/CommentDetails';
 import AuthorList from './components/AuthorList';
 import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
 import Signup from './components/Signup';
+import ErrorPage from './components/ErrorPage';
 
 const App = () => {
 	const location = useLocation();
 
 	const [loading, setLoading] = useState(true);
 	const [currentUser, setCurrentUser] = useState(null);
-	const [posts, setPosts] = useState();
 
 	useEffect(() => {
 		(async () => {
@@ -106,24 +104,16 @@ const App = () => {
 					/>
 				</Route>
 				<Route path='posts'>
-					<Route path='' element={<PostList posts={posts} />} />
+					<Route path='' element={<PostList />} />
 					<Route path=':postid' element={<Outlet />}>
 						<Route
 							path=''
-							element={
-								<>
-									<PostDetails posts={posts} />
-									<CommentList currentUser={currentUser} />
-								</>
-							}
-						/>
-						<Route
-							path='comments/:commentid'
-							element={<CommentDetails currentUser={currentUser} />}
+							element={<PostDetails currentUser={currentUser} />}
 						/>
 					</Route>
 				</Route>
-				<Route path='authors' element={<AuthorList posts={posts} />} />
+				<Route path='authors' element={<AuthorList />} />
+				<Route path='error' element={<ErrorPage />} />
 			</Route>
 		</Routes>
 	);
