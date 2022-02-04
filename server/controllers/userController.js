@@ -107,7 +107,9 @@ exports.sign_up_user = [
 
 exports.get_user_list = async (req, res, next) => {
 	try {
-		const user_list = await User.find({}, 'username').exec();
+		const user_list = await User.find({}, 'username')
+			.sort({ username: 'asc' })
+			.exec();
 		return res.status(200).json(user_list);
 	} catch (error) {
 		res.status(401).json(null);
