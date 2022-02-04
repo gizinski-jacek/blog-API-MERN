@@ -26,7 +26,11 @@ const AuthorPostsWrapper = ({ author, posts }) => {
 		<div className='author-posts'>
 			<div className='top'>
 				<h2>Author: {author.username}</h2>
-				<button type='button' onClick={() => setExpand(!expand)}>
+				<button
+					type='button'
+					className='button-m'
+					onClick={() => setExpand(!expand)}
+				>
 					{expand ? 'Collapse' : 'Expand'}
 				</button>
 			</div>

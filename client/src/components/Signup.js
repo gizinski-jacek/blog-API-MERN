@@ -69,8 +69,14 @@ const Signup = () => {
 					required
 				/>
 				<div className='sign-up-controls'>
-					<button type='submit'>Sign Up</button>
-					<button type='button' onClick={() => navigate(-1)}>
+					<button type='submit' className='button-m'>
+						Sign Up
+					</button>
+					<button
+						type='button'
+						className='button-m'
+						onClick={() => navigate(-1)}
+					>
 						Go Back
 					</button>
 				</div>

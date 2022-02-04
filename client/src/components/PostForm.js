@@ -123,7 +123,9 @@ const PostForm = ({ editing }) => {
 							placeholder='Text'
 							required
 						/>
-						<button type='submit'>Submit</button>
+						<button type='submit' className='button-m'>
+							Submit
+						</button>
 					</form>
 					{errorsDisplay ? (
 						<ul className='error-list'>{errorsDisplay}</ul>

@@ -56,7 +56,12 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 		<nav className='navbar'>
 			<div className='nav-left'>
 				<Link to='/' className='logo'>
-					Blogster
+					<img
+						className='logo-icon'
+						src='images/b-blog-icon-51268.png'
+						alt='logo-icon'
+					/>
+					logster
 				</Link>
 				<Link to='posts'>Posts</Link>
 				<Link to='authors'>Authors</Link>
@@ -64,13 +69,13 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 			<div className='nav-right'>
 				{currentUser ? (
 					<>
-						<Link to='dashboard' className='button-link'>
+						<Link to='dashboard' className='button-l'>
 							Dashboard
 						</Link>
-						<Link to='dashboard/create' className='button-link'>
+						<Link to='dashboard/create' className='button-l'>
 							Create Post
 						</Link>
-						<Link to='' className='button-link' onClick={handleLogOut}>
+						<Link to='' className='button-l' onClick={handleLogOut}>
 							Log Out
 						</Link>
 					</>
@@ -100,10 +105,13 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 										placeholder='Password'
 									/>
 								</fieldset>
-								<div className='nav-log-in-controls'>
-									<button type='submit'>Log In</button>
+								<div>
+									<button type='submit' className='button-s'>
+										Log In
+									</button>
 									<button
 										type='button'
+										className='button-s'
 										onClick={() => {
 											setShowForm(false);
 										}}
@@ -115,7 +123,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 						) : (
 							<button
 								to=''
-								className='button-link'
+								className='button-l'
 								onClick={() => {
 									setShowForm(true);
 								}}
@@ -123,7 +131,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 								Log In
 							</button>
 						)}
-						<Link to='sign-up' className='button-link'>
+						<Link to='sign-up' className='button-l'>
 							Sign Up
 						</Link>
 					</>

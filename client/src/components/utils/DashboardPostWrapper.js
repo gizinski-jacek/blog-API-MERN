@@ -44,11 +44,19 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 			<div className='post-edit-controls'>
 				<Link to={`update/${post._id}`}>Edit</Link>
 				{post.published ? (
-					<button type='button' onClick={() => handleUnpublish(post._id)}>
+					<button
+						type='button'
+						className='button-m'
+						onClick={() => handleUnpublish(post._id)}
+					>
 						Unpublish
 					</button>
 				) : (
-					<button type='button' onClick={() => handlePublish(post._id)}>
+					<button
+						type='button'
+						className='button-m'
+						onClick={() => handlePublish(post._id)}
+					>
 						Publish
 					</button>
 				)}
