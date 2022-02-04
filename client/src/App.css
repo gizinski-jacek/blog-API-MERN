@@ -1,6 +1,6 @@
 body * {
-  font: 16px "Lucida Grande", Helvetica, Arial, sans-serif;
   box-sizing: border-box;
+  font-family: "Inter", sans-serif;
 }
 
 h1 {
@@ -32,12 +32,27 @@ h3 {
   justify-content: space-between;
   align-items: center;
   padding: 12px;
+  height: 80px;
 }
 
+.nav-left {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.nav-left .logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.nav-left .logo-icon {
+  width: 32px;
+}
 .nav-left a {
   text-decoration: none;
-  margin: 8px;
-  padding: 8px;
+  margin: 0 16px;
   color: black;
   font-size: 1.5rem;
   font-weight: 600;
@@ -51,11 +66,17 @@ h3 {
 
 .nav-right {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+}
+.nav-right .button-s {
+  margin: auto 2px;
 }
 .nav-right #nav-log-in-form {
   display: flex;
   flex-direction: row;
+}
+.nav-right #nav-log-in-form * {
+  font-size: 1rem;
 }
 .nav-right #nav-log-in-form fieldset,
 .nav-right #nav-log-in-form div {
@@ -68,14 +89,7 @@ h3 {
 }
 .nav-right #nav-log-in-form input {
   border: none;
-  margin: 1px;
-}
-.nav-right #nav-log-in-form button {
-  color: #fafadc;
-  font-weight: 600;
-  background-color: #007dc8;
-  border: none;
-  margin: 1px;
+  margin: auto 2px;
 }
 .nav-right #nav-log-in-form button:hover {
   background-color: #007dc8;
@@ -91,8 +105,9 @@ h3 {
 .welcome-panel img {
   display: block;
   width: auto;
-  height: 200px;
-  margin: 20px 40px;
+  height: 128px;
+  margin: 20px;
+  margin-left: 40px;
 }
 .welcome-panel div {
   width: 75%;
@@ -172,15 +187,15 @@ h3 {
   -webkit-box-orient: vertical;
 }
 .post .post-title {
-  height: 5.25rem;
+  height: 4.5rem;
 }
 .post .post-text {
-  height: 2.4rem;
+  height: 2rem;
   line-clamp: 2;
   -webkit-line-clamp: 2;
 }
 .post .post-metadata {
-  height: 3rem;
+  height: 2.5rem;
 }
 
 .post:hover {
@@ -203,6 +218,7 @@ h3 {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   max-height: 60px;
   margin-bottom: 12px;
 }
@@ -299,6 +315,46 @@ h3 {
   align-items: center;
 }
 
+.comment-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.comment-controls .new-comment,
+.comment-controls .edit-comment {
+  margin: 0 12px;
+  padding: 8px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  background-color: #f0af4b;
+  border-left: 2px solid #007dc8;
+  border-right: 2px solid #007dc8;
+  justify-content: center;
+}
+.comment-controls .new-comment form,
+.comment-controls .edit-comment form {
+  display: flex;
+  flex-direction: column;
+}
+.comment-controls .new-comment .controls,
+.comment-controls .edit-comment .controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.comment-controls .new-comment .button-m,
+.comment-controls .edit-comment .button-m {
+  align-self: center;
+}
+.comment-controls .new-comment textarea,
+.comment-controls .edit-comment textarea {
+  width: 400px;
+  resize: none;
+  margin: 4px;
+}
+
 .comment-list {
   display: grid;
   grid-template-columns: repeat(4, 300px);
@@ -370,37 +426,55 @@ h3 {
 .comment .comment-edit-controls {
   float: right;
 }
-.button-link {
-  text-decoration: none;
-  margin: 8px;
+.comment #edit-comment-form {
+  display: flex;
+}
+.comment #edit-comment-form .button-s {
+  align-self: center;
+}
+.comment #edit-comment-form textarea {
+  resize: none;
+}
+
+.button-l,
+.button-m,
+.button-s {
+  margin: 0 8px;
   padding: 8px;
   background-color: #007dc8;
   color: #fafadc;
   font-size: 1.5rem;
   font-weight: 600;
   text-align: center;
-  border: none;
-  border-radius: 4px;
-}
-
-.button-link:hover {
-  filter: brightness(110%);
-}
-
-.button-submit {
   text-decoration: none;
-  margin: 8px;
-  padding: 8px;
-  background-color: #007dc8;
-  color: #fafadc;
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-align: center;
   border: none;
   border-radius: 4px;
 }
 
-.button-submit:hover {
+.button-l {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 48px;
+}
+
+.button-m {
+  margin: 4px;
+  padding: 4px;
+  font-size: 1.25rem;
+}
+
+.button-s {
+  margin: 2px;
+  padding: 2px;
+  font-size: 1rem;
+  border-radius: 0;
+}
+
+.button-l:hover,
+.button-m:hover,
+.button-s:hover {
   filter: brightness(110%);
 }
 
