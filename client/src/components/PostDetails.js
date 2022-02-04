@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
+import EditCommentForm from './EditCommentForm';
 import LoadingIcon from './utils/LoadingIcon';
 import nl2br from 'react-nl2br';
 
@@ -12,6 +13,7 @@ const PostDetails = ({ currentUser, deleting }) => {
 	const [loading, setLoading] = useState(true);
 	const [post, setPost] = useState();
 	const [postComments, setPostComments] = useState();
+	const [editingComment, setEditingComment] = useState(null);
 
 	useEffect(() => {
 		(async () => {
@@ -43,7 +45,7 @@ const PostDetails = ({ currentUser, deleting }) => {
 				console.log(error);
 			}
 		})();
-	}, [params.postid]);
+	}, [params.postid, navigate]);
 
 	const handleDelete = async (e) => {
 		e.preventDefault();
@@ -73,7 +75,7 @@ const PostDetails = ({ currentUser, deleting }) => {
 					{deleting ? (
 						<div className='post-delete-controls'>
 							<h1>Delete this post?</h1>
-							<button type='submit' onClick={handleDelete}>
+							<button type='submit' className='button-m' onClick={handleDelete}>
 								Delete
 							</button>
 						</div>
@@ -110,14 +112,23 @@ const PostDetails = ({ currentUser, deleting }) => {
 						</article>
 					) : null}
 					<div className='comment-section'>
-						<CommentForm
-							currentUser={currentUser}
-							setPostComments={setPostComments}
-						/>
+						<div className='comment-controls'>
+							<CommentForm
+								currentUser={currentUser}
+								setPostComments={setPostComments}
+							/>
+							{editingComment ? (
+								<EditCommentForm
+									editingComment={editingComment}
+									setPostComments={setPostComments}
+									setEditingComment={setEditingComment}
+								/>
+							) : null}
+						</div>
 						<CommentList
 							currentUser={currentUser}
 							postComments={postComments}
-							setPostComments={setPostComments}
+							setEditingComment={setEditingComment}
 						/>
 					</div>
 				</div>
