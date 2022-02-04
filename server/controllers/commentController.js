@@ -2,28 +2,16 @@ const Comment = require('../models/comment');
 const { body, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 
-exports.get_all_comments = async (req, res, next) => {
+exports.get_all_post_comments = async (req, res, next) => {
 	try {
+		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+			return res.status(404).json('Invalid post Id');
+		}
 		const comment_list = await Comment.find({ post: req.params.postid })
 			.sort({ create_timestamp: 'desc' })
-			.populate('author')
+			.populate('author', 'username')
 			.exec();
 		res.status(200).json(comment_list);
-	} catch (error) {
-		next(error);
-	}
-};
-
-exports.get_single_comment = async (req, res, next) => {
-	try {
-		if (!mongoose.Types.ObjectId.isValid(req.params.commentid)) {
-			return res.status(404).json('Invalid comment Id');
-		}
-		const comment = await Comment.findById(req.params.commentid)
-			.populate('author')
-			.populate('post')
-			.exec();
-		res.status(200).json(comment);
 	} catch (error) {
 		next(error);
 	}
@@ -54,7 +42,7 @@ exports.create_comment = [
 			}
 			const comment_list = await Comment.find({ post: req.params.postid })
 				.sort({ create_timestamp: 'desc' })
-				.populate('author')
+				.populate('author', 'username')
 				.exec();
 			res.status(200).json(comment_list);
 		} catch (error) {
@@ -96,8 +84,7 @@ exports.update_comment = [
 				updatedComment,
 				{ returnDocument: 'after' }
 			)
-				.populate('author')
-				.populate('post')
+				.populate('author', 'username')
 				.exec();
 			if (!comment) {
 				return res.status(404).json('Comment not found, nothing to update');
@@ -120,6 +107,11 @@ exports.delete_comment = async (req, res, next) => {
 		if (!comment) {
 			return res.status(404).json('Comment not found, nothing to delete');
 		}
+		const comment_list = await Comment.find({ post: req.params.postid })
+			.sort({ create_timestamp: 'desc' })
+			.populate('author', 'username')
+			.exec();
+		res.status(200).json(comment_list);
 		res.status(200).json('Comment deleted');
 	} catch (error) {
 		next(error);
