@@ -43,12 +43,13 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 				<>
 					<h3>Comment as: {currentUser.username}</h3>
 					<form id='new-comment-form' onSubmit={handleSubmit}>
-						<input
+						<textarea
 							type='text'
 							id='comment'
 							name='comment'
 							minLength='2'
 							maxLength='64'
+							rows='2'
 							onChange={(e) => {
 								setCommentValue(e.target.value);
 							}}
@@ -56,7 +57,9 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 							placeholder='Comment'
 							required
 						/>
-						<button type='submit'>Submit</button>
+						<button type='submit' className='button-m'>
+							Submit
+						</button>
 					</form>
 					{errorsDisplay ? (
 						<ul className='error-list'>{errorsDisplay}</ul>
