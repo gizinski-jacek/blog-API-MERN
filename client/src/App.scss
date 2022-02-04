@@ -4,7 +4,7 @@ $orange: rgb(240, 175, 75);
 $pink: rgb(240, 150, 150);
 $error-red: rgb(240, 0, 0);
 $black: rgb(0, 0, 0);
-$black-transparent: rgba(0, 0, 0, 0.5);
+$black-transparent: rgba(0, 0, 0, 0.4);
 
 body * {
 	font: 16px 'Lucida Grande', Helvetica, Arial, sans-serif;
@@ -184,6 +184,7 @@ h3 {
 	justify-content: space-between;
 	color: $black;
 	border-radius: 12px;
+	border: 2px solid $blue;
 
 	.post-title,
 	.post-text {
@@ -214,34 +215,6 @@ h3 {
 	filter: brightness(110%);
 }
 
-.post-simple {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	padding: 4px;
-	margin: 8px;
-	background-color: $orange;
-	text-decoration: none;
-	color: $black;
-	border-radius: 4px;
-
-	.post-title,
-	.post-created {
-		margin: 0 12px;
-	}
-
-	.post-title {
-		flex: 1;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
-	}
-}
-
-.post-simple:hover {
-	filter: brightness(110%);
-}
-
 .author-list {
 	flex: 1;
 	width: 80%;
@@ -251,7 +224,7 @@ h3 {
 .author-posts {
 	padding: 12px;
 	margin-bottom: 12px;
-	background-color: $pink;
+	background-color: $orange;
 	border-radius: 8px;
 
 	.top {
@@ -274,6 +247,186 @@ h3 {
 
 	.container.expand {
 		max-height: 400px;
+	}
+}
+
+.post-simple {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	padding: 4px;
+	margin: 8px;
+	background-color: $pink;
+	text-decoration: none;
+	color: $black;
+	border-radius: 4px;
+
+	.post-title,
+	.post-metadata {
+		margin: 0 12px;
+	}
+
+	.post-title {
+		flex: 1;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+}
+
+.post-simple:hover {
+	filter: brightness(110%);
+}
+
+.post-details {
+	width: 80%;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 12px;
+}
+
+.post-full {
+	min-height: 256px;
+	text-decoration: none;
+	display: flex;
+	flex-direction: column;
+	color: $black;
+
+	.post-info {
+		margin: 12px;
+		padding: 12px;
+		background-color: $pink;
+		border-radius: 12px;
+		border-top: 2px solid $blue;
+		border-bottom: 2px solid $blue;
+
+		.post-metadata {
+			margin-bottom: 24px;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: flex-end;
+
+			.right {
+				margin-left: 24px;
+				text-align: right;
+			}
+		}
+	}
+
+	.post-content {
+		margin: 12px;
+	}
+
+	.post-text {
+		padding: 12px;
+		background-color: $pink;
+		border-radius: 12px;
+		border-top: 2px solid $blue;
+		border-bottom: 2px solid $blue;
+	}
+}
+
+.comment-section {
+	width: 100%;
+	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.new-comment {
+}
+
+.comment-list {
+	display: grid;
+	grid-template-columns: repeat(4, 300px);
+	justify-content: space-evenly;
+	grid-gap: 12px;
+	margin: 24px 0;
+}
+
+@media only screen and (min-width: 1440px) {
+	.comment-list {
+		grid-template-columns: repeat(4, 300px);
+
+		> :nth-child(4n + 1) {
+			margin-bottom: 24px;
+		}
+
+		> :nth-child(4n + 2) {
+			margin-top: 8px;
+			margin-bottom: 16px;
+		}
+
+		> :nth-child(4n + 3) {
+			margin-top: 16px;
+			margin-bottom: 8px;
+		}
+
+		> :nth-child(4n + 4) {
+			margin-top: 24px;
+		}
+	}
+}
+
+@media only screen and (min-width: 1200px) and(max-width: 1440px) {
+	.comment-list {
+		grid-template-columns: repeat(3, 300px);
+
+		> :nth-child(3n + 1) {
+			margin-bottom: 16px;
+		}
+
+		> :nth-child(3n + 2) {
+			margin-top: 8px;
+			margin-bottom: 8px;
+		}
+
+		> :nth-child(3n + 3) {
+			margin-top: 16px;
+		}
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1200px) {
+	.comment-list {
+		grid-template-columns: repeat(2, 300px);
+
+		> :nth-child(2n + 1) {
+			margin-bottom: 8px;
+		}
+
+		> :nth-child(2n + 2) {
+			margin-top: 8px;
+		}
+	}
+}
+
+@media only screen and (max-width: 768px) {
+	.comment-list {
+		grid-template-columns: repeat(1, 300px);
+	}
+}
+
+.comment {
+	padding: 4px;
+	border-radius: 4px;
+	background-color: $orange;
+	border-left: 2px solid $blue;
+	border-right: 2px solid $blue;
+
+	.p {
+		padding: 4px;
+	}
+
+	.comment-edit-controls {
+		float: right;
+	}
+
+	#edit-comment-form {
 	}
 }
 
@@ -321,5 +474,6 @@ h3 {
 	width: 100%;
 	padding: 12px;
 	text-align: center;
-	background-color: $orange;
+	background-color: $black;
+	color: white;
 }
