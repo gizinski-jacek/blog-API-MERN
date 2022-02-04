@@ -40,7 +40,7 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 	};
 
 	return (
-		<div className='user-post'>
+		<div className='user-post-controls'>
 			<div className='post-edit-controls'>
 				<Link to={`update/${post._id}`}>Edit</Link>
 				{post.published ? (
@@ -54,7 +54,7 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 				)}
 				<Link to={`delete/${post._id}`}>Delete</Link>
 			</div>
-			<article className='post'>
+			<article className='user-post'>
 				<h2 className='post-title'>Title: {post.title}</h2>
 				<div className='post-metadata'>
 					<h3 className='post-author'>Author: {post.author.username}</h3>
