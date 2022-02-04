@@ -89,7 +89,11 @@ exports.update_comment = [
 			if (!comment) {
 				return res.status(404).json('Comment not found, nothing to update');
 			}
-			res.status(200).json(comment);
+			const comment_list = await Comment.find({ post: req.params.postid })
+				.sort({ create_timestamp: 'desc' })
+				.populate('author', 'username')
+				.exec();
+			res.status(200).json(comment_list);
 		} catch (error) {
 			next(error);
 		}
@@ -112,7 +116,6 @@ exports.delete_comment = async (req, res, next) => {
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(comment_list);
-		res.status(200).json('Comment deleted');
 	} catch (error) {
 		next(error);
 	}
