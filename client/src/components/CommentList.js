@@ -1,13 +1,13 @@
 import CommentWrapper from './utils/CommentWrapper';
 
-const CommentList = ({ currentUser, postComments, setPostComments }) => {
+const CommentList = ({ currentUser, postComments, setEditingComment }) => {
 	const commentsDisplay = postComments?.map((comment, index) => {
 		return (
 			<CommentWrapper
 				key={index}
 				currentUser={currentUser}
 				comment={comment}
-				setPostComments={setPostComments}
+				setEditingComment={setEditingComment}
 			/>
 		);
 	});
