@@ -80,20 +80,14 @@ router.put(
 );
 
 /////
-/* GET all comments */
-router.get('/posts/:postid/comments', comment_controller.get_all_comments);
+/* GET all post comments */
+router.get('/posts/:postid/comments', comment_controller.get_all_post_comments);
 
 /* POST new comment */
 router.post(
 	'/posts/:postid/comments',
 	passport.authenticate('jwt', { session: false }),
 	comment_controller.create_comment
-);
-
-/* GET single comment */
-router.get(
-	'/posts/:postid/comments/:commentid',
-	comment_controller.get_single_comment
 );
 
 /* PUT update comment */
