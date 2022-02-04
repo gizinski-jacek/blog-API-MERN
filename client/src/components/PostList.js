@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import LoadingIcon from './utils/LoadingIcon';
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
 const PostList = () => {
+	const [loading, setLoading] = useState(true);
 	const [allPosts, setAllPosts] = useState();
 
 	useEffect(() => {
@@ -14,6 +16,7 @@ const PostList = () => {
 				});
 				const resJson = await res.json();
 				setAllPosts(resJson);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
@@ -25,9 +28,15 @@ const PostList = () => {
 	});
 
 	return (
-		<div className='all-posts'>
-			<section className='grid-container'>{postsDisplay}</section>
-		</div>
+		<>
+			{loading ? (
+				<LoadingIcon />
+			) : (
+				<div className='all-posts'>
+					<section className='grid-container'>{postsDisplay}</section>
+				</div>
+			)}
+		</>
 	);
 };
 

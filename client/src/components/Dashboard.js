@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import DashboardPostWrapper from './utils/DashboardPostWrapper';
+import LoadingIcon from './utils/LoadingIcon';
 
 const Dashboard = ({ currentUser }) => {
+	const [loading, setLoading] = useState(true);
 	const [allPosts, setAllPosts] = useState();
 
 	useEffect(() => {
@@ -15,6 +17,7 @@ const Dashboard = ({ currentUser }) => {
 				});
 				const resJson = await res.json();
 				setAllPosts(resJson);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
@@ -28,9 +31,15 @@ const Dashboard = ({ currentUser }) => {
 	});
 
 	return (
-		<div className='user-posts'>
-			<section className='grid-container'>{postsDisplay}</section>
-		</div>
+		<>
+			{loading ? (
+				<LoadingIcon />
+			) : (
+				<div className='user-posts'>
+					<section className='grid-container'>{postsDisplay}</section>
+				</div>
+			)}
+		</>
 	);
 };
 

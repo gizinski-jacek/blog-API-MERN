@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import AuthorPostsWrapper from './utils/AuthorPostsWrapper';
+import LoadingIcon from './utils/LoadingIcon';
 
 const AuthorList = () => {
+	const [loading, setLoading] = useState(true);
 	const [allPosts, setAllPosts] = useState();
 	const [allAuthors, setAllAuthors] = useState();
 
@@ -22,6 +24,7 @@ const AuthorList = () => {
 				const authorsJson = await resAuthors.json();
 				setAllPosts(postsJson);
 				setAllAuthors(authorsJson);
+				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
@@ -49,7 +52,15 @@ const AuthorList = () => {
 		);
 	});
 
-	return <div className='author-list'>{authorsDataDisplay}</div>;
+	return (
+		<>
+			{loading ? (
+				<LoadingIcon />
+			) : (
+				<div className='author-list'>{authorsDataDisplay}</div>
+			)}
+		</>
+	);
 };
 
 export default AuthorList;
