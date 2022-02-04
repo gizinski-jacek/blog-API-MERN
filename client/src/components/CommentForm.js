@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router';
 
-const CommentForm = ({ currentUser, setAllComments }) => {
+const CommentForm = ({ currentUser, setPostComments }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
@@ -21,7 +21,8 @@ const CommentForm = ({ currentUser, setAllComments }) => {
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setAllComments(resJson);
+				setPostComments(resJson);
+				setCommentValue('');
 			}
 		} catch (error) {
 			console.log(error);
@@ -40,7 +41,7 @@ const CommentForm = ({ currentUser, setAllComments }) => {
 		<div className='new-comment'>
 			{currentUser ? (
 				<>
-					<h3>{currentUser.username}</h3>
+					<h3>Comment as: {currentUser.username}</h3>
 					<form id='new-comment-form' onSubmit={handleSubmit}>
 						<input
 							type='text'
