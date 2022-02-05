@@ -156,7 +156,7 @@ h3 {
 
 .preview-posts,
 .all-posts,
-.user-posts {
+.user-post-list {
 	flex: 1;
 	width: 100%;
 	padding: 24px;
@@ -165,10 +165,7 @@ h3 {
 .preview-posts {
 	display: flex;
 	flex-direction: column;
-
-	.grid-container {
-		flex: 1;
-	}
+	justify-content: space-between;
 
 	.recent-posts {
 		text-align: center;
@@ -185,15 +182,13 @@ h3 {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 400px);
 	justify-content: space-evenly;
+	grid-auto-rows: 1fr;
 	grid-gap: 24px;
 	margin: 24px 0;
 }
 
 .post {
 	padding: 12px;
-	min-height: 256px;
-	flex-basis: 100%;
-	flex: 1;
 	background-color: $pink;
 	text-decoration: none;
 	display: flex;
@@ -203,28 +198,15 @@ h3 {
 	border-radius: 12px;
 	border: 2px solid $blue;
 
-	.post-title,
-	.post-text {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		display: -webkit-box;
-		line-clamp: 3;
-		-webkit-line-clamp: 3;
-		-webkit-box-orient: vertical;
-	}
-
 	.post-title {
-		height: 4.5rem;
-	}
-
-	.post-text {
-		height: 2rem;
-		line-clamp: 2;
-		-webkit-line-clamp: 2;
+		margin-bottom: 24px;
 	}
 
 	.post-metadata {
-		height: 2.5rem;
+		margin-top: 24px;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
 	}
 }
 
@@ -303,6 +285,20 @@ h3 {
 	flex-direction: column;
 	align-items: center;
 	padding: 12px;
+
+	.post-delete-controls {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		.button-l {
+			margin: 24px;
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
 }
 
 .post-full {
@@ -365,7 +361,7 @@ h3 {
 	.edit-comment {
 		margin: 0 12px;
 		padding: 8px;
-		border-radius: 4px;
+		border-radius: 8px;
 		display: flex;
 		flex-direction: column;
 		background-color: $orange;
@@ -469,7 +465,7 @@ h3 {
 
 .comment {
 	padding: 4px;
-	border-radius: 4px;
+	border-radius: 8px;
 	background-color: $orange;
 	border-left: 2px solid $blue;
 	border-right: 2px solid $blue;
@@ -495,6 +491,75 @@ h3 {
 	}
 }
 
+.user-post {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	.user-post-controls {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		padding: 4px;
+		background-color: $orange;
+		border: 2px solid $blue;
+		border-bottom: none;
+		border-radius: 12px;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+
+		.button-m {
+			flex: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.post {
+		flex: 1;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+	}
+
+	.unpublished {
+		filter: brightness(80%) !important;
+	}
+}
+
+.new-post {
+	margin: 24px;
+	flex: 1;
+	width: 50%;
+}
+
+.new-post-form {
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+	background-color: $pink;
+	border-top: 2px solid $blue;
+	border-bottom: 2px solid $blue;
+	border-radius: 12px;
+
+	label {
+		margin: 12px;
+		margin-bottom: 0;
+		text-align: center;
+	}
+
+	textarea {
+		padding: 4px;
+		margin: 12px;
+		resize: none;
+	}
+
+	.button-l {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
 .button-l,
 .button-m,
 .button-s {
@@ -508,6 +573,7 @@ h3 {
 	text-decoration: none;
 	border: none;
 	border-radius: 4px;
+	cursor: pointer;
 }
 
 .button-l {

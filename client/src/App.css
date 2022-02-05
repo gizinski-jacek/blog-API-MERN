@@ -133,7 +133,7 @@ h3 {
 
 .preview-posts,
 .all-posts,
-.user-posts {
+.user-post-list {
   flex: 1;
   width: 100%;
   padding: 24px;
@@ -142,9 +142,7 @@ h3 {
 .preview-posts {
   display: flex;
   flex-direction: column;
-}
-.preview-posts .grid-container {
-  flex: 1;
+  justify-content: space-between;
 }
 .preview-posts .recent-posts {
   text-align: center;
@@ -159,15 +157,13 @@ h3 {
   display: grid;
   grid-template-columns: repeat(auto-fill, 400px);
   justify-content: space-evenly;
+  grid-auto-rows: 1fr;
   grid-gap: 24px;
   margin: 24px 0;
 }
 
 .post {
   padding: 12px;
-  min-height: 256px;
-  flex-basis: 100%;
-  flex: 1;
   background-color: #f09696;
   text-decoration: none;
   display: flex;
@@ -177,25 +173,14 @@ h3 {
   border-radius: 12px;
   border: 2px solid #007dc8;
 }
-.post .post-title,
-.post .post-text {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  line-clamp: 3;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-}
 .post .post-title {
-  height: 4.5rem;
-}
-.post .post-text {
-  height: 2rem;
-  line-clamp: 2;
-  -webkit-line-clamp: 2;
+  margin-bottom: 24px;
 }
 .post .post-metadata {
-  height: 2.5rem;
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .post:hover {
@@ -269,6 +254,18 @@ h3 {
   align-items: center;
   padding: 12px;
 }
+.post-details .post-delete-controls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.post-details .post-delete-controls .button-l {
+  margin: 24px;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 .post-full {
   min-height: 256px;
@@ -325,7 +322,7 @@ h3 {
 .comment-controls .edit-comment {
   margin: 0 12px;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   background-color: #f0af4b;
@@ -415,7 +412,7 @@ h3 {
 }
 .comment {
   padding: 4px;
-  border-radius: 4px;
+  border-radius: 8px;
   background-color: #f0af4b;
   border-left: 2px solid #007dc8;
   border-right: 2px solid #007dc8;
@@ -436,6 +433,68 @@ h3 {
   resize: none;
 }
 
+.user-post {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.user-post .user-post-controls {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 4px;
+  background-color: #f0af4b;
+  border: 2px solid #007dc8;
+  border-bottom: none;
+  border-radius: 12px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.user-post .user-post-controls .button-m {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.user-post .post {
+  flex: 1;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.user-post .unpublished {
+  filter: brightness(80%) !important;
+}
+
+.new-post {
+  margin: 24px;
+  flex: 1;
+  width: 50%;
+}
+
+.new-post-form {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background-color: #f09696;
+  border-top: 2px solid #007dc8;
+  border-bottom: 2px solid #007dc8;
+  border-radius: 12px;
+}
+.new-post-form label {
+  margin: 12px;
+  margin-bottom: 0;
+  text-align: center;
+}
+.new-post-form textarea {
+  padding: 4px;
+  margin: 12px;
+  resize: none;
+}
+.new-post-form .button-l {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .button-l,
 .button-m,
 .button-s {
@@ -449,6 +508,7 @@ h3 {
   text-decoration: none;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 
 .button-l {
