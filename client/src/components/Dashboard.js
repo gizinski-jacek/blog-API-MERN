@@ -35,7 +35,7 @@ const Dashboard = ({ currentUser }) => {
 			{loading ? (
 				<LoadingIcon />
 			) : (
-				<div className='user-posts'>
+				<div className='user-post-list'>
 					<section className='grid-container'>{postsDisplay}</section>
 				</div>
 			)}
