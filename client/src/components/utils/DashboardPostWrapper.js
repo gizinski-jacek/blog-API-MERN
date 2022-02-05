@@ -40,9 +40,8 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 	};
 
 	return (
-		<div className='user-post-controls'>
-			<div className='post-edit-controls'>
-				<Link to={`update/${post._id}`}>Edit</Link>
+		<div className='user-post'>
+			<div className='user-post-controls'>
 				{post.published ? (
 					<button
 						type='button'
@@ -60,12 +59,16 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 						Publish
 					</button>
 				)}
-				<Link to={`delete/${post._id}`}>Delete</Link>
+				<Link to={`update/${post._id}`} className='button-m'>
+					Edit
+				</Link>
+				<Link to={`delete/${post._id}`} className='button-m'>
+					Delete
+				</Link>
 			</div>
-			<article className='user-post'>
+			<article className={`post ${post.published ? '' : 'unpublished'}`}>
 				<h2 className='post-title'>Title: {post.title}</h2>
 				<div className='post-metadata'>
-					<h3 className='post-author'>Author: {post.author.username}</h3>
 					<h3 className='post-created'>
 						Published:{' '}
 						{new Date(post.create_timestamp).toLocaleString('en-GB', {
