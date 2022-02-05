@@ -45,6 +45,8 @@ const Signup = () => {
 					type='text'
 					id='username'
 					name='username'
+					minLength='4'
+					maxLength='32'
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
 					placeholder='Username'
@@ -55,6 +57,8 @@ const Signup = () => {
 					type='password'
 					id='password'
 					name='password'
+					minLength='4'
+					maxLength='64'
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
 					required
@@ -64,6 +68,8 @@ const Signup = () => {
 					type='password'
 					id='confirmPassword'
 					name='confirmPassword'
+					minLength='4'
+					maxLength='64'
 					value={confirmPassword}
 					onChange={(e) => setconfirmPassword(e.target.value)}
 					required
