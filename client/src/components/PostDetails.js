@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { Link } from 'react-router-dom';
 import CommentList from './CommentList';
 import CommentForm from './CommentForm';
 import EditCommentForm from './EditCommentForm';
@@ -75,9 +76,12 @@ const PostDetails = ({ currentUser, deleting }) => {
 					{deleting ? (
 						<div className='post-delete-controls'>
 							<h1>Delete this post?</h1>
-							<button type='submit' className='button-m' onClick={handleDelete}>
+							<button type='submit' className='button-l' onClick={handleDelete}>
 								Delete
 							</button>
+							<Link to='/dashboard' className='button-l'>
+								Cancel
+							</Link>
 						</div>
 					) : null}
 					{post ? (
@@ -111,26 +115,28 @@ const PostDetails = ({ currentUser, deleting }) => {
 							</div>
 						</article>
 					) : null}
-					<div className='comment-section'>
-						<div className='comment-controls'>
-							<CommentForm
-								currentUser={currentUser}
-								setPostComments={setPostComments}
-							/>
-							{editingComment ? (
-								<EditCommentForm
-									editingComment={editingComment}
+					{deleting ? null : (
+						<div className='comment-section'>
+							<div className='comment-controls'>
+								<CommentForm
+									currentUser={currentUser}
 									setPostComments={setPostComments}
-									setEditingComment={setEditingComment}
 								/>
-							) : null}
+								{editingComment ? (
+									<EditCommentForm
+										editingComment={editingComment}
+										setPostComments={setPostComments}
+										setEditingComment={setEditingComment}
+									/>
+								) : null}
+							</div>
+							<CommentList
+								currentUser={currentUser}
+								postComments={postComments}
+								setEditingComment={setEditingComment}
+							/>
 						</div>
-						<CommentList
-							currentUser={currentUser}
-							postComments={postComments}
-							setEditingComment={setEditingComment}
-						/>
-					</div>
+					)}
 				</div>
 			)}
 		</>
