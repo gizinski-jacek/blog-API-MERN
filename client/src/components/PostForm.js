@@ -96,12 +96,13 @@ const PostForm = ({ editing }) => {
 						onSubmit={editing ? handleUpdate : handleSubmit}
 					>
 						<label htmlFor='title'>Title</label>
-						<input
+						<textarea
 							type='text'
 							id='title'
 							name='title'
 							minLength='8'
-							maxLength='256'
+							maxLength='128'
+							rows='3'
 							onChange={(e) => {
 								setTitleValue(e.target.value);
 							}}
@@ -116,6 +117,7 @@ const PostForm = ({ editing }) => {
 							name='text'
 							minLength='16'
 							maxLength='4084'
+							rows='16'
 							onChange={(e) => {
 								setTextValue(e.target.value);
 							}}
@@ -123,7 +125,7 @@ const PostForm = ({ editing }) => {
 							placeholder='Text'
 							required
 						/>
-						<button type='submit' className='button-m'>
+						<button type='submit' className='button-l'>
 							Submit
 						</button>
 					</form>
