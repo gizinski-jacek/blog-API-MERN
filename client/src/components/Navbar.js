@@ -58,7 +58,7 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 				<Link to='/' className='logo'>
 					<img
 						className='logo-icon'
-						src='images/b-blog-icon-51268.png'
+						src='/images/b-blog-icon-51268.png'
 						alt='logo-icon'
 					/>
 					logster
