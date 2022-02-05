@@ -4,7 +4,6 @@ const PostLinkWrapper = ({ post }) => {
 	return (
 		<Link to={`/posts/${post._id}`} className='post'>
 			<h2 className='post-title'>Title: {post.title}</h2>
-			<p className='post-text'>{post.text}</p>
 			<div className='post-metadata'>
 				<h3 className='post-author'>Author: {post.author.username}</h3>
 				<h3 className='post-created'>
