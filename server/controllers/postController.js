@@ -57,7 +57,7 @@ exports.get_user_posts = async (req, res, next) => {
 exports.create_post = [
 	body('titleValue', 'Title field can not be empty')
 		.trim()
-		.isLength({ min: 8, max: 256 })
+		.isLength({ min: 8, max: 128 })
 		.escape(),
 	body('textValue', 'Text field can not be empty')
 		.trim()
@@ -89,7 +89,7 @@ exports.create_post = [
 exports.update_post = [
 	body('titleValue', 'Title field can not be empty')
 		.trim()
-		.isLength({ min: 8, max: 256 })
+		.isLength({ min: 8, max: 128 })
 		.escape(),
 	body('textValue', 'Text field can not be empty')
 		.trim()
