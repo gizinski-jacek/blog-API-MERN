@@ -53,6 +53,10 @@ h3 {
 		flex-direction: row;
 		align-items: center;
 		text-transform: uppercase;
+	}
+
+	.logo:hover {
+		color: $black;
 		text-decoration: none;
 	}
 
@@ -246,7 +250,7 @@ h3 {
 	}
 
 	.container.expand {
-		max-height: 400px;
+		max-height: 208px;
 	}
 }
 
@@ -601,12 +605,6 @@ h3 {
 .button-m:hover,
 .button-s:hover {
 	filter: brightness(110%);
-}
-
-.error-list {
-}
-
-.error-msg {
 }
 
 .footer {

@@ -13,7 +13,6 @@ import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
 import LogIn from './components/LogIn';
 import Signup from './components/Signup';
-import ErrorPage from './components/ErrorPage';
 
 const App = () => {
 	const location = useLocation();
@@ -113,7 +112,6 @@ const App = () => {
 					</Route>
 				</Route>
 				<Route path='authors' element={<AuthorList />} />
-				<Route path='error' element={<ErrorPage />} />
 			</Route>
 		</Routes>
 	);
