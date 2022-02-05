@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
-	title: { type: String, minlength: 8, maxlength: 256, required: true },
+	title: { type: String, minlength: 8, maxlength: 128, required: true },
 	text: { type: String, minlength: 16, maxlength: 4084, required: true },
 	author: {
 		type: Schema.Types.ObjectId,
