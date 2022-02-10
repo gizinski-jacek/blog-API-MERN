@@ -50,7 +50,6 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 	};
 
 	const handleLogOut = async (e) => {
-		e.preventDefault();
 		try {
 			await fetch('/api/log-out', {
 				method: 'POST',
@@ -86,9 +85,9 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 						<Link to='dashboard/create' className='button-l'>
 							Create Post
 						</Link>
-						<Link to='' className='button-l' onClick={handleLogOut}>
+						<button className='button-l' onClick={handleLogOut}>
 							Log Out
-						</Link>
+						</button>
 					</>
 				) : (
 					<>
