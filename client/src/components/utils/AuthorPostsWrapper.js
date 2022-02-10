@@ -7,16 +7,26 @@ const AuthorPostsWrapper = ({ author, posts }) => {
 	const postsDisplay = posts.map((post, index) => {
 		return (
 			<Link key={index} to={`/posts/${post._id}`} className='post-simple'>
-				<h2 className='post-title'>Title: {post.title}</h2>
+				<h3 className='post-title'>Title: {post.title}</h3>
 				<div className='post-metadata'>
-					<h2 className='post-created'>
+					<h3 className='post-created'>
 						Published:{' '}
-						{new Date(post.create_timestamp).toLocaleString('en-GB', {
+						{new Date(post.createdAt).toLocaleString('en-GB', {
 							year: 'numeric',
 							month: 'numeric',
 							day: 'numeric',
 						})}
-					</h2>
+					</h3>
+					{post.updatedAt ? (
+						<h3 className='post-updated'>
+							Updated:{' '}
+							{new Date(post.updatedAt).toLocaleString('en-GB', {
+								year: 'numeric',
+								month: 'numeric',
+								day: 'numeric',
+							})}
+						</h3>
+					) : null}
 				</div>
 			</Link>
 		);
