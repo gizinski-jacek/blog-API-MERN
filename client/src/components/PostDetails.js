@@ -52,7 +52,6 @@ const PostDetails = ({ currentUser, deleting }) => {
 	}, [params.postid, navigate]);
 
 	const handleDelete = async (e) => {
-		e.preventDefault();
 		try {
 			const res = await fetch(`/api/posts/${params.postid}`, {
 				method: 'DELETE',
