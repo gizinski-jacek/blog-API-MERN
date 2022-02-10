@@ -5,9 +5,12 @@ const Signup = () => {
 	const navigate = useNavigate();
 
 	const [errors, setErrors] = useState();
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
-	const [confirmPassword, setconfirmPassword] = useState('');
+	const [user, setUser] = useState({ username: '', password: '', repeat: '' });
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setUser((prevState) => ({ ...prevState, [name]: value }));
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -15,12 +18,21 @@ const Signup = () => {
 			const res = await fetch('/api/sign-up', {
 				method: 'POST',
 				mode: 'cors',
-				body: JSON.stringify({ username, password, confirmPassword }),
+				body: JSON.stringify(user),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setErrors(resJson);
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						setErrors([resJson]);
+					}
+					if (typeof resJson === 'string') {
+						setErrors([{ msg: resJson }]);
+					}
+				} else {
+					setErrors(resJson);
+				}
 			} else {
 				navigate('/log-in');
 			}
@@ -40,6 +52,7 @@ const Signup = () => {
 	return (
 		<div className='sign-up'>
 			<form id='sign-up-form' onSubmit={handleSubmit}>
+				<h2>Sign Up</h2>
 				<label htmlFor='username'>Username</label>
 				<input
 					type='text'
@@ -47,8 +60,8 @@ const Signup = () => {
 					name='username'
 					minLength='4'
 					maxLength='32'
-					value={username}
-					onChange={(e) => setUsername(e.target.value)}
+					value={user.username}
+					onChange={(e) => handleChange(e)}
 					placeholder='Username'
 					required
 				/>
@@ -59,21 +72,24 @@ const Signup = () => {
 					name='password'
 					minLength='4'
 					maxLength='64'
-					value={password}
-					onChange={(e) => setPassword(e.target.value)}
+					value={user.password}
+					onChange={(e) => handleChange(e)}
+					placeholder='Password'
 					required
 				/>
-				<label htmlFor='confirmPasswords'>Confirm password</label>
+				<label htmlFor='repeat'>Repeat password</label>
 				<input
 					type='password'
-					id='confirmPassword'
-					name='confirmPassword'
+					id='repeat'
+					name='repeat'
 					minLength='4'
 					maxLength='64'
-					value={confirmPassword}
-					onChange={(e) => setconfirmPassword(e.target.value)}
+					value={user.repeat}
+					onChange={(e) => handleChange(e)}
+					placeholder='Repeat password'
 					required
 				/>
+				{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 				<div className='sign-up-controls'>
 					<button type='submit' className='button-m'>
 						Sign Up
@@ -87,7 +103,6 @@ const Signup = () => {
 					</button>
 				</div>
 			</form>
-			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 		</div>
 	);
 };
