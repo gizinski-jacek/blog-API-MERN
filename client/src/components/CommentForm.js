@@ -36,7 +36,7 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 				}
 			} else {
 				setPostComments(resJson);
-				setComment({});
+				setComment({ text: '' });
 			}
 		} catch (error) {
 			console.log(error);
