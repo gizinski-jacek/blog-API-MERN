@@ -71,7 +71,7 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 				<div className='post-metadata'>
 					<h3 className='post-created'>
 						Published:{' '}
-						{new Date(post.create_timestamp).toLocaleString('en-GB', {
+						{new Date(post.createdAt).toLocaleString('en-GB', {
 							year: 'numeric',
 							month: 'numeric',
 							day: 'numeric',

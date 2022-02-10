@@ -8,7 +8,7 @@ const PostLinkWrapper = ({ post }) => {
 				<h3 className='post-author'>Author: {post.author.username}</h3>
 				<h3 className='post-created'>
 					Published:{' '}
-					{new Date(post.create_timestamp).toLocaleString('en-GB', {
+					{new Date(post.createdAt).toLocaleString('en-GB', {
 						year: 'numeric',
 						month: 'numeric',
 						day: 'numeric',
