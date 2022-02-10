@@ -29,7 +29,18 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 			setUsername('');
 			setPassword('');
 			if (res.status !== 200) {
-				navigate('/log-in', { state: resJson });
+				let errors;
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						errors = [resJson];
+					}
+					if (typeof resJson === 'string') {
+						errors = [{ msg: resJson }];
+					}
+				} else {
+					errors = resJson;
+				}
+				navigate('/log-in', { state: errors });
 			} else {
 				setCurrentUser(resJson);
 			}
@@ -89,6 +100,8 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 										type='text'
 										id='username'
 										name='username'
+										minLength='4'
+										maxLength='32'
 										value={username}
 										onChange={(e) => setUsername(e.target.value)}
 										required
@@ -99,6 +112,8 @@ const Navbar = ({ currentUser, setCurrentUser }) => {
 										type='password'
 										id='password'
 										name='password'
+										minLength='4'
+										maxLength='64'
 										value={password}
 										onChange={(e) => setPassword(e.target.value)}
 										required
