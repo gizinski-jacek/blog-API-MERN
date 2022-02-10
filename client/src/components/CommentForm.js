@@ -5,7 +5,12 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
-	const [commentValue, setCommentValue] = useState('');
+	const [comment, setComment] = useState({ text: '' });
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setComment({ [name]: value });
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -14,15 +19,24 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
-				body: JSON.stringify({ commentValue }),
+				body: JSON.stringify(comment),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setErrors(resJson);
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						setErrors([resJson]);
+					}
+					if (typeof resJson === 'string') {
+						setErrors([{ msg: resJson }]);
+					}
+				} else {
+					setErrors(resJson);
+				}
 			} else {
 				setPostComments(resJson);
-				setCommentValue('');
+				setComment({});
 			}
 		} catch (error) {
 			console.log(error);
@@ -51,19 +65,19 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 							maxLength='64'
 							rows='2'
 							onChange={(e) => {
-								setCommentValue(e.target.value);
+								handleChange(e);
 							}}
-							value={commentValue}
+							value={comment.text}
 							placeholder='Comment'
 							required
 						/>
+						{errorsDisplay ? (
+							<ul className='error-list'>{errorsDisplay}</ul>
+						) : null}
 						<button type='submit' className='button-m'>
 							Submit
 						</button>
 					</form>
-					{errorsDisplay ? (
-						<ul className='error-list'>{errorsDisplay}</ul>
-					) : null}
 				</>
 			) : (
 				<>
