@@ -23,6 +23,10 @@ h3 {
 	font-size: 1.25rem;
 }
 
+h5 {
+	font-size: 0.8rem;
+}
+
 .main {
 	width: 100%;
 	min-height: 100vh;
@@ -92,10 +96,6 @@ h3 {
 		display: flex;
 		flex-direction: row;
 
-		* {
-			font-size: 1rem;
-		}
-
 		fieldset,
 		div {
 			display: flex;
@@ -110,11 +110,56 @@ h3 {
 		input {
 			border: none;
 			margin: auto 2px;
+			font-size: 0.9rem;
 		}
 
 		button:hover {
 			background-color: $blue;
 		}
+	}
+}
+
+.sign-up,
+.log-in {
+	flex: 1;
+	min-width: 400px;
+	max-width: 50%;
+	padding: 24px;
+
+	#sign-up-form,
+	#log-in-form {
+		display: flex;
+		flex-direction: column;
+		background-color: $pink;
+		padding: 24px;
+		border-style: solid;
+		border-color: $black;
+		border-width: 0 2px;
+		border-radius: 8px;
+	}
+
+	h2 {
+		text-align: center;
+		margin-bottom: 24px;
+	}
+
+	label {
+		font-size: 1.25rem;
+		text-align: center;
+		margin-bottom: 4px;
+	}
+
+	input {
+		font-size: 0.9rem;
+		padding: 2px;
+		margin-bottom: 24px;
+	}
+
+	.sign-up-controls,
+	.log-in-controls {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
 	}
 }
 
@@ -177,6 +222,7 @@ h3 {
 
 	.view-all {
 		width: 50%;
+		min-width: fit-content;
 		margin-left: auto;
 		margin-right: auto;
 	}
@@ -327,6 +373,15 @@ h3 {
 			justify-content: space-between;
 			align-items: flex-end;
 
+			h2 {
+				line-height: 1.25rem;
+			}
+
+			h2,
+			h5 {
+				color: $blue;
+			}
+
 			.right {
 				margin-left: 24px;
 				text-align: right;
@@ -474,24 +529,21 @@ h3 {
 	border-left: 2px solid $blue;
 	border-right: 2px solid $blue;
 
-	.p {
-		padding: 4px;
+	h3,
+	h5 {
+		color: $blue;
+	}
+
+	p {
+		padding-top: 8px;
 	}
 
 	.comment-edit-controls {
 		float: right;
 	}
 
-	#edit-comment-form {
-		display: flex;
-
-		.button-s {
-			align-self: center;
-		}
-
-		textarea {
-			resize: none;
-		}
+	.button-s {
+		padding: 0 2px;
 	}
 }
 
@@ -613,4 +665,14 @@ h3 {
 	text-align: center;
 	background-color: $black;
 	color: white;
+}
+
+.error-list {
+	list-style-type: disc;
+	list-style-position: inside;
+	margin-bottom: 24px;
+	font-weight: 600;
+	padding: 8px;
+	background-color: $black;
+	color: $error-red;
 }
