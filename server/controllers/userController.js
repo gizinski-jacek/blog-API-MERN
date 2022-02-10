@@ -75,29 +75,29 @@ exports.sign_up_user = [
 		.trim()
 		.isLength({ min: 4, max: 64 })
 		.escape(),
-	body('confirmPassword', 'Password field can not be empty').custom(
-		(value, { req }) => {
-			if (value !== req.body.password) {
-				const error = new Error('Passwords must match');
-				error.status = 403;
-				throw error;
-			}
-			return true;
+	body('repeat', 'Password field can not be empty').custom((value, { req }) => {
+		if (value !== req.body.password) {
+			const error = new Error('Passwords must match');
+			error.status = 403;
+			throw error;
 		}
-	),
+		return true;
+	}),
 	async (req, res, next) => {
 		try {
 			const errors = validationResult(req);
 			const newUser = new User({
 				username: req.body.username,
-				registered: new Date(),
 			});
 			if (!errors.isEmpty()) {
 				return res.status(404).json(errors.array());
 			}
 			const hashedPassword = await bcryptjs.hash(req.body.password, 10);
 			newUser.password = hashedPassword;
-			await newUser.save();
+			const user = await newUser.save();
+			if (!user) {
+				return res.status(404).json('Error creating user, try again');
+			}
 			res.status(200).json({ success: true });
 		} catch (error) {
 			next(error);
