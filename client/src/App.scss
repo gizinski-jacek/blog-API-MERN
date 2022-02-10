@@ -565,7 +565,7 @@ h5 {
 		position: relative;
 		display: flex;
 		justify-content: space-between;
-		padding: 4px;
+		padding: 8px;
 		background-color: $orange;
 		border: 2px solid $blue;
 		border-bottom: none;
@@ -587,8 +587,12 @@ h5 {
 		border-top-right-radius: 0;
 	}
 
-	.unpublished {
-		filter: brightness(80%) !important;
+	.not-published {
+		filter: brightness(80%);
+	}
+
+	.not-published:hover {
+		filter: brightness(90%);
 	}
 }
 
