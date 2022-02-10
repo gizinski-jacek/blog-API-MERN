@@ -40,7 +40,7 @@ const EditCommentForm = ({
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setComment('');
+				setComment({ text: '' });
 				setPostComments(resJson);
 				setEditingComment(null);
 			}
@@ -50,7 +50,6 @@ const EditCommentForm = ({
 	};
 
 	const handleDelete = async (e) => {
-		e.preventDefault();
 		try {
 			const res = await fetch(
 				`/api/posts/${params.postid}/comments/${editingComment._id}`,
@@ -80,11 +79,6 @@ const EditCommentForm = ({
 		} catch (error) {
 			console.log(error);
 		}
-	};
-
-	const handleCancel = (e) => {
-		e.preventDefault();
-		setEditingComment(null);
 	};
 
 	const errorsDisplay = errors?.map((error, index) => {
@@ -121,7 +115,7 @@ const EditCommentForm = ({
 					<button
 						type='submit'
 						className='button-m'
-						onClick={(e) => handleCancel(e)}
+						onClick={setEditingComment(null)}
 					>
 						Cancel
 					</button>
