@@ -9,11 +9,19 @@ const EditCommentForm = ({
 	const params = useParams();
 
 	const [errors, setErrors] = useState();
-	const [commentValue, setCommentValue] = useState(editingComment.text);
+	const [comment, setComment] = useState(editingComment);
 
 	useEffect(() => {
-		setCommentValue(editingComment.text);
+		setComment(editingComment);
 	}, [editingComment]);
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setComment((prevState) => ({
+			...prevState,
+			[name]: value,
+		}));
+	};
 
 	const handleUpdate = async (e) => {
 		e.preventDefault();
@@ -24,7 +32,7 @@ const EditCommentForm = ({
 					method: 'PUT',
 					mode: 'cors',
 					credentials: 'include',
-					body: JSON.stringify({ commentValue }),
+					body: JSON.stringify(comment),
 					headers: { 'Content-type': 'application/json' },
 				}
 			);
@@ -32,7 +40,7 @@ const EditCommentForm = ({
 			if (res.status !== 200) {
 				setErrors(resJson);
 			} else {
-				setCommentValue('');
+				setComment('');
 				setPostComments(resJson);
 				setEditingComment(null);
 			}
@@ -55,7 +63,16 @@ const EditCommentForm = ({
 			);
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setErrors(resJson);
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						setErrors([resJson]);
+					}
+					if (typeof resJson === 'string') {
+						setErrors([{ msg: resJson }]);
+					}
+				} else {
+					setErrors(resJson);
+				}
 			} else {
 				setPostComments(resJson);
 				setEditingComment(null);
@@ -90,12 +107,13 @@ const EditCommentForm = ({
 					maxLength='64'
 					rows='2'
 					onChange={(e) => {
-						setCommentValue(e.target.value);
+						handleChange(e);
 					}}
-					value={commentValue}
+					value={comment}
 					placeholder='Comment'
 					required
 				/>
+				{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 				<div className='controls'>
 					<button type='submit' className='button-m'>
 						Update
@@ -116,7 +134,6 @@ const EditCommentForm = ({
 					</button>
 				</div>
 			</form>
-			{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 		</div>
 	);
 };
