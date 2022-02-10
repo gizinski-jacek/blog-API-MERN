@@ -117,7 +117,7 @@ exports.update_post = [
 			const post = await Post.findByIdAndUpdate(
 				req.params.postid,
 				updatedPost,
-				{ upsert: true }
+				{ upsert: true, timestamps: true }
 			).exec();
 			if (!post) {
 				return res
@@ -151,9 +151,13 @@ exports.publish_post = async (req, res, next) => {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
 			return res.status(404).json('Invalid post Id');
 		}
-		const post = await Post.findByIdAndUpdate(req.params.postid, {
-			published: true,
-		}).exec();
+		const post = await Post.findByIdAndUpdate(
+			req.params.postid,
+			{
+				published: true,
+			},
+			{ timestamps: false }
+		).exec();
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to publish');
 		}
@@ -172,9 +176,13 @@ exports.unpublish_post = async (req, res, next) => {
 		if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
 			return res.status(404).json('Invalid post Id');
 		}
-		const post = await Post.findByIdAndUpdate(req.params.postid, {
-			published: false,
-		}).exec();
+		const post = await Post.findByIdAndUpdate(
+			req.params.postid,
+			{
+				published: false,
+			},
+			{ timestamps: false }
+		).exec();
 		if (!post) {
 			return res.status(404).json('Post not found, nothing to unpublish');
 		}
