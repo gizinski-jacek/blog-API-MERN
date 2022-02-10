@@ -22,7 +22,7 @@ const CommentWrapper = ({ currentUser, comment, setEditingComment }) => {
 			</h5>
 			{comment.updatedAt ? (
 				<h5 className='comment-updated'>
-					Last edited: {new Date(comment.updatedAt).toLocaleString('en-GB')}
+					Last edit: {new Date(comment.updatedAt).toLocaleString('en-GB')}
 				</h5>
 			) : null}
 			<p className='comment-text'>{nl2br(comment.text)}</p>
