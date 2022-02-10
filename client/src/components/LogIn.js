@@ -5,7 +5,7 @@ const LogIn = ({ setCurrentUser }) => {
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const [error, setError] = useState(location.state);
+	const [errors, setErrors] = useState(location?.state);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
@@ -21,26 +21,49 @@ const LogIn = ({ setCurrentUser }) => {
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setError(resJson);
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						console.log([resJson]);
+						setErrors([resJson]);
+					}
+					if (typeof resJson === 'string') {
+						setErrors([{ msg: resJson }]);
+					}
+				} else {
+					setErrors(resJson);
+				}
 			} else {
 				setCurrentUser(resJson);
 				navigate('/dashboard');
 			}
+			setPassword('');
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+	const errorsDisplay = errors?.map((error, index) => {
+		return (
+			<li key={index} className='error-msg'>
+				{error.msg}
+			</li>
+		);
+	});
+
 	return (
 		<div className='log-in'>
 			<form id='log-in-form' onSubmit={handleLogIn}>
+				<h2>Log In</h2>
 				<label htmlFor='username'>Username</label>
 				<input
 					type='text'
 					id='username'
 					name='username'
+					minLength='4'
+					maxLength='32'
 					value={username}
 					onChange={(e) => setUsername(e.target.value)}
+					placeholder='Username'
 					required
 				/>
 				<label htmlFor='password'>Password</label>
@@ -48,10 +71,14 @@ const LogIn = ({ setCurrentUser }) => {
 					type='password'
 					id='password'
 					name='password'
+					minLength='4'
+					maxLength='64'
 					value={password}
 					onChange={(e) => setPassword(e.target.value)}
+					placeholder='Password'
 					required
 				/>
+				{errorsDisplay ? <ul className='error-list'>{errorsDisplay}</ul> : null}
 				<div className='log-in-controls'>
 					<button type='submit' className='button-m'>
 						Log In
@@ -65,11 +92,6 @@ const LogIn = ({ setCurrentUser }) => {
 					</button>
 				</div>
 			</form>
-			{error ? (
-				<ul className='error-list'>
-					<li className='error-msg'>{error.msg}</li>
-				</ul>
-			) : null}
 		</div>
 	);
 };
