@@ -17,14 +17,13 @@ const CommentWrapper = ({ currentUser, comment, setEditingComment }) => {
 				</div>
 			) : null}
 			<h3 className='comment-author'>By: {comment.author.username}</h3>
-			<p className='comment-created'>
-				Posted: {new Date(comment.create_timestamp).toLocaleString('en-GB')}
-			</p>
-			{comment.update_timestamp ? (
-				<p className='comment-updated'>
-					Last edited:{' '}
-					{new Date(comment.update_timestamp).toLocaleString('en-GB')}
-				</p>
+			<h5 className='comment-created'>
+				Posted: {new Date(comment.createdAt).toLocaleString('en-GB')}
+			</h5>
+			{comment.updatedAt ? (
+				<h5 className='comment-updated'>
+					Last edited: {new Date(comment.updatedAt).toLocaleString('en-GB')}
+				</h5>
 			) : null}
 			<p className='comment-text'>{nl2br(comment.text)}</p>
 		</div>
