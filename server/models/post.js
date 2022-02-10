@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const PostSchema = new Schema({
-	title: { type: String, minlength: 8, maxlength: 128, required: true },
-	text: { type: String, minlength: 16, maxlength: 4084, required: true },
-	author: {
-		type: Schema.Types.ObjectId,
-		ref: 'User',
-		required: true,
+const PostSchema = new Schema(
+	{
+		title: { type: String, minlength: 8, maxlength: 128, required: true },
+		text: { type: String, minlength: 16, maxlength: 4084, required: true },
+		published: { type: Boolean, default: false },
+		author: {
+			type: Schema.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		},
 	},
-	create_timestamp: { type: Date, required: true },
-	update_timestamp: { type: Date },
-	published: { type: Boolean, default: false },
-});
+	{ timestamps: true }
+);
 
 // Virtual for post's URL
 PostSchema.virtual('url').get(function () {
