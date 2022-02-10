@@ -66,7 +66,10 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 					Delete
 				</Link>
 			</div>
-			<article className={`post ${post.published ? '' : 'unpublished'}`}>
+			<Link
+				to={`/posts/${post._id}`}
+				className={`post ${post.published ? '' : 'not-published'}`}
+			>
 				<h2 className='post-title'>Title: {post.title}</h2>
 				<div className='post-metadata'>
 					<h4 className='post-created'>
@@ -78,7 +81,7 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 						</h4>
 					) : null}
 				</div>
-			</article>
+			</Link>
 		</div>
 	);
 };
