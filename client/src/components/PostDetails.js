@@ -17,6 +17,10 @@ const PostDetails = ({ currentUser, deleting }) => {
 	const [editingComment, setEditingComment] = useState(null);
 
 	useEffect(() => {
+		setEditingComment(null);
+	}, [currentUser]);
+
+	useEffect(() => {
 		(async () => {
 			try {
 				const resPost = await fetch(`/api/posts/${params.postid}`, {
@@ -35,8 +39,7 @@ const PostDetails = ({ currentUser, deleting }) => {
 				const postJson = await resPost.json();
 				const commentsJson = await resComments.json();
 				if (resPost.status !== 200) {
-					console.log(resPost);
-					navigate('/error', { state: postJson });
+					navigate('/posts');
 				} else {
 					setPost(postJson);
 					setPostComments(commentsJson);
@@ -89,22 +92,20 @@ const PostDetails = ({ currentUser, deleting }) => {
 							<div className='post-info'>
 								<div className='post-metadata'>
 									<div className='left'>
-										<h3 className='post-author'>
+										<h2 className='post-author'>
 											Author: {post.author.username}
-										</h3>
+										</h2>
 									</div>
 									<div className='right'>
-										<h4 className='post-created'>
+										<h5 className='post-created'>
 											Published:{' '}
-											{new Date(post.create_timestamp).toLocaleString('en-GB')}
-										</h4>
-										{post.update_timestamp ? (
-											<h4 className='post-updated'>
-												Last updated:{' '}
-												{new Date(post.update_timestamp).toLocaleString(
-													'en-GB'
-												)}
-											</h4>
+											{new Date(post.createdAt).toLocaleString('en-GB')}
+										</h5>
+										{post.updatedAt ? (
+											<h5 className='post-updated'>
+												Updated:{' '}
+												{new Date(post.updatedAt).toLocaleString('en-GB')}
+											</h5>
 										) : null}
 									</div>
 								</div>
