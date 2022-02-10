@@ -69,14 +69,14 @@ const DashboardPostWrapper = ({ post, setAllPosts }) => {
 			<article className={`post ${post.published ? '' : 'unpublished'}`}>
 				<h2 className='post-title'>Title: {post.title}</h2>
 				<div className='post-metadata'>
-					<h3 className='post-created'>
-						Published:{' '}
-						{new Date(post.createdAt).toLocaleString('en-GB', {
-							year: 'numeric',
-							month: 'numeric',
-							day: 'numeric',
-						})}
-					</h3>
+					<h4 className='post-created'>
+						Published: {new Date(post.createdAt).toLocaleString('en-GB')}
+					</h4>
+					{post.updatedAt ? (
+						<h4 className='comment-updated'>
+							Updated: {new Date(post.updatedAt).toLocaleString('en-GB')}
+						</h4>
+					) : null}
 				</div>
 			</article>
 		</div>
