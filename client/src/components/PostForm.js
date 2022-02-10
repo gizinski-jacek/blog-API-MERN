@@ -8,8 +8,7 @@ const PostForm = ({ editing }) => {
 
 	const [loading, setLoading] = useState(true);
 	const [errors, setErrors] = useState();
-	const [titleValue, setTitleValue] = useState('');
-	const [textValue, setTextValue] = useState('');
+	const [post, setPost] = useState({ title: '', text: '' });
 
 	useEffect(() => {
 		if (params.postid) {
@@ -21,19 +20,21 @@ const PostForm = ({ editing }) => {
 						headers: { 'Content-type': 'application/json' },
 					});
 					const resJson = await res.json();
-					setTitleValue(resJson.title);
-					setTextValue(resJson.text);
+					setPost(resJson);
 					setLoading(false);
 				} catch (error) {
 					console.log(error);
 				}
 			})();
 		} else {
-			setTitleValue('');
-			setTextValue('');
 			setLoading(false);
 		}
 	}, [params.postid]);
+
+	const handleChange = (e) => {
+		const { name, value } = e.target;
+		setPost((prevState) => ({ ...prevState, [name]: value }));
+	};
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -42,12 +43,21 @@ const PostForm = ({ editing }) => {
 				method: 'POST',
 				mode: 'cors',
 				credentials: 'include',
-				body: JSON.stringify({ titleValue, textValue }),
+				body: JSON.stringify(post),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
-				setErrors(resJson);
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						setErrors([resJson]);
+					}
+					if (typeof resJson === 'string') {
+						setErrors([{ msg: resJson }]);
+					}
+				} else {
+					setErrors(resJson);
+				}
 			} else {
 				navigate('/dashboard');
 			}
@@ -63,11 +73,19 @@ const PostForm = ({ editing }) => {
 				method: 'PUT',
 				mode: 'cors',
 				credentials: 'include',
-				body: JSON.stringify({ titleValue, textValue }),
+				body: JSON.stringify(post),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
 			if (res.status !== 200) {
+				if (!Array.isArray(resJson)) {
+					if (typeof resJson === 'object') {
+						setErrors([resJson]);
+					}
+					if (typeof resJson === 'string') {
+						setErrors([{ msg: resJson }]);
+					}
+				}
 				setErrors(resJson);
 			} else {
 				navigate('/dashboard');
@@ -104,9 +122,9 @@ const PostForm = ({ editing }) => {
 							maxLength='128'
 							rows='3'
 							onChange={(e) => {
-								setTitleValue(e.target.value);
+								handleChange(e);
 							}}
-							value={titleValue}
+							value={post.title}
 							placeholder='Title'
 							required
 						/>
@@ -119,9 +137,9 @@ const PostForm = ({ editing }) => {
 							maxLength='4084'
 							rows='16'
 							onChange={(e) => {
-								setTextValue(e.target.value);
+								handleChange(e);
 							}}
-							value={textValue}
+							value={post.text}
 							placeholder='Text'
 							required
 						/>
