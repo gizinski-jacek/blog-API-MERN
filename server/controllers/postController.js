@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 exports.get_all_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
-			.sort({ create_timestamp: 'desc' })
+			.sort({ createdAt: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -18,7 +18,7 @@ exports.get_all_posts = async (req, res, next) => {
 exports.get_preview_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
-			.sort({ create_timestamp: 'desc' })
+			.sort({ createdAt: 'desc' })
 			.limit(3)
 			.populate('author', 'username')
 			.exec();
@@ -36,6 +36,9 @@ exports.get_single_post = async (req, res, next) => {
 		const post = await Post.findById(req.params.postid)
 			.populate('author', 'username')
 			.exec();
+		if (!post) {
+			return res.status(404).json('Post not found');
+		}
 		res.status(200).json(post);
 	} catch (error) {
 		next(error);
@@ -45,7 +48,7 @@ exports.get_single_post = async (req, res, next) => {
 exports.get_user_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ author: req.user._id })
-			.sort({ create_timestamp: 'desc' })
+			.sort({ createdAt: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -55,11 +58,11 @@ exports.get_user_posts = async (req, res, next) => {
 };
 
 exports.create_post = [
-	body('titleValue', 'Title field can not be empty')
+	body('title', 'Title field can not be empty')
 		.trim()
 		.isLength({ min: 8, max: 128 })
 		.escape(),
-	body('textValue', 'Text field can not be empty')
+	body('text', 'Text field can not be empty')
 		.trim()
 		.isLength({ min: 16, max: 4084 })
 		.escape(),
@@ -67,17 +70,17 @@ exports.create_post = [
 		try {
 			const errors = validationResult(req);
 			const newPost = new Post({
-				title: req.body.titleValue,
-				text: req.body.textValue,
+				title: req.body.title,
+				text: req.body.text,
+				published: false,
 				author: req.user._id,
-				create_timestamp: new Date(),
 			});
 			if (!errors.isEmpty()) {
 				return res.status(404).json(errors.array());
 			}
 			const post = await newPost.save();
 			if (!post) {
-				return res.status(404).json([{ msg: 'Error saving post, try again' }]);
+				return res.status(404).json('Error saving post, try again');
 			}
 			res.status(200).json('Post created');
 		} catch (error) {
@@ -87,11 +90,11 @@ exports.create_post = [
 ];
 
 exports.update_post = [
-	body('titleValue', 'Title field can not be empty')
+	body('title', 'Title field can not be empty')
 		.trim()
 		.isLength({ min: 8, max: 128 })
 		.escape(),
-	body('textValue', 'Text field can not be empty')
+	body('text', 'Text field can not be empty')
 		.trim()
 		.isLength({ min: 16, max: 4084 })
 		.escape(),
@@ -100,31 +103,28 @@ exports.update_post = [
 			if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
 				return res.status(404).json('Invalid post Id');
 			}
-			const postToUpdate = await Post.findById(req.params.postid).exec();
-			if (!postToUpdate) {
-				return res.status(404).json('Post not found, nothing to update');
-			}
 			const errors = validationResult(req);
 			const updatedPost = new Post({
-				_id: postToUpdate._id,
-				title: req.body.titleValue,
-				text: req.body.textValue,
-				author: postToUpdate.author,
-				create_timestamp: postToUpdate.create_timestamp,
-				update_timestamp: new Date(),
-				published: postToUpdate.published,
+				_id: req.params.postid,
+				title: req.body.title,
+				text: req.body.text,
+				published: req.body.published,
+				author: req.user._id,
 			});
 			if (!errors.isEmpty()) {
 				return res.status(404).json(errors.array());
 			}
 			const post = await Post.findByIdAndUpdate(
 				req.params.postid,
-				updatedPost
+				updatedPost,
+				{ upsert: true }
 			).exec();
 			if (!post) {
-				return res.status(200).json('Post not found, nothing to update');
+				return res
+					.status(200)
+					.json('Post not found, nothing to update. Creating post instead');
 			}
-			res.status(200).json('Post updated');
+			res.status(200).json('Post updated successfully');
 		} catch (error) {
 			next(error);
 		}
@@ -158,7 +158,7 @@ exports.publish_post = async (req, res, next) => {
 			return res.status(404).json('Post not found, nothing to publish');
 		}
 		const post_list = await Post.find({ author: req.user._id })
-			.sort({ create_timestamp: 'desc' })
+			.sort({ createdAt: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
@@ -179,7 +179,7 @@ exports.unpublish_post = async (req, res, next) => {
 			return res.status(404).json('Post not found, nothing to unpublish');
 		}
 		const post_list = await Post.find({ author: req.user._id })
-			.sort({ create_timestamp: 'desc' })
+			.sort({ createdAt: 'desc' })
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
