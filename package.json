@@ -1,23 +1,37 @@
 {
-	"name": "blog-api-mern",
-	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"name": "server",
+	"version": "0.0.0",
+	"private": true,
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"all": "concurrently \"cd server && npm run devstart\" \"cd client && npm run startcss\" "
+		"start": "node ./bin/www",
+		"devstart": "nodemon ./bin/www",
+		"serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart",
+		"all": "concurrently \"run devstart\" \"cd client && npm run startcss\" ",
+		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
 	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/gizinski-jacek/blog-API-MERN.git"
-	},
-	"author": "",
-	"license": "ISC",
-	"bugs": {
-		"url": "https://github.com/gizinski-jacek/blog-API-MERN/issues"
-	},
-	"homepage": "https://github.com/gizinski-jacek/blog-API-MERN#readme",
 	"dependencies": {
+		"async": "^3.2.3",
+		"bcryptjs": "^2.4.3",
+		"compression": "^1.7.4",
+		"cookie-parser": "~1.4.4",
+		"cors": "^2.8.5",
+		"debug": "~2.6.9",
+		"dotenv": "^14.2.0",
+		"express": "~4.16.1",
+		"express-validator": "^6.14.0",
+		"helmet": "^5.0.1",
+		"http-errors": "~1.6.3",
+		"jsonwebtoken": "^8.5.1",
+		"mongodb": "^4.3.1",
+		"mongoose": "^6.1.7",
+		"morgan": "^1.10.0",
+		"nodemon": "^2.0.15",
+		"passport": "^0.5.2",
+		"passport-jwt": "^4.0.0",
+		"passport-local": "^1.0.0",
+		"pug": "^3.0.2"
+	},
+	"devDependencies": {
 		"concurrently": "^7.0.0"
 	}
 }
