@@ -261,6 +261,7 @@ h5 {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
+		border-top: 1px solid $black;
 
 		h3,
 		h4 {
@@ -320,9 +321,8 @@ h5 {
 	color: $black;
 	border-radius: 4px;
 
-	.post-title,
-	.post-metadata {
-		margin: 0 12px;
+	h3 {
+		margin: 0 8px;
 	}
 
 	.post-title {
@@ -330,6 +330,11 @@ h5 {
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+
+	.post-metadata {
+		display: flex;
+		flex-direction: row;
 	}
 }
 
@@ -381,6 +386,7 @@ h5 {
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: flex-end;
+			border-bottom: 1px solid $black;
 
 			h2 {
 				line-height: 1.25rem;
@@ -545,6 +551,10 @@ h5 {
 
 	p {
 		padding-top: 8px;
+	}
+
+	.comment-metadata {
+		border-bottom: 1px solid $black;
 	}
 
 	.comment-edit-controls {
