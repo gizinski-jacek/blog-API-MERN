@@ -95,8 +95,8 @@ const EditCommentForm = ({
 			<form id='edit-comment-form' onSubmit={handleUpdate}>
 				<textarea
 					type='text'
-					id='comment'
-					name='comment'
+					id='text'
+					name='text'
 					minLength='2'
 					maxLength='64'
 					rows='2'

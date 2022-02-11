@@ -59,8 +59,8 @@ const CommentForm = ({ currentUser, setPostComments }) => {
 					<form id='new-comment-form' onSubmit={handleSubmit}>
 						<textarea
 							type='text'
-							id='comment'
-							name='comment'
+							id='text'
+							name='text'
 							minLength='2'
 							maxLength='64'
 							rows='2'
