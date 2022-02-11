@@ -15,7 +15,6 @@ mongoose.connect(mongoDb, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 
 const app = express();
@@ -43,14 +42,14 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-// app.use(session(sessionConfig));
-// app.use(passport.initialize());
-// app.use(passport.session());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, './client/build')));
+
 app.use(compression());
 
-app.use('/', indexRouter);
 app.use('/api', apiRouter);
+app.get('*', function (req, res, next) {
+	res.sendFile(path.join(__dirname, './client/build', 'index.html'));
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
