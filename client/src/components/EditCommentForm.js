@@ -103,7 +103,7 @@ const EditCommentForm = ({
 					onChange={(e) => {
 						handleChange(e);
 					}}
-					value={comment}
+					value={comment.text}
 					placeholder='Comment'
 					required
 				/>
@@ -115,7 +115,9 @@ const EditCommentForm = ({
 					<button
 						type='submit'
 						className='button-m'
-						onClick={setEditingComment(null)}
+						onClick={() => {
+							setEditingComment(null);
+						}}
 					>
 						Cancel
 					</button>
