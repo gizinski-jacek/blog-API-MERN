@@ -6,7 +6,6 @@
 		"start": "node ./bin/www",
 		"devstart": "nodemon ./bin/www",
 		"serverstart": "DEBUG=express-locallibrary-tutorial:* npm run devstart",
-		"all": "concurrently \"run devstart\" \"cd client && npm run startcss\" ",
 		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
 	},
 	"dependencies": {
@@ -33,5 +32,8 @@
 	},
 	"devDependencies": {
 		"concurrently": "^7.0.0"
+	},
+	"engines": {
+		"node": "16.13.0"
 	}
 }
