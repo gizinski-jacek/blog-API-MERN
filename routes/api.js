@@ -8,7 +8,7 @@ const comment_controller = require('../controllers/commentController');
 
 /* Redirect to all posts. */
 router.get('/', function (req, res, next) {
-	res.redirect('/posts');
+	res.redirect('/api/posts');
 });
 
 /////
