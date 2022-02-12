@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { useState, useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router';
 import { Routes, Route, Outlet } from 'react-router-dom';
