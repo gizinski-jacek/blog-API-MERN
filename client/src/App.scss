@@ -366,6 +366,7 @@ h5 {
 }
 
 .post-full {
+	flex: 1 1;
 	min-height: 256px;
 	text-decoration: none;
 	display: flex;
@@ -373,7 +374,7 @@ h5 {
 	color: $black;
 
 	.post-info {
-		margin: 12px;
+		margin-bottom: 12px;
 		padding: 12px;
 		background-color: $pink;
 		border-radius: 12px;
@@ -404,11 +405,8 @@ h5 {
 		}
 	}
 
-	.post-content {
-		margin: 12px;
-	}
-
 	.post-text {
+		min-height: 80px;
 		padding: 12px;
 		background-color: $pink;
 		border-radius: 12px;
