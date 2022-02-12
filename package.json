@@ -24,7 +24,6 @@
 		"mongodb": "^4.3.1",
 		"mongoose": "^6.1.7",
 		"morgan": "^1.10.0",
-		"nodemon": "^2.0.15",
 		"passport": "^0.5.2",
 		"passport-jwt": "^4.0.0",
 		"passport-local": "^1.0.0",
@@ -32,5 +31,8 @@
 	},
 	"engines": {
 		"node": "16.13.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.15"
 	}
 }
