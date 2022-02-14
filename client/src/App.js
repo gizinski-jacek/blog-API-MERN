@@ -98,7 +98,10 @@ const App = () => {
 					<Route path='' element={<Dashboard currentUser={currentUser} />} />
 					<Route path='create' element={<PostForm />} />
 					<Route path='update/:postid' element={<PostForm editing={true} />} />
-					<Route path='delete/:postid' element={<PostDelete />} />
+					<Route
+						path='delete/:postid'
+						element={<PostDelete currentUser={currentUser} />}
+					/>
 				</Route>
 				<Route path='posts'>
 					<Route path='' element={<PostList />} />
