@@ -8,6 +8,7 @@ import WelcomePanel from './components/WelcomePanel';
 import PostsPreview from './components/PostsPreview';
 import PostList from './components/PostList';
 import PostDetails from './components/PostDetails';
+import PostDelete from './components/PostDelete';
 import AuthorList from './components/AuthorList';
 import Dashboard from './components/Dashboard';
 import PostForm from './components/PostForm';
@@ -97,10 +98,7 @@ const App = () => {
 					<Route path='' element={<Dashboard currentUser={currentUser} />} />
 					<Route path='create' element={<PostForm />} />
 					<Route path='update/:postid' element={<PostForm editing={true} />} />
-					<Route
-						path='delete/:postid'
-						element={<PostDetails deleting={true} />}
-					/>
+					<Route path='delete/:postid' element={<PostDelete />} />
 				</Route>
 				<Route path='posts'>
 					<Route path='' element={<PostList />} />
