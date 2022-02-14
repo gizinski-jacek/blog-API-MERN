@@ -3,7 +3,9 @@ import nl2br from 'react-nl2br';
 const CommentWrapper = ({ currentUser, comment, setEditingComment }) => {
 	return (
 		<div className='comment'>
-			{currentUser && currentUser._id === comment.author._id ? (
+			{setEditingComment &&
+			currentUser &&
+			currentUser._id === comment.author._id ? (
 				<div className='comment-edit-controls'>
 					<button
 						type='button'
