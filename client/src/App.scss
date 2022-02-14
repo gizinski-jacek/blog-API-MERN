@@ -697,3 +697,23 @@ h5 {
 	background-color: $black;
 	color: $error-red;
 }
+
+.not-found {
+	flex: 1;
+	max-width: 400px;
+
+	.not-found-info {
+		background-color: $orange;
+		padding: 12px;
+		margin: 24px 0;
+	}
+
+	h3,
+	p {
+		margin: 4px;
+	}
+
+	.button-m {
+		margin-top: 24px;
+	}
+}
