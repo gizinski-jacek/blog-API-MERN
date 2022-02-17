@@ -24,6 +24,9 @@ exports.create_comment = [
 		.escape(),
 	async (req, res, next) => {
 		try {
+			if (!mongoose.Types.ObjectId.isValid(req.params.postid)) {
+				return res.status(404).json('Invalid post Id');
+			}
 			const errors = validationResult(req);
 			const newComment = new Comment({
 				text: req.body.text,
