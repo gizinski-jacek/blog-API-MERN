@@ -78,9 +78,7 @@ exports.sign_up_user = [
 		try {
 			const user_list = await User.find({ username: req.body.username }).exec();
 			if (user_list.length > 0) {
-				return res
-					.status(409)
-					.json(`${req.body.username} name is already taken`);
+				return res.status(409).json('Name is already taken');
 			}
 			const errors = validationResult(req);
 			const newUser = new User({
