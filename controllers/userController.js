@@ -62,15 +62,6 @@ exports.sign_up_user = [
 		.trim()
 		.isLength({ min: 4, max: 32 })
 		.escape(),
-	body('username').custom(async (value, { req }) => {
-		const user_list = await User.find({ username: req.body.username }).exec();
-		if (user_list.length > 0) {
-			const error = new Error(`${value} name is already taken`);
-			error.status = 409;
-			throw error;
-		}
-		return true;
-	}),
 	body('password', 'Password field can not be empty')
 		.trim()
 		.isLength({ min: 4, max: 64 })
@@ -85,6 +76,12 @@ exports.sign_up_user = [
 	}),
 	async (req, res, next) => {
 		try {
+			const user_list = await User.find({ username: req.body.username }).exec();
+			if (user_list.length > 0) {
+				return res
+					.status(409)
+					.json(`${req.body.username} name is already taken`);
+			}
 			const errors = validationResult(req);
 			const newUser = new User({
 				username: req.body.username,
