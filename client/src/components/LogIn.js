@@ -15,7 +15,6 @@ const LogIn = ({ setCurrentUser }) => {
 			const res = await fetch('/api/log-in', {
 				method: 'POST',
 				mode: 'cors',
-				credentials: 'include',
 				body: JSON.stringify({ username, password }),
 				headers: { 'Content-type': 'application/json' },
 			});
