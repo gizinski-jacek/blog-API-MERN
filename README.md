@@ -39,7 +39,7 @@ npm run all
 This will use **_concurrently_** module to start Node server and React client app.
 
 Open [http://localhost:3000](http://localhost:3000) to view frontend App in the browser.\
-Open [http://localhost:4000](http://localhost:4000) to view backend API in the browser.
+Open [http://localhost:4000/api](http://localhost:4000/api) to view backend API in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
