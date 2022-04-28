@@ -37,7 +37,6 @@ h5 {
 	flex-direction: column;
 	align-items: center;
 	background-color: $light-gray;
-	padding: 8px;
 }
 
 .navbar {
@@ -48,7 +47,7 @@ h5 {
 	justify-content: space-between;
 	align-items: center;
 	padding: 12px;
-	height: 80px;
+	height: 64px;
 	border-bottom: 2px solid $blue;
 
 	a:visited {
