@@ -50,6 +50,10 @@ h5 {
 	padding: 12px;
 	height: 80px;
 	border-bottom: 2px solid $blue;
+
+	a:visited {
+		color: $white;
+	}
 }
 
 .nav-left {
@@ -84,8 +88,7 @@ h5 {
 	}
 
 	a:hover {
-		color: $blue;
-		text-decoration: underline;
+		color: $white;
 	}
 }
 
