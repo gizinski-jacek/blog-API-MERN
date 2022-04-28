@@ -1,9 +1,9 @@
 $blue: rgb(0, 100, 200);
 $light-gray: rgb(235, 235, 235);
 $gray: rgb(150, 150, 150);
-$white: hwb(0 100% 0%);
+$white: rgb(255, 255, 255);
 $black: rgb(0, 0, 0);
-$error-red: rgb(240, 0, 0);
+$error-red: rgb(225, 0, 0);
 
 body * {
 	box-sizing: border-box;
@@ -716,8 +716,8 @@ h5 {
 	margin-bottom: 24px;
 	font-weight: 600;
 	padding: 8px;
-	background-color: $black;
-	color: $error-red;
+	background-color: $error-red;
+	color: $black;
 }
 
 .not-found {
