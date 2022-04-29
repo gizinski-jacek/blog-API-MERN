@@ -49,10 +49,6 @@ h5 {
 	padding: 12px;
 	height: 64px;
 	border-bottom: 2px solid $blue;
-
-	a:visited {
-		color: $white;
-	}
 }
 
 .nav-left {
@@ -89,11 +85,19 @@ h5 {
 	a:hover {
 		color: $white;
 	}
+
+	a:visited {
+		color: $black;
+	}
 }
 
 .nav-right {
 	display: flex;
 	flex-direction: row;
+
+	a:visited {
+		color: $white;
+	}
 
 	.button-s {
 		margin: auto 2px;
@@ -684,7 +688,7 @@ h5 {
 .footer {
 	width: 100%;
 	text-align: center;
-	background-color: $blue;
+	background-color: $black;
 
 	a {
 		font-weight: 600;
