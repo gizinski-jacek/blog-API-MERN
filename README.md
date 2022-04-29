@@ -18,7 +18,7 @@ Made to practice working with frontend to backend communication and furthering m
 
 Github repo can be found [here](https://github.com/gizinski-jacek/blog-API-MERN).
 
-This repo is live on [Heroku](https://blog-api-mern-360821.herokuapp.com).
+Live demo can be found on [Heroku](https://blog-api-mern-360821.herokuapp.com).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
