@@ -219,7 +219,7 @@ h5 {
 .preview-posts {
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
+	justify-content: space-evenly;
 
 	.recent-posts {
 		text-align: center;
@@ -259,6 +259,7 @@ h5 {
 
 	.post-metadata {
 		margin-top: 24px;
+		padding-top: 4px;
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-end;
