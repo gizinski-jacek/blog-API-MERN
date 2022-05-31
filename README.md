@@ -1,4 +1,4 @@
-# Blog API MERN
+# Blogster - MERN API
 
 Blog MERN app built with React as frontend client, Node/Express as backend server, MongoDB for data storage, and using Heroku to host it online.
 
