@@ -1,6 +1,6 @@
 $blue: rgb(0, 100, 200);
 $light-gray: rgb(235, 235, 235);
-$gray: rgb(150, 150, 150);
+$gray: rgb(175, 175, 175);
 $white: rgb(255, 255, 255);
 $black: rgb(0, 0, 0);
 $error-red: rgb(225, 0, 0);
@@ -61,15 +61,11 @@ h5 {
 		flex-direction: row;
 		align-items: center;
 		text-transform: uppercase;
-	}
 
-	.logo:hover {
-		color: $black;
-		text-decoration: none;
-	}
-
-	.logo-icon {
-		width: 32px;
+		svg {
+			width: 32px;
+			height: 32px;
+		}
 	}
 
 	a {
@@ -90,13 +86,19 @@ h5 {
 .nav-right {
 	display: flex;
 	flex-direction: row;
+	align-items: center;
 
 	a:visited {
 		color: $white;
 	}
 
 	.button-s {
-		font-size: 0.85rem;
+		font-size: 0.9rem;
+	}
+
+	.button-l {
+		height: 40px;
+		font-size: 1.25rem;
 	}
 
 	#nav-log-in-form {
@@ -117,7 +119,7 @@ h5 {
 		input {
 			border: none;
 			margin: auto 2px;
-			font-size: 0.85rem;
+			font-size: 0.9rem;
 		}
 
 		button:hover {
@@ -188,6 +190,10 @@ h5 {
 	div {
 		width: 75%;
 		margin: 24px;
+	}
+
+	h1 {
+		margin: 1rem 0;
 	}
 }
 
@@ -303,6 +309,7 @@ h5 {
 		transition: 0.5s ease-in-out;
 		overflow: hidden scroll;
 		scrollbar-color: $light-gray $blue;
+		scrollbar-width: thin;
 		background-color: $blue;
 	}
 
@@ -340,7 +347,7 @@ h5 {
 }
 
 .post-simple:hover {
-	filter: brightness(110%);
+	filter: brightness(95%);
 }
 
 .post-details {
