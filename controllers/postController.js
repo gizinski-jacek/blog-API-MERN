@@ -19,7 +19,7 @@ exports.get_preview_posts = async (req, res, next) => {
 	try {
 		const post_list = await Post.find({ published: true })
 			.sort({ createdAt: 'desc' })
-			.limit(3)
+			.limit(4)
 			.populate('author', 'username')
 			.exec();
 		res.status(200).json(post_list);
