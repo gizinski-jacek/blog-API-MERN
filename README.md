@@ -79,7 +79,7 @@ heroku open
 ## Features
 
 - Responsive User Interface
-- Create and authenticate users
+- Sign up and authenticate users
 - Create, edit and delete blog posts
 - Publish and unpublish existing posts
 - Comment on blog posts
