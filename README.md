@@ -83,9 +83,6 @@ heroku open
 - Create, edit and delete blog posts
 - Publish and unpublish existing posts
 - Comment on blog posts
-- Save data in localStorage
-- Reset form data
-- Print the CV
 
 ## Status
 
