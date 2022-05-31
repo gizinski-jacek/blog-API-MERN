@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import LoadingIcon from './utils/LoadingIcon';
 import PostLinkWrapper from './utils/PostLinkWrapper';
 
 const PostsPreview = () => {
-	const [loading, setLoading] = useState(true);
 	const [previewPosts, setPreviewPosts] = useState();
 
 	useEffect(() => {
@@ -17,7 +15,6 @@ const PostsPreview = () => {
 				});
 				const resJson = await res.json();
 				setPreviewPosts(resJson);
-				setLoading(false);
 			} catch (error) {
 				console.log(error);
 			}
