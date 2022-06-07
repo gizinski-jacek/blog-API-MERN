@@ -5,11 +5,15 @@ const Signup = () => {
 	const navigate = useNavigate();
 
 	const [errors, setErrors] = useState();
-	const [user, setUser] = useState({ username: '', password: '', repeat: '' });
+	const [signUpData, setSignUpData] = useState({
+		username: '',
+		password: '',
+		repeat: '',
+	});
 
 	const handleChange = (e) => {
 		const { name, value } = e.target;
-		setUser((prevState) => ({ ...prevState, [name]: value }));
+		setSignUpData((prevState) => ({ ...prevState, [name]: value }));
 	};
 
 	const handleSubmit = async (e) => {
@@ -18,7 +22,7 @@ const Signup = () => {
 			const res = await fetch('/api/sign-up', {
 				method: 'POST',
 				mode: 'cors',
-				body: JSON.stringify(user),
+				body: JSON.stringify(signUpData),
 				headers: { 'Content-type': 'application/json' },
 			});
 			const resJson = await res.json();
@@ -60,7 +64,7 @@ const Signup = () => {
 					name='username'
 					minLength='4'
 					maxLength='32'
-					value={user.username}
+					value={signUpData.username}
 					onChange={(e) => handleChange(e)}
 					placeholder='Username'
 					required
@@ -72,7 +76,7 @@ const Signup = () => {
 					name='password'
 					minLength='4'
 					maxLength='64'
-					value={user.password}
+					value={signUpData.password}
 					onChange={(e) => handleChange(e)}
 					placeholder='Password'
 					required
@@ -84,7 +88,7 @@ const Signup = () => {
 					name='repeat'
 					minLength='4'
 					maxLength='64'
-					value={user.repeat}
+					value={signUpData.repeat}
 					onChange={(e) => handleChange(e)}
 					placeholder='Repeat password'
 					required
