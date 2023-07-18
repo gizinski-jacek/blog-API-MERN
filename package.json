@@ -6,8 +6,9 @@
 		"start": "node ./bin/www",
 		"devstart": "nodemon ./bin/www",
 		"debugstart": "DEBUG=blog-api-mern:* npm run devstart",
-		"all": "concurrently \"npm run devstart\" \"cd client && npm run startcss\" ",
-		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build"
+		"all": "concurrently \"npm i && npm run devstart\" \"cd client && npm i && npm run startcss\" ",
+		"heroku-postbuild": "cd client && npm install --only=dev && npm install && npm run build",
+		"render-postbuild": "npm i && cd client && npm install && npm install && npm run build"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
