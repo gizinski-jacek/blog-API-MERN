@@ -6,19 +6,21 @@ Made to practice working with frontend to backend communication and furthering m
 
 ## Table of contents
 
-- [Github & Live](#github--live)
-- [Getting Started](#getting-started)
-- [React](#react)
-- [Deploy](#deploy)
-- [Features](#features)
-- [Status](#status)
-- [Contact](#contact)
+- [Blogster - MERN API](#blogster---mern-api)
+  - [Table of contents](#table-of-contents)
+- [Github \& Live](#github--live)
+  - [Getting Started](#getting-started)
+  - [React](#react)
+  - [Deploy](#deploy)
+  - [Features](#features)
+  - [Status](#status)
+  - [Contact](#contact)
 
 # Github & Live
 
 Github repo can be found [here](https://github.com/gizinski-jacek/blog-API-MERN).
 
-Live demo can be found on [Heroku](https://blog-api-mern-360821.herokuapp.com).
+Live demo can be found on [Render](https://blog-api-mern.onrender.com).
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
@@ -77,6 +79,7 @@ heroku open
 ```
 
 Don't forget to add **.env** file with these environmental variables for the app:
+
 ```
 MONGODB_URI
 STRATEGY_SECRET
