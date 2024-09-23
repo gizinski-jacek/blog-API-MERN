@@ -689,9 +689,11 @@ h5 {
 }
 
 .footer {
-	width: 100%;
-	text-align: center;
+	position: absolute;
+	bottom: 0;
+	right: 0;
 	background-color: $black;
+	border-top-left-radius: 8px;
 
 	a {
 		font-weight: 600;
@@ -704,7 +706,6 @@ h5 {
 	}
 
 	svg {
-		margin: 0 8px;
 		box-sizing: content-box;
 		border-radius: 50%;
 		padding: 1px;

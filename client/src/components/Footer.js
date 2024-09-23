@@ -2,7 +2,6 @@ const Footer = () => {
 	return (
 		<footer className='footer'>
 			<a href='https://github.com/gizinski-jacek/blog-API-MERN'>
-				Gizinski Jacek
 				<svg
 					viewBox='0 0 16 16'
 					height='18px'
