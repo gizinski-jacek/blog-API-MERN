@@ -696,13 +696,9 @@ h5 {
 	border-top-left-radius: 8px;
 
 	a {
-		font-weight: 600;
+		display: block;
 		color: $white;
 		padding: 4px;
-		float: right;
-		display: flex;
-		align-items: center;
-		text-decoration: none;
 	}
 
 	svg {
